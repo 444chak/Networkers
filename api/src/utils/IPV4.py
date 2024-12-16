@@ -127,3 +127,48 @@ def bin_to_dec(adresse):
     
     # Joindre les octets en notation décimale
     return '.'.join(octets_decimaux)
+
+def ipv4_to_cidr(adresse, masque):
+    """
+    Écrit une adresse IPv4 en notation CIDR.
+    
+    :param adresse: Une chaîne de caractères représentant l'adresse IPv4 (par exemple "192.168.1.1").
+    :param masque: Une chaîne de caractères représentant le masque de sous-réseau (par exemple "255.255.255.0").
+    :return: Une chaîne représentant l'adresse IPv4 en notation CIDR (par exemple "192.168.1.1/24"),
+             ou un message d'erreur si l'adresse ou le masque est invalide.
+    """
+    if not est_valide(adresse):
+        return "Adresse invalide"
+    
+    masque_binaire = ''.join([f"{int(octet):08b}" for octet in masque.split('.')])
+    bits_a_1 = masque_binaire.count('1')
+    
+    return f"{adresse}/{bits_a_1}"
+
+def get_masque_ipv4(cidr):
+    """
+    Calcule le masque de sous-réseau à partir d'une adresse IPv4 en notation CIDR.
+    
+    :param cidr: Une chaîne de caractères représentant une adresse IPv4 en notation CIDR (par exemple "192.168.1.1/24").
+    :return: Une chaîne représentant le masque de sous-réseau (par exemple "255.255.255.0"),
+             ou un message d'erreur si l'entrée est invalide.
+    """
+    if '/' not in cidr:
+        return "Notation CIDR invalide"
+    
+    try:
+        adresse, prefixe = cidr.split('/')
+        prefixe = int(prefixe) 
+    except ValueError:
+        return "Notation CIDR invalide"
+    
+    if not est_valide(adresse) or not (0 <= prefixe <= 32):
+        return "Adresse IPv4 ou préfixe CIDR invalide"
+    
+    masque_binaire = '1' * prefixe + '0' * (32 - prefixe)
+    
+    masque_octets = [int(masque_binaire[i:i+8], 2) for i in range(0, 32, 8)]
+    
+    masque = '.'.join(map(str, masque_octets))
+    
+    return masque
