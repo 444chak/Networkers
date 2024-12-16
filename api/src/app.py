@@ -8,7 +8,7 @@ from routes import auth, users
 
 app = FastAPI()
 
-@app.get("/", dependencies=[Depends(common_key_header)])
+@app.get("/", summary="Get app version", dependencies=[Depends(common_key_header)])
 async def get_info() -> dict:
     """Get the app info."""
     info = {}
@@ -19,9 +19,9 @@ async def get_info() -> dict:
 
 app.add_middleware(client_auth.ClientAuth)
 
-app.include_router(auth.router, prefix="/auth",
+app.include_router(auth.router, prefix="/auth", tags=["auth"],
                    dependencies=[Depends(common_key_header)])
-app.include_router(users.router, prefix="/users",
+app.include_router(users.router, prefix="/users", tags=["users"],
                    dependencies=[Depends(common_key_header)])
 
 db.init_db()

@@ -8,7 +8,7 @@ from models.user import User, user_table
 
 router = APIRouter()
 
-@router.get("/users", response_model=list[User], tags=["users"],
+@router.get("/users", response_model=list[User],
             summary="Get all users", dependencies=[Depends(jwt_bearer)])
 async def get_all_users() -> dict:
     """Get all users."""
