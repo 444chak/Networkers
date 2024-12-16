@@ -1,10 +1,7 @@
 """FastAPI application."""
-from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from routes import auth
-
-load_dotenv()
 
 app = FastAPI()
 
