@@ -1,6 +1,7 @@
 """User model module."""
 from dataclasses import asdict, dataclass
 
+from pydantic import BaseModel
 from sqlalchemy import (
     Column,
     String,
@@ -53,3 +54,10 @@ class User:
             password,
             role if role else "user",
         )
+
+
+class UserUpdate(BaseModel):
+    """Model for user update."""
+
+    username: str
+    password: str
