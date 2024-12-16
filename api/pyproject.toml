@@ -6,7 +6,9 @@ authors = [{ name = "444chak", email = "444chak@gmail.com" },
             { name = "Eliott B", email = "contact@eliott-b.fr"}]
 dependencies = [
     "fastapi[standard]>=0.115.0",
-    "uvicorn"
+    "uvicorn",
+    "passlib>=1.7.4",
+    "python-jose>=3.3.0",
 ]
 requires-python = ">=3.11"
 readme = "../README.md"
