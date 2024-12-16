@@ -1,5 +1,5 @@
 """User model module."""
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 from sqlalchemy import (
     Column,
@@ -25,6 +25,15 @@ class User:
     username:str
     password:str
     role:str
+
+    def to_dict(self) -> dict:
+        """Return the dictionary representation of the object.
+
+        Returns:
+            dict: Dictionary
+
+        """
+        return asdict(self)
 
     @classmethod
     def from_db(cls, username: str, password: str, role: str|None) -> "User":
