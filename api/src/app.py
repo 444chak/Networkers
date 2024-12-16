@@ -2,7 +2,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from routes import auth_router
+from routes import auth
 
 load_dotenv()
 
@@ -17,4 +17,4 @@ async def get_info() -> dict:
     info["author"] = "BORGO, IUT Vélizy"
     return info
 
-app.include_router(auth_router, prefix="/auth")
+app.include_router(auth.router, prefix="/auth")
