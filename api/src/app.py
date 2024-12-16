@@ -5,10 +5,14 @@ app = FastAPI()
 
 @app.get("/")
 async def read_root() -> dict:
-    """Return a simple Hello World message.
+    """Return all information about the app.
 
     Returns:
-        dict: Hello World message
+        dict: Information message
 
     """
-    return {"message": "Hello World!"}
+    info = {}
+    info["title"] = app.title
+    info["version"] = "v" + app.version
+    info["author"] = "BORGO, IUT Vélizy"
+    return info
