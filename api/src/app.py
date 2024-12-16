@@ -1,6 +1,7 @@
 """FastAPI application."""
 from fastapi import FastAPI
 
+from models import db
 from routes import auth
 
 app = FastAPI()
@@ -15,3 +16,5 @@ async def get_info() -> dict:
     return info
 
 app.include_router(auth.router, prefix="/auth")
+
+db.init_db()
