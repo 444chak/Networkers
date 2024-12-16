@@ -96,3 +96,40 @@ async def update_current_user(user_udpate: UserUpdate,\
         conn.execute(stmt)
 
     return user
+
+@router.patch("/{username}", response_model=User, summary="Update an user by username",
+              dependencies=[Depends(jwt_bearer)])
+async def update_user(username: str, user_udpate: UserUpdate,\
+        token: dict = Depends(jwt_bearer)) -> dict: # noqa: B008, FAST002
+    """Update current user."""
+    stmt = user_table.select().where(user_table.c.username == token["sub"])
+    with db.engine.begin() as conn:
+        result = conn.execute(stmt).fetchone()
+    if result[2] != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    stmt = user_table.select().where(user_table.c.username == username)
+    with db.engine.begin() as conn:
+        result = conn.execute(stmt).fetchone()
+    if not result:
+        raise HTTPException(status_code=404, detail="User not found")
+    user: User = User.from_db(result[0], result[1], result[2])
+
+    if user.username != user_udpate.username:
+        stmt = user_table.select().where(user_table.c.username == user_udpate.username)
+        with db.engine.begin() as conn:
+            result = conn.execute(stmt).fetchone()
+        if result:
+            raise HTTPException(status_code=400, detail="Username already used")
+
+        user.username = user_udpate.username
+
+    if not verify_password(user_udpate.password, user.password):
+        user.password = get_hashed_password(user_udpate.password)
+
+    stmt = user_table.update().where(user_table.c.username == username)\
+        .values(user.to_dict())
+    with db.engine.begin() as conn:
+        conn.execute(stmt)
+
+    return user
