@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 
 import utils.ipv6 as ipv6_utils
 from dependencies.jwt import jwt_bearer
-from models.ipv6 import Ipv6
 
 router = APIRouter()
 
