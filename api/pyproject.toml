@@ -1,6 +1,6 @@
 [project]
-name = "fastapi-app"
-version = "0.1.0"
+name = "NetWorkers-API"
+version = "1.0.0"
 description = "A simple FastAPI application"
 authors = [{ name = "444chak", email = "444chak@gmail.com" },
             { name = "Eliott B", email = "contact@eliott-b.fr"}]

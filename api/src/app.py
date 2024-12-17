@@ -6,7 +6,7 @@ from middlewares import client_auth
 from models import db
 from routes import auth, users
 
-app = FastAPI()
+app = FastAPI(title="NetWorkers API", version="1.0.0")
 
 @app.get("/", summary="Get app version", dependencies=[Depends(common_key_header)])
 async def get_info() -> dict:

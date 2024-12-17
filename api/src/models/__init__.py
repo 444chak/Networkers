@@ -20,7 +20,7 @@ class Database:
         username = os.getenv("MYSQL_USER")
         password = os.getenv("MYSQL_PASSWORD")
         self.engine = create_engine(
-            f"mariadb+mariadbconnector://{username}:{password}@mariadb/{database}")
+            f"mariadb+mariadbconnector://{username}:{password}@networkers-db/{database}")
         self.metadata.create_all(self.engine)
 
 

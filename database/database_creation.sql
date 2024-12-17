@@ -1,5 +1,7 @@
-CREATE DATABASE nom_appli;
-USE nom_appli;
+CREATE DATABASE networkers;
+
+USE networkers;
+
 CREATE TABLE `users` (
   `username` varchar(35) PRIMARY KEY,
   `password` varchar(255) NOT NULL,
