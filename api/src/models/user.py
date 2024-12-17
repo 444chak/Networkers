@@ -9,6 +9,7 @@ from sqlalchemy import (
 )
 
 from models import db
+from utils.auth import get_hashed_password
 
 user_table = Table(
     "user",
@@ -61,3 +62,25 @@ class UserUpdate(BaseModel):
 
     username: str
     password: str
+
+
+def create_admin_user() -> User|None:
+    """Create the admin user if not exists.
+
+    Returns:
+        User|None: User object
+
+    """
+    user = user_table.select().where(user_table.c.username == "admin")
+    with db.engine.begin() as conn:
+        result = conn.execute(user).fetchone()
+    if result:
+        return None
+
+    password = get_hashed_password("admin")
+    user = User("admin", password, "admin")
+    stmt = user_table.insert().values(user.to_dict())
+    with db.engine.begin() as conn:
+        conn.execute(stmt)
+
+    return user
