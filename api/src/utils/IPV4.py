@@ -155,3 +155,64 @@ def get_ipv4_mask(cidr):
     mask = '.'.join(map(str, mask_octets))
     
     return mask
+
+def vlsm(base_ip, subnets):
+    """
+    Implements the VLSM (Variable Length Subnet Mask) technique.
+
+    :param base_ip: The base IPv4 network address (e.g., "192.168.1.0").
+    :param subnets: A list of integers representing the number of required hosts for each subnet.
+    :return: A list of dictionaries containing subnet details: network, mask, broadcast, and usable range.
+    """
+    if not is_valid(base_ip):
+        return "Invalid base IP address"
+
+    # Sort subnets in descending order (to allocate the largest first)
+    subnets.sort(reverse=True)
+    results = []
+
+    # Helper functions to convert between IP addresses and integers
+    def ip_to_int(ip):
+        octets = list(map(int, ip.split('.')))
+        return (octets[0] << 24) + (octets[1] << 16) + (octets[2] << 8) + octets[3]
+
+    def int_to_ip(ip_int):
+        return '.'.join([str((ip_int >> (8 * i)) & 255) for i in range(3, -1, -1)])
+
+    current_ip_int = ip_to_int(base_ip)
+
+    for hosts in subnets:
+        # Total addresses needed (including network and broadcast addresses)
+        total_addresses = hosts + 2
+
+        # Calculate the CIDR prefix (number of network bits)
+        prefix = 32 - (total_addresses - 1).bit_length()
+
+        # Calculate network and broadcast addresses
+        network_ip = current_ip_int
+        broadcast_ip = network_ip + (1 << (32 - prefix)) - 1
+
+        # Check for valid IPv4 address range
+        if broadcast_ip > 0xFFFFFFFF:
+            raise ValueError("Out of IPv4 address range")
+
+        # Append the results to the list
+        results.append({
+            'network': int_to_ip(network_ip),
+            'mask': get_ipv4_mask(f"0.0.0.0/{prefix}"),
+            'broadcast': int_to_ip(broadcast_ip),
+            'range': f"{int_to_ip(network_ip + 1)} - {int_to_ip(broadcast_ip - 1)}"
+        })
+
+        # Move to the next subnet's network address
+        current_ip_int = broadcast_ip + 1
+
+    return results
+
+# Example usage
+base_ip = "192.168.1.0"
+subnet_hosts = [50, 20, 10]
+subnets = vlsm(base_ip, subnet_hosts)
+
+for i, subnet in enumerate(subnets):
+    print(f"Subnet {i+1}: {subnet}")
