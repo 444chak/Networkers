@@ -1,11 +1,11 @@
-def est_valide(adresse):
+def is_valid(address):
     """
-    Vérifie si une adresse IPv4 est valide.
+    Checks if an IPv4 address is valid.
     
-    :param adresse: Une chaîne de caractères représentant l'adresse IPv4 (par exemple "192.168.1.1").
-    :return: True si l'adresse est valide, False sinon.
+    :param address: A string representing the IPv4 address (e.g., "192.168.1.1").
+    :return: True if the address is valid, False otherwise.
     """
-    octets = adresse.split('.')
+    octets = address.split('.')
     
     if len(octets) != 4:
         return False
@@ -16,159 +16,142 @@ def est_valide(adresse):
     
     return True
 
-
-def classe_ipv4(adresse):
+def ipv4_class(address):
     """
-    Détermine la classe A, B ou C d'une adresse IPv4.
+    Determines the class A, B, or C of an IPv4 address.
     
-    :param adresse: Une chaîne de caractères représentant l'adresse IPv4 (par exemple "192.168.1.1").
-    :return: Une chaîne indiquant la classe de l'adresse (A, B ou C) ou un message d'erreur si l'adresse est invalide.
+    :param address: A string representing the IPv4 address (e.g., "192.168.1.1").
+    :return: A string indicating the class of the address (A, B, or C) or an error message if the address is invalid.
     """
-    if not (est_valide(adresse)):
+    if not is_valid(address):
         return False
-    octets = adresse.split('.')
-    premier_octet = int(octets[0])
+    octets = address.split('.')
+    first_octet = int(octets[0])
     
-    if 0 <= premier_octet <= 127:
-        return "Classe A"
-    elif 128 <= premier_octet <= 191:
-        return "Classe B"
-    elif 192 <= premier_octet <= 223:
-        return "Classe C"
+    if 0 <= first_octet <= 127:
+        return "Class A"
+    elif 128 <= first_octet <= 191:
+        return "Class B"
+    elif 192 <= first_octet <= 223:
+        return "Class C"
     else:
-        return "L'adresse ne fait pas partie des classes A, B ou C"
+        return "The address does not belong to classes A, B, or C"
     
-def dec_to_bin(adresse):
+def dec_to_bin(address):
     """
-    Convertit une adresse IPv4 de notation décimale en notation binaire.
+    Converts an IPv4 address from decimal notation to binary notation.
     
-    :param adresse: Une chaîne de caractères représentant l'adresse IPv4 (par exemple "192.168.1.1").
-    :return: Une chaîne contenant l'adresse IPv4 en binaire (ex : "11000000.10101000.00000001.00000001")
-             ou un message d'erreur si l'adresse est invalide.
+    :param address: A string representing the IPv4 address (e.g., "192.168.1.1").
+    :return: A string containing the IPv4 address in binary notation (e.g., "11000000.10101000.00000001.00000001")
+             or an error message if the address is invalid.
     """
-    # Vérifier si l'adresse est valide
-    if not est_valide(adresse):
-        return "Adresse IPv4 invalide"
+    if not is_valid(address):
+        return "Invalid IPv4 address"
     
-    # Diviser l'adresse en octets
-    octets = adresse.split('.')
+    octets = address.split('.')
     
-    # Convertir chaque octet en binaire avec 8 bits
-    octets_binaires = [f"{int(octet):08b}" for octet in octets]
+    binary_octets = [f"{int(octet):08b}" for octet in octets]
     
-    # Joindre les octets binaires avec des points
-    return '.'.join(octets_binaires)
+    return '.'.join(binary_octets)
 
-def dec_to_hex(adresse):
+def dec_to_hex(address):
     """
-    Convertit une adresse IPv4 de notation décimale en notation hexadécimale.
+    Converts an IPv4 address from decimal notation to hexadecimal notation.
     
-    :param adresse: Une chaîne de caractères représentant l'adresse IPv4 (par exemple "192.168.1.1").
-    :return: Une chaîne contenant l'adresse IPv4 en hexadécimal (ex : "C0.A8.01.01")
-             ou un message d'erreur si l'adresse est invalide.
+    :param address: A string representing the IPv4 address (e.g., "192.168.1.1").
+    :return: A string containing the IPv4 address in hexadecimal notation (e.g., "C0.A8.01.01")
+             or an error message if the address is invalid.
     """
-    # Vérifier si l'adresse est valide
-    if not est_valide(adresse):
-        return "Adresse IPv4 invalide"
+    if not is_valid(address):
+        return "Invalid IPv4 address"
     
-    # Diviser l'adresse en octets
-    octets = adresse.split('.')
+    octets = address.split('.')
     
-    # Convertir chaque octet en hexadécimal (2 caractères)
-    octets_hex = [f"{int(octet):02X}" for octet in octets]
+    hex_octets = [f"{int(octet):02X}" for octet in octets]
     
-    # Joindre les octets hexadécimaux avec des points
-    return '.'.join(octets_hex)
+    return '.'.join(hex_octets)
 
-def hex_to_dec(adresse):
+def hex_to_dec(address):
     """
-    Convertit une adresse IPv4 de notation hexadécimale en notation décimale.
+    Converts an IPv4 address from hexadecimal notation to decimal notation.
     
-    :param adresse_hex: Une chaîne de caractères représentant l'adresse IPv4 en hexadécimal (ex : "C0.A8.01.01").
-    :return: Une chaîne contenant l'adresse IPv4 en notation décimale (ex : "192.168.1.1"),
-             ou un message d'erreur si l'adresse est invalide.
+    :param address: A string representing the IPv4 address in hexadecimal notation (e.g., "C0.A8.01.01").
+    :return: A string containing the IPv4 address in decimal notation (e.g., "192.168.1.1"),
+             or an error message if the address is invalid.
     """
-    # Diviser l'adresse en octets
-    octets = adresse.split('.')
+    octets = address.split('.')
     
-    # Vérifier qu'il y a exactement 4 octets
     if len(octets) != 4:
-        return "Adresse IPv4 hexadécimale invalide"
+        return "Invalid hexadecimal IPv4 address"
     
-    # Convertir chaque octet hexadécimal en décimal
     try:
-        octets_decimaux = [str(int(octet, 16)) for octet in octets]
+        decimal_octets = [str(int(octet, 16)) for octet in octets]
     except ValueError:
-        return "Adresse IPv4 hexadécimale invalide"
+        return "Invalid hexadecimal IPv4 address"
     
-    # Joindre les octets en notation décimale
-    return '.'.join(octets_decimaux)
+    return '.'.join(decimal_octets)
 
-def bin_to_dec(adresse):
+def bin_to_dec(address):
     """
-    Convertit une adresse IPv4 de notation binaire en notation décimale.
+    Converts an IPv4 address from binary notation to decimal notation.
     
-    :param adresse_bin: Une chaîne de caractères représentant l'adresse IPv4 en binaire (ex : "11000000.10101000.00000001.00000001").
-    :return: Une chaîne contenant l'adresse IPv4 en notation décimale (ex : "192.168.1.1"),
-             ou un message d'erreur si l'adresse est invalide.
+    :param address: A string representing the IPv4 address in binary notation (e.g., "11000000.10101000.00000001.00000001").
+    :return: A string containing the IPv4 address in decimal notation (e.g., "192.168.1.1"),
+             or an error message if the address is invalid.
     """
-    # Diviser l'adresse en octets
-    octets = adresse.split('.')
+    octets = address.split('.')
     
-    # Vérifier qu'il y a exactement 4 octets
     if len(octets) != 4:
-        return "Adresse IPv4 binaire invalide"
+        return "Invalid binary IPv4 address"
     
-    # Convertir chaque octet binaire en décimal
     try:
-        octets_decimaux = [str(int(octet, 2)) for octet in octets]
+        decimal_octets = [str(int(octet, 2)) for octet in octets]
     except ValueError:
-        return "Adresse IPv4 binaire invalide"
+        return "Invalid binary IPv4 address"
     
-    # Joindre les octets en notation décimale
-    return '.'.join(octets_decimaux)
+    return '.'.join(decimal_octets)
 
-def ipv4_to_cidr(adresse, masque):
+def ipv4_to_cidr(address, mask):
     """
-    Écrit une adresse IPv4 en notation CIDR.
+    Converts an IPv4 address to CIDR notation.
     
-    :param adresse: Une chaîne de caractères représentant l'adresse IPv4 (par exemple "192.168.1.1").
-    :param masque: Une chaîne de caractères représentant le masque de sous-réseau (par exemple "255.255.255.0").
-    :return: Une chaîne représentant l'adresse IPv4 en notation CIDR (par exemple "192.168.1.1/24"),
-             ou un message d'erreur si l'adresse ou le masque est invalide.
+    :param address: A string representing the IPv4 address (e.g., "192.168.1.1").
+    :param mask: A string representing the subnet mask (e.g., "255.255.255.0").
+    :return: A string representing the IPv4 address in CIDR notation (e.g., "192.168.1.1/24"),
+             or an error message if the address or mask is invalid.
     """
-    if not est_valide(adresse):
-        return "Adresse invalide"
+    if not is_valid(address):
+        return "Invalid address"
     
-    masque_binaire = ''.join([f"{int(octet):08b}" for octet in masque.split('.')])
-    bits_a_1 = masque_binaire.count('1')
+    binary_mask = ''.join([f"{int(octet):08b}" for octet in mask.split('.')])
+    ones_count = binary_mask.count('1')
     
-    return f"{adresse}/{bits_a_1}"
+    return f"{address}/{ones_count}"
 
-def get_masque_ipv4(cidr):
+def get_ipv4_mask(cidr):
     """
-    Calcule le masque de sous-réseau à partir d'une adresse IPv4 en notation CIDR.
+    Calculates the subnet mask from an IPv4 address in CIDR notation.
     
-    :param cidr: Une chaîne de caractères représentant une adresse IPv4 en notation CIDR (par exemple "192.168.1.1/24").
-    :return: Une chaîne représentant le masque de sous-réseau (par exemple "255.255.255.0"),
-             ou un message d'erreur si l'entrée est invalide.
+    :param cidr: A string representing an IPv4 address in CIDR notation (e.g., "192.168.1.1/24").
+    :return: A string representing the subnet mask (e.g., "255.255.255.0"),
+             or an error message if the input is invalid.
     """
     if '/' not in cidr:
-        return "Notation CIDR invalide"
+        return "Invalid CIDR notation"
     
     try:
-        adresse, prefixe = cidr.split('/')
-        prefixe = int(prefixe) 
+        address, prefix = cidr.split('/')
+        prefix = int(prefix) 
     except ValueError:
-        return "Notation CIDR invalide"
+        return "Invalid CIDR notation"
     
-    if not est_valide(adresse) or not (0 <= prefixe <= 32):
-        return "Adresse IPv4 ou préfixe CIDR invalide"
+    if not is_valid(address) or not (0 <= prefix <= 32):
+        return "Invalid IPv4 address or CIDR prefix"
     
-    masque_binaire = '1' * prefixe + '0' * (32 - prefixe)
+    binary_mask = '1' * prefix + '0' * (32 - prefix)
     
-    masque_octets = [int(masque_binaire[i:i+8], 2) for i in range(0, 32, 8)]
+    mask_octets = [int(binary_mask[i:i+8], 2) for i in range(0, 32, 8)]
     
-    masque = '.'.join(map(str, masque_octets))
+    mask = '.'.join(map(str, mask_octets))
     
-    return masque
+    return mask
