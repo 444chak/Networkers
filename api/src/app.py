@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI
 from dependencies.common_key_header import common_key_header
 from middlewares import client_auth
 from models import db
-from routes import auth, users
+from routes import auth, users, ipv6
 
 app = FastAPI(title="NetWorkers API", version="1.0.0")
 
@@ -22,6 +22,8 @@ app.add_middleware(client_auth.ClientAuth)
 app.include_router(auth.router, prefix="/auth", tags=["auth"],
                    dependencies=[Depends(common_key_header)])
 app.include_router(users.router, prefix="/users", tags=["users"],
+                   dependencies=[Depends(common_key_header)])
+app.include_router(ipv6.router, prefix="/ipv6", tags=["ipv6"],
                    dependencies=[Depends(common_key_header)])
 
 db.init_db()
