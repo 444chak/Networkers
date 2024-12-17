@@ -101,7 +101,7 @@ async def update_current_user(user_udpate: UserUpdate,\
               dependencies=[Depends(jwt_bearer)])
 async def update_user(username: str, user_udpate: UserUpdate,\
         token: dict = Depends(jwt_bearer)) -> dict: # noqa: B008, FAST002
-    """Update current user."""
+    """Update an user by username."""
     stmt = user_table.select().where(user_table.c.username == token["sub"])
     with db.engine.begin() as conn:
         result = conn.execute(stmt).fetchone()
@@ -133,3 +133,20 @@ async def update_user(username: str, user_udpate: UserUpdate,\
         conn.execute(stmt)
 
     return user
+
+@router.patch("/{username}", summary="Delete an user by username",
+              dependencies=[Depends(jwt_bearer)])
+async def delete_user(username: str, token: dict = Depends(jwt_bearer)) -> dict:\
+        # noqa: B008, FAST002
+    """Delete an user by username."""
+    stmt = user_table.select().where(user_table.c.username == token["sub"])
+    with db.engine.begin() as conn:
+        result = conn.execute(stmt).fetchone()
+    if result[2] != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    stmt = user_table.delete().where(user_table.c.username == username)
+    with db.engine.begin() as conn:
+        conn.execute(stmt)
+
+    return {"message": "User deleted"}
