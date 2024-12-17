@@ -1,6 +1,5 @@
 .button {
     border-radius: 39.5px;
-    background: var(--Noir, #181b1f);
     width: 155px;
     height: 64px;
     flex-shrink: 0;
@@ -13,5 +12,11 @@
         font-weight: 400;
         line-height: normal;
         color: var(--Blanc, #f4f9fb);
+    }
+    &.primary {
+        background: var(--Bleu, #5f63fe);
+    }
+    &.secondary {
+        background: var(--Noir, #181b1f);
     }
 }

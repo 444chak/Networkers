@@ -1,0 +1,14 @@
+.layout {
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    &.background {
+        &-home {
+            background-image: linear-gradient(125deg, rgba(218, 240, 247, 0.63) 25%, rgba(0, 5, 255, 0.34) 75%);
+        }
+        &-logged {
+            background-image: linear-gradient(0deg, #f0f3e8 26.5%, #c5d3fe 87.5%);
+        }
+    }
+}
