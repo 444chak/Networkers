@@ -15,8 +15,31 @@
     }
     &.primary {
         background: var(--Bleu, #5f63fe);
+        transition: background 0.3s;
+        &:hover {
+            &:not(:disabled) {
+                background: var(--BleuFonce, #4c4f9d);
+            }
+        }
     }
     &.secondary {
         background: var(--Noir, #181b1f);
+        transition: background 0.3s;
+        &:hover {
+            &:not(:disabled) {
+                background: var(--Gris, #2d2f33);
+            }
+        }
+    }
+    &:disabled {
+        opacity: 0.5;
+    }
+    &:hover {
+        &:disabled {
+            cursor: not-allowed;
+        }
+        &:not(:disabled) {
+            cursor: pointer;
+        }
     }
 }

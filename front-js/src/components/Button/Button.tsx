@@ -20,13 +20,14 @@ interface ButtonProps {
         top?: string;
         bottom?: string;
     }
+    disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({ text, onClick
-    , primary, secondary, textsize, margin
+    , primary, secondary, textsize, margin, disabled
 }) => {
     return (
-        <button onClick={onClick} className={"button " + (primary ? "primary" : secondary ? "secondary" : "")} style={{ fontSize: textsize, marginLeft: margin?.left, marginRight: margin?.right, marginTop: margin?.top, marginBottom: margin?.bottom }}>
+        <button onClick={onClick} className={"button " + (primary ? "primary" : secondary ? "secondary" : "")} style={{ fontSize: textsize, marginLeft: margin?.left, marginRight: margin?.right, marginTop: margin?.top, marginBottom: margin?.bottom }} disabled={disabled}>
             <span className="text">{text}</span>
         </button >
     );
