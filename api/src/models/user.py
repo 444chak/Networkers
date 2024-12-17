@@ -1,6 +1,7 @@
 """User model module."""
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
+from pydantic import BaseModel
 from sqlalchemy import (
     Column,
     String,
@@ -26,6 +27,15 @@ class User:
     password:str
     role:str
 
+    def to_dict(self) -> dict:
+        """Return the dictionary representation of the object.
+
+        Returns:
+            dict: Dictionary
+
+        """
+        return asdict(self)
+
     @classmethod
     def from_db(cls, username: str, password: str, role: str|None) -> "User":
         """Create a new instance.
@@ -44,3 +54,10 @@ class User:
             password,
             role if role else "user",
         )
+
+
+class UserUpdate(BaseModel):
+    """Model for user update."""
+
+    username: str
+    password: str

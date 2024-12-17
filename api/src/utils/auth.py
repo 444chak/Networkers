@@ -2,7 +2,8 @@
 import os
 from datetime import UTC, datetime, timedelta
 
-from jose import jwt
+from fastapi import HTTPException
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes
@@ -79,3 +80,21 @@ def create_refresh_token(subject: str, expires_delta: int | None = None) -> str:
 
     to_encode = {"exp": expires_delta, "sub": str(subject)}
     return jwt.encode(to_encode, JWT_REFRESH_SECRET_KEY, ALGORITHM)
+
+def verify_jwt(token: str) -> dict:
+    """Verify JWT token.
+
+    Args:
+        token (str): JWT token
+
+    Raises:
+        HTTPException: Invalid token
+
+    Returns:
+        dict: Payload
+
+    """
+    try:
+        return jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
+    except JWTError as err:
+        raise HTTPException(status_code=403, detail="Invalid token") from err
