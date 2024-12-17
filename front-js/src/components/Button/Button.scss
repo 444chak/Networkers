@@ -1,45 +1,50 @@
 .button {
-    border-radius: 39.5px;
-    width: 155px;
-    height: 64px;
-    flex-shrink: 0;
-    border: none;
-    .text {
-        text-align: justify;
-        font-family: Tahoma;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        color: var(--Blanc, #f4f9fb);
-    }
-    &.primary {
-        background: var(--Bleu, #5f63fe);
-        transition: background 0.3s;
-        &:hover {
-            &:not(:disabled) {
-                background: var(--BleuFonce, #4c4f9d);
-            }
-        }
-    }
-    &.secondary {
-        background: var(--Noir, #181b1f);
-        transition: background 0.3s;
-        &:hover {
-            &:not(:disabled) {
-                background: var(--Gris, #2d2f33);
-            }
-        }
-    }
-    &:disabled {
-        opacity: 0.5;
-    }
+  border-radius: 39.5px;
+  width: 155px;
+  height: 64px;
+  flex-shrink: 0;
+  border: none;
+  .text {
+    text-align: justify;
+    font-family: Tahoma;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: var(--Blanc, #f4f9fb);
+  }
+  &.primary {
+    background: var(--Bleu, #5f63fe);
+    transition: background 0.3s;
     &:hover {
-        &:disabled {
-            cursor: not-allowed;
-        }
-        &:not(:disabled) {
-            cursor: pointer;
-        }
+      &:not(:disabled) {
+        background: var(--BleuFonce, #4c4f9d);
+      }
     }
+  }
+  &.secondary {
+    background: var(--Noir, #181b1f);
+    transition: background 0.3s;
+    &:hover {
+      &:not(:disabled) {
+        background: var(--Gris, #2d2f33);
+      }
+    }
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+  &:hover {
+    &:disabled {
+      cursor: not-allowed;
+    }
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+  }
+  &.input {
+    height: auto;
+    padding: 10px;
+    width: 100%;
+  }
 }

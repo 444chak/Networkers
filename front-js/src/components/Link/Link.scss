@@ -1,0 +1,13 @@
+.link {
+  font-family: Tahoma;
+  font-style: normal;
+  line-height: normal;
+  color: var(--Noir, #181b1f);
+  text-decoration: underline;
+  transition: color 0.3s;
+
+  &:hover {
+    color: var(--BleuFonce, #4c4f9d);
+    cursor: pointer;
+  }
+}

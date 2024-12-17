@@ -1,21 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import './Modal.scss';
+import React from "react";
+import "./Modal.scss";
 
 interface ModalProps {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ children
-}) => {
-    return (
-        <div className="modal">
-            <div className="modal-content">
-                {children}
-            </div>
-        </div>
-    );
+const Modal: React.FC<ModalProps> = ({ children }) => {
+  return (
+    <div className="modal">
+      <div className="modal-content">{children}</div>
+    </div>
+  );
 };
 
 export default Modal;

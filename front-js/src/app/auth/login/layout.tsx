@@ -1,21 +1,18 @@
 import type { Metadata } from "next";
 
-
 export const metadata: Metadata = {
-    title: "Connexion",
-    description: "Networkers",
+  title: "Connexion",
+  description: "Networkers",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body>
-                {children}
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
