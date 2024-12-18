@@ -19,7 +19,7 @@ export default function Home() {
 
   const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: { preventDefault: () => void; }) => {
       e.preventDefault();
       try {
         const response = await axios.post("/auth/login", {
@@ -34,7 +34,7 @@ export default function Home() {
           window.location.href = "/";
         }
 
-      } catch (error) {
+      } catch (error: any) {
         if (error.status === 400 || error.status === 404) {
           setError("Nom d'utilisateur ou mot de passe incorrect");
         }
