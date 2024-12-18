@@ -85,7 +85,7 @@ export default function Home() {
           <Box align="right">
             <Text align="right" margin={{ top: "20px" }} size="15px">
               Pas encore de compte ?{" "}
-              <Link href="/auth/register">S’inscrire</Link>
+              <Link href="/auth/signup">S’inscrire</Link>
             </Text>
           </Box>
         </Modal>
