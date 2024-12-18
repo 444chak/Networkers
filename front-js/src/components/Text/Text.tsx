@@ -15,6 +15,9 @@ interface TextProps {
     bottom?: string;
   };
   align?: "left" | "center" | "right" | "justify";
+  className?: string;
+  icon?: React.ReactNode;
+  iconPosition?: "start" | "end"; // Add the iconPosition prop here
 }
 
 const Text: React.FC<TextProps> = ({
@@ -24,10 +27,13 @@ const Text: React.FC<TextProps> = ({
   weight,
   margin,
   align,
+  className,
+  icon,
+  iconPosition = "start", // Destructure the iconPosition prop here with a default value
 }) => {
   return (
     <span
-      className="text"
+      className={`text ${className}`}
       style={{
         color,
         fontSize: size,
@@ -39,7 +45,9 @@ const Text: React.FC<TextProps> = ({
         textAlign: align,
       }}
     >
+      {iconPosition === "start" && icon && <span className="icon">{icon}</span>}
       {children}
+      {iconPosition === "end" && icon && <span className="icon">{icon}</span>}
     </span>
   );
 };

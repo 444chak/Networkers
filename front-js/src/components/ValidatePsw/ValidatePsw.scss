@@ -1,0 +1,14 @@
+.validate-password {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--Gris, #4b4c59);
+    span {
+        display: flex;
+        align-items: center;
+    }
+}
