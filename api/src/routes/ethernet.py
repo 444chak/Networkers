@@ -1,3 +1,5 @@
+"""Ethernet routes module."""
+
 from flask import Flask, request, jsonify
 from scapy.all import Ether
 

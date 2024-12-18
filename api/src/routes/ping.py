@@ -1,6 +1,10 @@
+"""Ping routes module."""
+
 from scapy.all import IP, ICMP, sr1
 
-@app.route("/api/ping", methods=["POST"])
+router = APIRouter()
+
+@router.post("/ping", summary="Ping a target IP")
 def ping():
     """
     Route pour effectuer un ping.

@@ -1,6 +1,10 @@
+"""TCP routes module."""
+
 from scapy.all import IP, TCP, sr1
 
-@app.route("/api/tcp_test", methods=["POST"])
+router = APIRouter()
+
+@router.post("/tcp_test", summary="Test a TCP connection")
 def tcp_test():
     """
     Route pour tester une connexion TCP.
