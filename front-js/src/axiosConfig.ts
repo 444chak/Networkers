@@ -10,7 +10,6 @@ const instance = axios.create({
 instance.interceptors.request.use(async (config) => {
   const response = await fetch('/api/config');
   const { commonKey } = await response.json();
-  
   config.headers["X-Common-Key"] = commonKey;
   return config;
 });

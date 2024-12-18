@@ -11,7 +11,6 @@ import Title from "@/components/Title";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
-
 export default function Home() {
   const router = useRouter();
   const [hasAccessToken, setHasAccessToken] = useState(false);
@@ -23,14 +22,13 @@ export default function Home() {
       if (!token && refresh) {
         try {
           const response = await axios.post("/auth/refresh", {
-            "refresh_token": refresh
+            refresh_token: refresh,
           });
           const data = response.data;
           if (response.status === 200) {
             Cookies.set("access_token", data.access_token);
             Cookies.set("refresh_token", refresh);
           }
-
         } catch {
           Cookies.remove("access_token");
           Cookies.remove("refresh_token");
@@ -56,13 +54,13 @@ export default function Home() {
           height={200}
           style={{ width: "auto", height: "auto" }}
         />
-        { hasAccessToken ?
+        {hasAccessToken ? (
           <Button
             text="Déconnexion"
             onClick={() => router.push("/auth/logout")}
             primary
           />
-        :
+        ) : (
           <Box>
             <Button
               text="Inscription"
@@ -76,7 +74,7 @@ export default function Home() {
               primary
             />
           </Box>
-    }
+        )}
       </Space>
       <Space
         direction="horizontal"
