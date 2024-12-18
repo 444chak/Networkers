@@ -9,6 +9,7 @@ from os import makedirs, remove
 ENV_PATH = ".env"
 ENV_DB = ENV_PATH + "/db"
 ENV_API = ENV_PATH + "/api"
+ENV_COMMON = ENV_PATH + "/common"
 
 GREEN = "\x1b[32m"
 BLUE = "\x1b[34m"
@@ -43,6 +44,14 @@ def create_db_env():
         f.write("MYSQL_ROOT_PASSWORD=" + passwordroot + "\n")
         f.close()
 
+def create_common_env():
+    """Create the .env/common file."""
+    print("Common configuration:")
+    with open(ENV_COMMON, 'w', encoding="UTF-8") as f:
+        common_key = input("Common key: ")
+        f.write("COMMON_KEY=" + common_key + "\n")
+        f.close()
+
 def create_api_env():
     """Create the .env/api file."""
     print("API configuration:")
@@ -51,8 +60,6 @@ def create_api_env():
         f.write("JWT_SECRET_KEY=" + jwt_secret_key + "\n")
         jwt_refresh_key = input("JWT Refresh Key: ")
         f.write("JWT_REFRESH_KEY=" + jwt_refresh_key + "\n")
-        common_key = input("Common key: ")
-        f.write("COMMON_KEY=" + common_key + "\n")
         f.close()
 
 if __name__ == "__main__":
@@ -66,5 +73,7 @@ if __name__ == "__main__":
     create_db_env()
     print("")
     create_api_env()
+    print("")
+    create_common_env()
     print("")
     print(f"{GREEN}Environment variables set successfully.{RESET}")

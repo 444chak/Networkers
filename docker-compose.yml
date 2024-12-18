@@ -28,6 +28,7 @@ services:
     env_file:
       - .env/api
       - .env/db
+      - .env/common
     networks:
       - app-network
   
@@ -43,6 +44,8 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    env_file:
+      - .env/common
     networks:
       - app-network
 
