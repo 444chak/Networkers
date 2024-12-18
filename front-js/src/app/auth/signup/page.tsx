@@ -10,6 +10,8 @@ import Text from "@/components/Text";
 import { use, useState } from "react";
 import Link from "@/components/Link";
 import Space from "@/components/Space";
+import ValidatePsw from "@/components/ValidatePsw";
+import {validate_passwd} from "./validatePasswd";
 
 export default function Home() {
     const [username, setUsername] = useState("");
@@ -17,6 +19,8 @@ export default function Home() {
     const [password, setPassword] = useState("");
 
     const [confirmPassword, setConfirmPassword] = useState("")
+
+    const isValid = false;
 
     return (
         <Layout type="home">
@@ -53,15 +57,15 @@ export default function Home() {
                 required
                 label="Confimer mot de passe"
               />
-              <Text>Le mot de passe doit contenir au moins une majuscule</Text>
-              <Space/>
-              <Text>Le mot de passe doit contenir au moins un chiffre</Text> 
+              <ValidatePsw
+              password={password}
+              />
               <Button
                 text="Connexion"
                 primary
                 type="input"
                 margin={{ top: "20px" }}
-                disabled={!username || !password || !confirmPassword}
+                disabled={!username || !password || !confirmPassword || password !== confirmPassword || !validate_passwd(password)}
               />
               <Box align="right">
                 <Text align="right" margin={{ top: "20px" }} size="15px">
