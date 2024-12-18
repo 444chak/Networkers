@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 1 day
 REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
 ALGORITHM = "HS256"
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")

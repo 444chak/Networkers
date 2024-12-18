@@ -1,5 +1,6 @@
 """FastAPI application."""
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from dependencies.common_key_header import common_key_header
 from middlewares import client_auth
@@ -7,6 +8,17 @@ from models import db, user
 from routes import auth, ipv6, users
 
 app = FastAPI(title="NetWorkers API", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["X-Common-Key", "Content-Type"],
+    expose_headers=["X-Common-Key"],
+)
+
+app.add_middleware(client_auth.ClientAuth)
 
 @app.get("/", summary="Get app version", dependencies=[Depends(common_key_header)])
 async def get_info() -> dict:
@@ -16,8 +28,6 @@ async def get_info() -> dict:
     info["version"] = "v" + app.version
     info["author"] = "BORGO, IUT Vélizy"
     return info
-
-app.add_middleware(client_auth.ClientAuth)
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"],
                    dependencies=[Depends(common_key_header)])

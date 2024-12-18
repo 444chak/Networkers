@@ -9,6 +9,7 @@ from utils.auth import (
     create_access_token,
     create_refresh_token,
     get_hashed_password,
+    verify_jwt,
     verify_password,
 )
 
@@ -37,7 +38,14 @@ async def login(auth: Auth) -> dict:
 @router.post("/refresh", summary="Refresh the access token")
 async def refresh(refresh_token: RefreshToken) -> dict:
     """Refresh the access token."""
-    return {"access_token": create_access_token(refresh_token)}
+    # Verify the refresh token
+    token = verify_jwt(refresh_token.refresh_token)
+    if not token:
+        raise HTTPException(status_code=400, detail="Invalid refresh token")
+
+    # Create a new access token
+    access_token = create_access_token(token["sub"])
+    return {"access_token": access_token}
 
 @router.post("/register", summary="Register to the app")
 async def register(auth: Auth) -> dict:
