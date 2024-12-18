@@ -15,6 +15,9 @@ class ClientAuth(BaseHTTPMiddleware):
         if request.url.path in ["/docs", "/redoc", "/openapi.json"]:
             return await call_next(request)
 
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         common_key = request.headers.get("X-Common-Key")
         if common_key != COMMON_KEY:
             return JSONResponse(status_code=403,

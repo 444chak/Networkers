@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@nextui-org/spacer": "^2.2.4",
+    "axios": "^1.7.9",
+    "js-cookie": "^3.0.5",
     "next": "15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
