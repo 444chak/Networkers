@@ -1,6 +1,7 @@
 """Scapy routes modules."""
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from scapy.config import conf
 from scapy.layers.inet import ICMP, IP, TCP
 from scapy.layers.l2 import Ether
 from scapy.sendrecv import sr1
@@ -29,7 +30,7 @@ def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
     }
 
 @router.get("/tcp-test/{target_ip}/{target_port}", summary="Test a TCP connection")
-def tcp_test(target_ip:str, target_port:str) -> dict:
+def get_tcp_test(target_ip:str, target_port:str) -> dict:
     """Test a TCP connection.
 
     Args:
@@ -71,7 +72,7 @@ def tcp_test(target_ip:str, target_port:str) -> dict:
     }
 
 @router.get("/ping/{ip}", summary="Ping a target IP")
-def ping(ip: str) -> dict:
+def get_ping(ip: str) -> dict:
     """Ping a target IP.
 
     Args:
@@ -93,3 +94,50 @@ def ping(ip: str) -> dict:
     return {
         "message": "Pas de réponse de la cible.",
     }
+
+def serialize_network_interface(iface: object) -> dict:
+    """Convert a network interface object to a dictionary.
+
+    Args:
+        iface (object): Network interface object.
+
+    Returns:
+        dict: Dictionary representation of the network interface.
+
+    """
+    return {
+        "name": str(iface.name) if hasattr(iface, "name") else None,
+        "ip": str(iface.ip) if hasattr(iface, "ip") else None,
+        "mac": str(iface.mac) if hasattr(iface, "mac") else None,
+        "mtu": int(iface.mtu) if hasattr(iface, "mtu") else None,
+    }
+
+@router.get("/interface/{ip}", summary="Ping a target IP")
+def get_interface(ip: str) -> dict | None:
+    """Ping a target IP.
+
+    Args:
+        ip (str): Target IP address.
+
+    Returns:
+        dict: Result of the ping with detailed information.
+
+    """
+    try:
+        packet = IP(dst=ip) / ICMP()
+        response = sr1(packet, timeout=3, verbose=0)
+
+        if response:
+            return {
+                "interface": serialize_network_interface(conf.iface),
+                "source_ip": packet.src,
+                "destination_ip": packet.dst,
+            }
+
+        return {
+            "message": f"No response from {ip}",
+            "interface": serialize_network_interface(conf.iface),
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
