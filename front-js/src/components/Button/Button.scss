@@ -1,6 +1,6 @@
 .button {
   border-radius: 39.5px;
-  width: 155px;
+  width: auto;
   height: 64px;
   flex-shrink: 0;
   border: none;
@@ -12,6 +12,7 @@
     font-weight: 400;
     line-height: normal;
     color: var(--Blanc, #f4f9fb);
+    margin: 20px;
   }
   &.primary {
     background: var(--Bleu, #5f63fe);
