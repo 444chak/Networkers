@@ -64,7 +64,7 @@ export default function Home() {
           <Box>
             <Button
               text="Inscription"
-              onClick={() => console.log("test")}
+              onClick={() => router.push("/auth/signup")}
               secondary
             />
             <Spacer x={4} />
