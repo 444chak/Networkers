@@ -9,8 +9,10 @@ import Title from "@/components/Title";
 import Text from "@/components/Text";
 import { useState } from "react";
 import Link from "@/components/Link";
-import axios from '@/axiosConfig';
+import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
+import { AxiosError } from "axios";
+import { Alert, CircularProgress } from "@mui/material";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -19,33 +21,35 @@ export default function Home() {
 
   const [error, setError] = useState("");
 
-  const handleLogin = async (e: { preventDefault: () => void; }) => {
-      e.preventDefault();
-      try {
-        const response = await axios.post("/auth/login", {
-          "username": username,
-          "password": password
-        });
-        const data = response.data;
-        if (response.status === 200) {
-          Cookies.set("access_token", data.access_token);
-          Cookies.set("refresh_token", data.refresh_token);
-          window.location.href = "/";
-        }
+  const [loading, setLoading] = useState(false);
 
-      } catch (error: any) {
-        if (error.status === 400 || error.status === 404) {
-          setError("Nom d'utilisateur ou mot de passe incorrect");
-        }
-        else if (error.status === 403) {
-          setError("Erreur lors de la connexion");
-        }
-        else {
-          setError("Erreur lors de la connexion");
-        }
+  const handleLogin = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/auth/login", {
+        username: username,
+        password: password,
+      });
+      const data = response.data;
+      if (response.status === 200) {
+        Cookies.set("access_token", data.access_token);
+        Cookies.set("refresh_token", data.refresh_token);
+        window.location.href = "/";
       }
-  }
-
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (
+        axiosError.response?.status === 400 ||
+        axiosError.response?.status === 404
+      ) {
+        setError("Nom d'utilisateur ou mot de passe incorrect");
+      } else if (axiosError.response?.status === 403) {
+        setError("Erreur lors de la connexion");
+      } else {
+        setError("Erreur lors de la connexion");
+      }
+    }
+  };
 
   return (
     <Layout type="home">
@@ -55,39 +59,58 @@ export default function Home() {
       <Box align="center">
         <Modal>
           <Title level={3}>Connexion</Title>
-          <Input
-            type="text"
-            placeholder="Nom d'utilisateur"
-            value={username}
-            margin={{ bottom: "20px" }}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            label="Nom d'utilisateur"
-          />
-          <Input
-            type="password"
-            placeholder="Password123&"
-            value={password}
-            margin={{ bottom: "20px" }}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            label="Mot de passe"
-          />
-          { error !== "" ? <span>Erreur : {error}</span> : null }
-          <Button
-            text="Connexion"
-            primary
-            type="input"
-            margin={{ top: "20px" }}
-            disabled={!username || !password}
-            onClick={handleLogin}
-          />
-          <Box align="right">
-            <Text align="right" margin={{ top: "20px" }} size="15px">
-              Pas encore de compte ?{" "}
-              <Link href="/auth/register">S’inscrire</Link>
-            </Text>
-          </Box>
+          <form onSubmit={handleLogin}>
+            <Input
+              type="text"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              margin={{ bottom: "20px" }}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              label="Nom d'utilisateur"
+            />
+            <Input
+              type="password"
+              placeholder="Password123&"
+              value={password}
+              margin={{ bottom: "20px" }}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              label="Mot de passe"
+            />
+            {error !== "" ? (
+              <Alert
+                severity="error"
+                variant="outlined"
+                style={{ borderRadius: "10px" }}
+              >
+                {error}
+              </Alert>
+            ) : null}
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                text="Connexion"
+                primary
+                form="submit"
+                type="input"
+                margin={{ top: "20px" }}
+                disabled={!username || !password}
+                onClick={(e) => {
+                  setLoading(true);
+                  handleLogin(e).finally(() => setLoading(false));
+                }}
+              />
+            )}
+
+            <Box align="right">
+              <Text align="right" margin={{ top: "20px" }} size="15px">
+                Pas encore de compte ?{" "}
+                <Link href="/auth/register">S’inscrire</Link>
+              </Text>
+            </Box>
+          </form>
         </Modal>
       </Box>
     </Layout>

@@ -2,8 +2,8 @@
 
 import Layout from "@/components/Layout";
 import Box from "@/components/Box";
-import Text from "@/components/Text";
 import Cookies from "js-cookie";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Home() {
   Cookies.remove("access_token");
@@ -13,8 +13,8 @@ export default function Home() {
   return (
     <Layout type="home">
       <Box align="center" margin={{ top: "100px" }}>
-        <Text>Déconnexion ...</Text>
+        <CircularProgress />
       </Box>
     </Layout>
-  )
+  );
 }
