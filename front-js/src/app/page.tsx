@@ -8,9 +8,41 @@ import Box from "@/components/Box";
 import Space from "@/components/Space";
 import Image from "next/image";
 import Title from "@/components/Title";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import axios from "@/axiosConfig";
 
 export default function Home() {
   const router = useRouter();
+  const [hasAccessToken, setHasAccessToken] = useState(false);
+
+  useEffect(() => {
+    const checkTokens = async () => {
+      const token = Cookies.get("access_token");
+      const refresh = Cookies.get("refresh_token");
+      if (!token && refresh) {
+        try {
+          const response = await axios.post("/auth/refresh", {
+            "refresh_token": refresh
+          });
+          const data = response.data;
+          if (response.status === 200) {
+            Cookies.set("access_token", data.access_token);
+            Cookies.set("refresh_token", refresh);
+          }
+
+        } catch (error: any) {
+          console.error("Error during the refresh:", error);
+          Cookies.remove("access_token");
+          Cookies.remove("refresh_token");
+        }
+      }
+      setHasAccessToken(!!token);
+    };
+
+    checkTokens();
+  }, []);
+
   return (
     <Layout type="home">
       <Space
@@ -25,19 +57,27 @@ export default function Home() {
           height={200}
           style={{ width: "auto", height: "auto" }}
         />
-        <Box>
+        { hasAccessToken ?
           <Button
-            text="Inscription"
-            onClick={() => console.log("test")}
-            secondary
-          />
-          <Spacer x={4} />
-          <Button
-            text="Connexion"
-            onClick={() => router.push("/auth/login")}
+            text="Déconnexion"
+            onClick={() => router.push("/auth/logout")}
             primary
           />
-        </Box>
+        :
+          <Box>
+            <Button
+              text="Inscription"
+              onClick={() => console.log("test")}
+              secondary
+            />
+            <Spacer x={4} />
+            <Button
+              text="Connexion"
+              onClick={() => router.push("/auth/login")}
+              primary
+            />
+          </Box>
+    }
       </Space>
       <Space
         direction="horizontal"
