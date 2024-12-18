@@ -3,9 +3,10 @@
 from flask import Flask, request, jsonify
 from scapy.all import Ether
 
-app = Flask(__name__)
 
-@app.route("/api/create_ethernet_frame", methods=["POST"])
+router = APIRouter()
+
+@router.post("/create_ethernet_frame", summary="Create an Ethernet frame")
 def create_ethernet_frame():
     """
     Route pour créer une trame Ethernet.
