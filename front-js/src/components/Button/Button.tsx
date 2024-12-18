@@ -8,7 +8,7 @@ import "./Button.scss";
 
 interface ButtonProps {
   text: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   primary?: boolean;
   secondary?: boolean;
   textsize?: string;
@@ -19,7 +19,8 @@ interface ButtonProps {
     bottom?: string;
   };
   disabled?: boolean;
-  type?: "input";
+  type?: "input"; // Modified this line to include "submit"
+  form?: "submit"; // Added this line
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -31,10 +32,12 @@ const Button: React.FC<ButtonProps> = ({
   margin,
   disabled,
   type,
+  form,
 }) => {
   return (
     <button
       onClick={onClick}
+      type={form === "submit" ? "submit" : "button"} // Added HTML button type
       className={
         "button " +
         (primary ? "primary" : secondary ? "secondary" : "") +
