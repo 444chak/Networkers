@@ -25,6 +25,12 @@ app.include_router(users.router, prefix="/users", tags=["users"],
                    dependencies=[Depends(common_key_header)])
 app.include_router(ipv6.router, prefix="/ipv6", tags=["ipv6"],
                    dependencies=[Depends(common_key_header)])
+app.include_router(scapy.router, prefix="/ethernet", tags=["scapy"],
+                   dependencies=[Depends(common_key_header)])
+app.include_router(scapy.router, prefix="/ping", tags=["scapy"],
+                   dependencies=[Depends(common_key_header)])
+app.include_router(scapy.router, prefix="/tcp", tags=["scapy"],
+                   dependencies=[Depends(common_key_header)])
 
 db.init_db()
 user.create_admin_user()
