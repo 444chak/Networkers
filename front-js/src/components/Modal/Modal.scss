@@ -2,7 +2,8 @@
     padding: 20px;
     width: 471px;
     border-radius: 28px;
-    background: rgba(246, 246, 246, 0.8);
+    background: rgba(246, 246, 246, 0.4);
+    backdrop-filter: blur(100px);
     --shadow-color: 236deg 42% 39%;
     box-shadow:
         0px 1px 1.3px hsl(var(--shadow-color) / 0.09),
