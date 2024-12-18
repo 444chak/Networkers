@@ -166,6 +166,10 @@ def vlsm(base_ip, subnets):
     """
     if not is_valid(base_ip):
         return "Invalid base IP address"
+    
+    # Check if any subnet requires more than 255 machines
+    if any(hosts > 255 for hosts in subnets):
+        return "Error: Each subnet can only accommodate up to 255 machines."
 
     # Sort subnets in descending order (to allocate the largest first)
     subnets.sort(reverse=True)
@@ -209,10 +213,3 @@ def vlsm(base_ip, subnets):
 
     return results
 
-# Example usage
-base_ip = "192.168.1.0"
-subnet_hosts = [50, 20, 10]
-subnets = vlsm(base_ip, subnet_hosts)
-
-for i, subnet in enumerate(subnets):
-    print(f"Subnet {i+1}: {subnet}")
