@@ -31,8 +31,7 @@ export default function Home() {
             Cookies.set("refresh_token", refresh);
           }
 
-        } catch (error: any) {
-          console.error("Error during the refresh:", error);
+        } catch {
           Cookies.remove("access_token");
           Cookies.remove("refresh_token");
         }

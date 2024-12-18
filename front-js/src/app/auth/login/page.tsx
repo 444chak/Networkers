@@ -26,7 +26,6 @@ export default function Home() {
           "username": username,
           "password": password
         });
-        console.log(response);
         const data = response.data;
         if (response.status === 200) {
           Cookies.set("access_token", data.access_token);
@@ -40,11 +39,9 @@ export default function Home() {
         }
         else if (error.status === 403) {
           setError("Erreur lors de la connexion");
-          console.error("Error during the connection:", error.response.detail);
         }
         else {
           setError("Erreur lors de la connexion");
-          console.error("Error fetching data:", error);
         }
       }
   }
