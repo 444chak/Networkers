@@ -1,4 +1,5 @@
 """FastAPI application."""
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,11 +15,12 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["X-Common-Key", "Content-Type"],
+    allow_headers=["X-Common-Key", "Content-Type", "Authorization"],
     expose_headers=["X-Common-Key"],
 )
 
 app.add_middleware(client_auth.ClientAuth)
+
 
 @app.get("/", summary="Get app version", dependencies=[Depends(common_key_header)])
 async def get_info() -> dict:
@@ -29,13 +31,30 @@ async def get_info() -> dict:
     info["author"] = "BORGO, IUT Vélizy"
     return info
 
-app.include_router(auth.router, prefix="/auth", tags=["auth"],
-                   dependencies=[Depends(common_key_header)])
-app.include_router(users.router, prefix="/users", tags=["users"],
-                   dependencies=[Depends(common_key_header)])
-app.include_router(ipv6.router, prefix="/ipv6", tags=["ipv6"],
-                   dependencies=[Depends(common_key_header)])
-app.include_router(scapy.router, prefix="/scapy", tags=["scapy"],
-                   dependencies=[Depends(common_key_header)])
+
+app.include_router(
+    auth.router,
+    prefix="/auth",
+    tags=["auth"],
+    dependencies=[Depends(common_key_header)],
+)
+app.include_router(
+    users.router,
+    prefix="/users",
+    tags=["users"],
+    dependencies=[Depends(common_key_header)],
+)
+app.include_router(
+    ipv6.router,
+    prefix="/ipv6",
+    tags=["ipv6"],
+    dependencies=[Depends(common_key_header)],
+)
+app.include_router(
+    scapy.router,
+    prefix="/scapy",
+    tags=["scapy"],
+    dependencies=[Depends(common_key_header)],
+)
 db.init_db()
 user.create_admin_user()
