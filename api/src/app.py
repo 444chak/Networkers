@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI
 from dependencies.common_key_header import common_key_header
 from middlewares import client_auth
 from models import db, user
-from routes import auth, ipv6, users
+from routes import auth, ipv6, scapy, users
 
 app = FastAPI(title="NetWorkers API", version="1.0.0")
 
@@ -25,12 +25,7 @@ app.include_router(users.router, prefix="/users", tags=["users"],
                    dependencies=[Depends(common_key_header)])
 app.include_router(ipv6.router, prefix="/ipv6", tags=["ipv6"],
                    dependencies=[Depends(common_key_header)])
-app.include_router(scapy.router, prefix="/ethernet", tags=["scapy"],
+app.include_router(scapy.router, prefix="/scapy", tags=["scapy"],
                    dependencies=[Depends(common_key_header)])
-app.include_router(scapy.router, prefix="/ping", tags=["scapy"],
-                   dependencies=[Depends(common_key_header)])
-app.include_router(scapy.router, prefix="/tcp", tags=["scapy"],
-                   dependencies=[Depends(common_key_header)])
-
 db.init_db()
 user.create_admin_user()

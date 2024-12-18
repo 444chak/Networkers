@@ -1,122 +1,95 @@
-"""Ethernet, ping and TCP routes modules"""
+"""Scapy routes modules."""
 
-from flask import Flask, request, jsonify
-from scapy.all import Ether
-
+from fastapi import APIRouter
+from scapy.layers.inet import ICMP, IP, TCP
+from scapy.layers.l2 import Ether
+from scapy.sendrecv import sr1
 
 router = APIRouter()
 
-#######################################
-# Route pour créer une trame Ethernet #
-#######################################
+@router.get("/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",\
+    summary="Create an Ethernet frame")
+def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
+    """Create an Ethernet frame.
 
-@router.post("/create_ethernet_frame", summary="Create an Ethernet frame")
-def create_ethernet_frame():
+    Args:
+        dst_mac (str): Destination MAC address.
+        src_mac (str): Source MAC address.
+        eth_type (str): Ethernet type.
+
+    Returns:
+        dict: Ethernet frame details.
+
     """
-    Route pour créer une trame Ethernet.
-    Attente un JSON avec les champs : dst_mac, src_mac, eth_type.
+    frame = Ether(dst=dst_mac, src=src_mac, type=int(eth_type, 16))
+
+    return {
+        "frame_summary": str(frame.summary()),
+        "frame_details": str(frame.show(dump=True)),
+    }
+
+@router.get("/tcp-test/{target_ip}/{target_port}", summary="Test a TCP connection")
+def tcp_test(target_ip:str, target_port:str) -> dict:
+    """Test a TCP connection.
+
+    Args:
+        target_ip (str): Target IP.
+        target_port (str): Target port.
+
+    Returns:
+        dict: Result of the TCP test.
+
     """
-    try:
-        data = request.json
-        dst_mac = data.get("dst_mac")  # Adresse MAC de destination
-        src_mac = data.get("src_mac")  # Adresse MAC source
-        eth_type = data.get("eth_type")  # Type Ethernet (format hexadécimal, ex: "0x0800")
+    if not isinstance(target_port, int) or not 1 <= target_port <= 65535:  # noqa: PLR2004
+        return {"error":\
+            "Le champ 'target_port' doit être un entier entre 1 et 65535."}, 400
 
-        if not dst_mac or not src_mac or not eth_type:
-            return {"error": "Tous les champs (dst_mac, src_mac, eth_type) sont obligatoires."}, 400
+    packet = IP(dst=target_ip) / TCP(dport=target_port, flags="S")  # Paquet SYN
+    response = sr1(packet, timeout=2, verbose=0)
 
-        frame = Ether(dst=dst_mac, src=src_mac, type=int(eth_type, 16))
-        
+    if response and response.haslayer(TCP):
+        tcp_flags = response.getlayer(TCP).flags
+        if tcp_flags == "SA":
+            return {
+                "message": f"Connexion TCP réussie avec \
+                    {target_ip}:{target_port} (SYN-ACK reçu).",
+                "details": response.show(dump=True),
+            }
+        if tcp_flags == "RA":
+            return {
+                "message": f"Connexion TCP refusée par \
+                    {target_ip}:{target_port} (RESET reçu).",
+            }
+
         return {
-            "success": True,
-            "frame_summary": str(frame.summary()),
-            "frame_details": str(frame.show(dump=True))
+            "message": f"Connexion TCP refusée par \
+                {target_ip}:{target_port} (Flags : {tcp_flags}).",
         }
 
-    except ValueError as e:
-        return {"error": f"Type Ethernet invalide : {e}"}, 400
-    except Exception as e:
-        return {"error": f"Une erreur est survenue : {e}"}, 500
+    return {
+        "message": "Pas de réponse de la cible.",
+    }
 
+@router.get("/ping/{ip}", summary="Ping a target IP")
+def ping(ip: str) -> dict:
+    """Ping a target IP.
 
-#######################################
-# Route pour tester une connexion TCP #
-#######################################
+    Args:
+        ip (str): Target IP address.
 
-@router.post("/tcp_test", summary="Test a TCP connection")
-def tcp_test():
+    Returns:
+        dict: Result of the ping.
+
     """
-    Route pour tester une connexion TCP.
-    Attente un JSON avec les champs : target_ip et target_port.
-    """
-    try:
-        data = request.json
-        target_ip = data.get("target_ip")
-        target_port = data.get("target_port")
+    packet = IP(dst=ip) / ICMP()
+    response = sr1(packet, timeout=3, verbose=0)
 
-        if not target_ip or not target_port:
-            return {"error": "Les champs 'target_ip' et 'target_port' sont obligatoires."}, 400
+    if response:
+        return {
+            "message": f"Ping réussi : {response.summary()}",
+            "details": response.show(dump=True),
+        }
 
-        if not isinstance(target_port, int) or not (1 <= target_port <= 65535):
-            return {"error": "Le champ 'target_port' doit être un entier entre 1 et 65535."}, 400
-
-        packet = IP(dst=target_ip) / TCP(dport=target_port, flags="S")  # Paquet SYN
-        response = sr1(packet, timeout=2, verbose=0)
-
-        if response and response.haslayer(TCP):
-            tcp_flags = response.getlayer(TCP).flags
-            if tcp_flags == "SA":
-                return {
-                    "success": True,
-                    "message": f"Connexion TCP réussie avec {target_ip}:{target_port} (SYN-ACK reçu).",
-                    "details": response.show(dump=True)
-                }
-            elif tcp_flags == "RA": 
-                return {
-                    "success": False,
-                    "message": f"Connexion TCP refusée par {target_ip}:{target_port} (RESET reçu)."
-                }
-        else:
-            return {
-                "success": False,
-                "message": "Pas de réponse de la cible."
-            }
-
-    except Exception as e:
-        return {"error": f"Une erreur est survenue : {e}"}, 500
-
-
-#############################
-# Route pour tester un PING #
-#############################
-
-@router.post("/ping", summary="Ping a target IP")
-def ping():
-    """
-    Route pour effectuer un ping.
-    Attente un JSON avec le champ : target_ip.
-    """
-    try:
-        data = request.json
-        target_ip = data.get("target_ip")
-
-        if not target_ip:
-            return {"error": "Le champ 'target_ip' est obligatoire."}, 400
-
-        packet = IP(dst=target_ip) / ICMP()
-        response = sr1(packet, timeout=3, verbose=0)
-
-        if response:
-            return jsonify({
-                "success": True,
-                "message": f"Ping réussi : {response.summary()}",
-                "details": response.show(dump=True)
-            })
-        else:
-            return {
-                "success": False,
-                "message": "Pas de réponse de la cible."
-            }
-
-    except Exception as e:
-        return {"error": f"Une erreur est survenue : {e}"}, 500
+    return {
+        "message": "Pas de réponse de la cible.",
+    }
