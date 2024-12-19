@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "IPv6",
+  title: "Interface réseau",
   description: "Networkers",
 };
 
