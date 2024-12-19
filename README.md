@@ -16,20 +16,59 @@ Il consiste en une application pour apprendre des notions sur les réseaux infor
 
 ### :inbox_tray: • Installation et configuration
 
-1. Clonez la dernière version du projet ([releases](https://www.github.com/444chak/SAE-5/releases)).
+**Si Git n'est pas istaller :**  
+
+```bash
+sudo apt-get update
+sudo apt-get install git
+```
+
+**Si Docker et Python ne sont pas installer :**  
+
+```bash
+sudo apt-get update
+sudo apt-get install python
+
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+:warning: Il faut installer Git avant Docker afin d'éviter des problèmes lors du clone.  
+
+1. Cloner la dernière version du projet ([releases](https://www.github.com/444chak/SAE-5/releases)).
 
 ```bash
 REPO_URL="https://github.com/444chak/SAE-5.git"
 LAST_TAG=$(git ls-remote --tags --sort="v:refname" $REPO_URL | tail -n 1 | awk '{print $2}' | sed 's/refs\/tags\///')
 git clone --branch $LAST_TAG --single-branch $REPO_URL
+cd SAE-5
 ```
 
 > *Ce script vous permet de récupérer le code du dernier tag présent sur le projet.*  
 
-2. Lancez le script pour mettre en place les variables d'environnement.
+2. Lancer le script pour mettre en place les variables d'environnement.
 
 ```bash
 python set_env.py
+```
+
+3. Ajouter son utilisateur au groupe Docker.  
+
+```bash
+sudo usermod -aG docker <user>
 ```
 
 ### :rocket: • Démarrage
