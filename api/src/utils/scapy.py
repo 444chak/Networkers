@@ -1,6 +1,6 @@
 """Module for Scapy utilities."""
 
-from scapy.all import ICMP, IP, Ether, conf, hexdump, sr1
+from scapy.all import ICMP, IP, TCP, Ether, conf, hexdump, sr1
 
 
 def ping(ipv4: str) -> tuple[IP, IP]:
@@ -45,3 +45,27 @@ def interface(ipv4: str) -> tuple[object, IP, IP]:
     iface = conf.iface
     packet, response = ping(ipv4)
     return iface, response, packet
+
+def tcp(target_ip:str, target_port:int) -> tuple[int, IP | None, IP | None, str | None]:
+    """Test a TCP connection.
+
+    Args:
+        target_ip (str): Target IP.
+        target_port (str): Target port.
+
+    Returns:
+        tuple: Status of the TCP test.
+
+    """
+    packet = IP(dst=target_ip) / TCP(dport=target_port, flags="S")  # Paquet SYN
+    response = sr1(packet, timeout=2, verbose=0)
+
+    if response and response.haslayer(TCP):
+        tcp_flags = response.getlayer(TCP).flags
+        if tcp_flags == "SA":
+            return 0, response, packet, tcp_flags
+        if tcp_flags == "RA":
+            return 1, None, None, tcp_flags
+
+        return 2, None, None, tcp_flags
+    return -1, None, None, None

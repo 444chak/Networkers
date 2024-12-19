@@ -4,7 +4,7 @@ import time
 
 from fastapi import APIRouter, HTTPException
 
-from utils.scapy import ethernet_frame, interface, ping
+from utils.scapy import ethernet_frame, interface, ping, tcp
 
 router = APIRouter()
 
@@ -28,47 +28,53 @@ def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
         "frame": frame,
     }
 
-# @router.get("/tcp-test/{target_ip}/{target_port}", summary="Test a TCP connection")
-# def get_tcp_test(target_ip:str, target_port:str) -> dict:
-#     """Test a TCP connection.
+@router.get("/tcp-test/{target_ip}/{target_port}", summary="Test a TCP connection")
+def get_tcp_test(target_ip:str, target_port:int) -> dict:
+    """Test a TCP connection.
 
-#     Args:
-#         target_ip (str): Target IP.
-#         target_port (str): Target port.
+    Args:
+        target_ip (str): Target IP.
+        target_port (str): Target port.
 
-#     Returns:
-#         dict: Result of the TCP test.
+    Returns:
+        dict: Result of the TCP test.
 
-#     """
-#     if not isinstance(target_port, int) or not 1 <= target_port <= 65535:  # noqa: PLR2004
-#         return {"error":\
-#             "Le champ 'target_port' doit être un entier entre 1 et 65535."}, 400
+    """
+    start_time = time.time()
+    status, response, packet, tcp_flags = tcp(target_ip, target_port)
+    rtt = (time.time() - start_time) * 1000  # Convert to ms
 
-#     packet = IP(dst=target_ip) / TCP(dport=target_port, flags="S")  # Paquet SYN
-#     response = sr1(packet, timeout=2, verbose=0)
+    if status == -1:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": f"No response from {target_ip}:{target_port}",
+            },
+        )
 
-#     if response and response.haslayer(TCP):
-#         tcp_flags = response.getlayer(TCP).flags
-#         if tcp_flags == "SA":
-#             return {
-#                 "message": f"Connexion TCP réussie avec \
-#                     {target_ip}:{target_port} (SYN-ACK reçu).",
-#                 "details": response.show(dump=True),
-#             }
-#         if tcp_flags == "RA":
-#             return {
-#                 "message": f"Connexion TCP refusée par \
-#                     {target_ip}:{target_port} (RESET reçu).",
-#             }
+    if status == 0:
+        return {
+                "message":\
+                f"Connexion TCP réussie avec {target_ip}:{target_port} (SYN-ACK reçu).",
+                "details": {
+                "rtt_ms": round(rtt, 2),
+                "packet_size": len(response),
+                "ttl": response.ttl,
+                "source": packet.src,
+                "destination": packet.dst,
+            },
+            }
 
-#         return {
-#             "message": f"Connexion TCP refusée par \
-#                 {target_ip}:{target_port} (Flags : {tcp_flags}).",
-#         }
+    if status == 1:
+        return {
+                "message":\
+                f"Connexion TCP refusée par {target_ip}:{target_port} (RESET reçu).",
+            }
 
-#     return {
-#         "message": "Pas de réponse de la cible.",
-#     }
+    return {
+        "message": \
+        f"Connexion TCP refusée par {target_ip}:{target_port} (Flags : {tcp_flags}).",
+    }
 
 @router.get("/ping/{ip}", summary="Ping a target IP")
 def get_ping(ip: str) -> dict:
