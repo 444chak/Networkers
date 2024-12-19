@@ -150,6 +150,7 @@ export default function Dashboard() {
                     title="Ping"
                     description="..."
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/ping")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
