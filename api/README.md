@@ -1,12 +1,22 @@
 # :satellite: NetWorkers API
 
-**Table of contents**  
+**Table des matières**  
 
+- [Framework](#framework)
+- [Mise en place](#mise-en-place)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Run](#run)
+- [Codes](#codes)
+  - [Architecture](#architecture)
+  - [Environnement](#environnement)
+  - [Base de données](#base-de-données)
 - [Routes](#routes)
   - [Auth](#auth)
     - [Login](#login)
     - [Register](#register)
     - [Refresh token](#refresh-token)
+  - [Users](#users)
     - [Get all users](#get-all-users)
     - [Get user by username](#get-user-by-username)
     - [Get own user](#get-own-user)
@@ -23,15 +33,82 @@
     - [Ping](#ping)
     - [Get interfaces](#get-interfaces)
 
+## Framework
+
+- [FastAPI](https://fastapi.tiangolo.com/)  
+- [SQLAlchemy](https://www.sqlalchemy.org/)  
+
+## Mise en place
+
+### Requirements
+
+- [Python](https://www.python.org/)
+- [PDM](https://pdm.fming.dev/)
+
+### Installation
+
+```bash
+pdm install
+```
+
+### Run
+
+```bash
+pdm run api
+```
+
+## Codes
+
+### Architecture
+
+Dans le dossier `src`, on retrouve les dossiers et fichiers suivants :
+
+- `app.py` : Fichier d'entrée de l'application  
+- `utils` : Dossier contenant les utilitaires de l'application dont le processus des modules  
+- `models` : Dossier contenant les modèles de données de l'application ainsi que la connexion à la base de données avec SQLAlchemy  
+- `routes` : Dossier contenant les routes de l'application
+- `middlewares` : Dossier contenant les middlewares de l'application
+- `dependencies` : Dossier contenant les dépendances des routes de l'application. C'est similaire aux middlewares mais eux sont utilisés pour les routes  
+
+### Environnement
+
+L'application a besoin que les variables d'environnement suivantes soient définies :
+
+- JWT_SECRET_KEY  
+- JWT_REFRESH_KEY  
+- COMMON_KEY  
+- MYSQL_DATABASE  
+- MYSQL_USER  
+- MYSQL_PASSWORD  
+
+> Ces variables d'environnement sont déjà définies si l'application est lancée avec le Docker  
+
+### Base de données
+
+La base de données utilisée est MariaDB. Si vous lancez MariaDB sans Docker, il faut que vous exécutiez les commandes suivantes :
+
+```bash
+mariadb -u root -p < database/init.sql # Depuis la racine du projet
+```
+
+```sql
+CREATE USER 'xxx'@'%' IDENTIFIED BY 'xxx';
+GRANT ALL PRIVILEGES ON networkers.* TO 'xxx'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
+
+Si vous gardez le lancement avec Docker, la base de données est déjà configurée.  
+Vous aurez un dossier `database/data` qui contient les données de la base de données.  
+
 ## Routes
 
 ### Auth
 
 #### Login
 
-| Method | URL         | Description | Need token | Roles |
-| ------ | ----------- | ----------- | ---------- | ----- |
-| POST   | /auth/login | Login       | False      | None  |
+| Méthode | URL         | Description | Token requis | Roles |
+| ------- | ----------- | ----------- | ------------ | ----- |
+| POST    | /auth/login | Login       | False        | None  |
 
 **Request**  
 
@@ -44,9 +121,9 @@
 
 #### Register
 
-| Method | URL            | Description | Need token | Roles |
-| ------ | -------------- | ----------- | ---------- | ----- |
-| POST   | /auth/register | Register    | False      | None  |
+| Méthode | URL            | Description | Token requis | Roles |
+| ------- | -------------- | ----------- | ------------ | ----- |
+| POST    | /auth/register | Register    | False        | None  |
 
 **Request**  
 
@@ -59,9 +136,9 @@
 
 #### Refresh token
 
-| Method | URL           | Description   | Need token | Roles |
-| ------ | ------------- | ------------- | ---------- | ----- |
-| POST   | /auth/refresh | Refresh token | False      | None  |
+| Méthode | URL           | Description   | Token requis | Roles |
+| ------- | ------------- | ------------- | ------------ | ----- |
+| POST    | /auth/refresh | Refresh token | False        | None  |
 
 **Request**  
 
@@ -71,29 +148,31 @@
 }
 ```
 
+### Users
+
 #### Get all users
 
-| Method | URL    | Description   | Need token | Roles |
-| ------ | ------ | ------------- | ---------- | ----- |
-| GET    | /users | Get all users | True       | Admin |
+| Méthode | URL    | Description   | Token requis | Roles |
+| ------- | ------ | ------------- | ------------ | ----- |
+| GET     | /users | Get all users | True         | Admin |
 
 #### Get user by username
 
-| Method | URL               | Description          | Need token | Roles |
-| ------ | ----------------- | -------------------- | ---------- | ----- |
-| GET    | /users/{username} | Get user by username | True       | Admin |
+| Méthode | URL               | Description          | Token requis | Roles |
+| ------- | ----------------- | -------------------- | ------------ | ----- |
+| GET     | /users/{username} | Get user by username | True         | Admin |
 
 #### Get own user
 
-| Method | URL       | Description  | Need token | Roles |
-| ------ | --------- | ------------ | ---------- | ----- |
-| GET    | /users/me | Get own user | True       | User  |
+| Méthode | URL       | Description  | Token requis | Roles |
+| ------- | --------- | ------------ | ------------ | ----- |
+| GET     | /users/me | Get own user | True         | User  |
 
 #### Update user
 
-| Method | URL               | Description | Need token | Roles |
-| ------ | ----------------- | ----------- | ---------- | ----- |
-| PATCH  | /users/{username} | Update user | True       | Admin |
+| Méthode | URL               | Description | Token requis | Roles |
+| ------- | ----------------- | ----------- | ------------ | ----- |
+| PATCH   | /users/{username} | Update user | True         | Admin |
 
 **Request**  
 
@@ -106,9 +185,9 @@
 
 #### Update own user
 
-| Method | URL       | Description     | Need token | Roles |
-| ------ | --------- | --------------- | ---------- | ----- |
-| PATCH  | /users/me | Update own user | True       | User  |
+| Méthode | URL       | Description     | Token requis | Roles |
+| ------- | --------- | --------------- | ------------ | ----- |
+| PATCH   | /users/me | Update own user | True         | User  |
 
 **Request**  
 
@@ -120,9 +199,9 @@
 
 #### Update user password
 
-| Method | URL                | Description          | Need token | Roles |
-| ------ | ------------------ | -------------------- | ---------- | ----- |
-| PATCH  | /users/me/password | Update user password | True       | User  |
+| Méthode | URL                | Description          | Token requis | Roles |
+| ------- | ------------------ | -------------------- | ------------ | ----- |
+| PATCH   | /users/me/password | Update user password | True         | User  |
 
 **Request**  
 
@@ -135,46 +214,46 @@
 
 #### Delete user
 
-| Method | URL               | Description | Need token | Roles |
-| ------ | ----------------- | ----------- | ---------- | ----- |
-| DELETE | /users/{username} | Delete user | True       | Admin |
+| Méthode | URL               | Description | Token requis | Roles |
+| ------- | ----------------- | ----------- | ------------ | ----- |
+| DELETE  | /users/{username} | Delete user | True         | Admin |
 
 ### IPv6
 
 #### Simplify IPv6
 
-| Method | URL                   | Description   | Need token | Roles |
-| ------ | --------------------- | ------------- | ---------- | ----- |
-| GET    | /ipv6/simplify/{ipv6} | Simplify IPv6 | True       | User  |
+| Méthode | URL                   | Description   | Token requis | Roles |
+| ------- | --------------------- | ------------- | ------------ | ----- |
+| GET     | /ipv6/simplify/{ipv6} | Simplify IPv6 | True         | User  |
 
 #### Extend IPv6
 
-| Method | URL                 | Description | Need token | Roles |
-| ------ | ------------------- | ----------- | ---------- | ----- |
-| GET    | /ipv6/extend/{ipv6} | Extend IPv6 | True       | User  |
+| Méthode | URL                 | Description | Token requis | Roles |
+| ------- | ------------------- | ----------- | ------------ | ----- |
+| GET     | /ipv6/extend/{ipv6} | Extend IPv6 | True         | User  |
 
 ### Scapy
 
 #### Create ethernet frame
 
-| Method | URL                                                  | Description           | Need token | Roles |
-| ------ | ---------------------------------------------------- | --------------------- | ---------- | ----- |
-| GET    | /scapy/ethernet-frame/{dst_mac}/{src_mac}/{eth_type} | Create ethernet frame | True       | User  |
+| Méthode | URL                                                  | Description           | Token requis | Roles |
+| ------- | ---------------------------------------------------- | --------------------- | ------------ | ----- |
+| GET     | /scapy/ethernet-frame/{dst_mac}/{src_mac}/{eth_type} | Create ethernet frame | True         | User  |
 
 #### TCP test
 
-| Method | URL                                       | Description | Need token | Roles |
-| ------ | ----------------------------------------- | ----------- | ---------- | ----- |
-| GET    | /scapy/tcp-test/{target_ip}/{target_port} | TCP test    | True       | User  |
+| Méthode | URL                                       | Description | Token requis | Roles |
+| ------- | ----------------------------------------- | ----------- | ------------ | ----- |
+| GET     | /scapy/tcp-test/{target_ip}/{target_port} | TCP test    | True         | User  |
 
 #### Ping
 
-| Method | URL              | Description | Need token | Roles |
-| ------ | ---------------- | ----------- | ---------- | ----- |
-| GET    | /scapy/ping/{ip} | Ping        | True       | User  |
+| Méthode | URL              | Description | Token requis | Roles |
+| ------- | ---------------- | ----------- | ------------ | ----- |
+| GET     | /scapy/ping/{ip} | Ping        | True         | User  |
 
 #### Get interfaces
 
-| Method | URL               | Description                | Need token | Roles |
-| ------ | ----------------- | -------------------------- | ---------- | ----- |
-| GET    | /scapy/interfaces | Get interfaces of the host | True       | User  |
+| Méthode | URL               | Description                | Token requis | Roles |
+| ------- | ----------------- | -------------------------- | ------------ | ----- |
+| GET     | /scapy/interfaces | Get interfaces of the host | True         | User  |
