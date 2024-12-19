@@ -13,8 +13,12 @@ import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 import { Alert, CircularProgress } from "@mui/material";
+import Backlink from "@/components/Backlink";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
 
   const [password, setPassword] = useState("");
@@ -53,6 +57,7 @@ export default function Home() {
 
   return (
     <Layout type="home">
+      <Backlink onClick={router.back} />
       <Box align="center" margin={{ top: "100px", bottom: "50px" }}>
         <Title level={1}>Networkers</Title>
       </Box>
