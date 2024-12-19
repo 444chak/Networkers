@@ -130,13 +130,6 @@ export default function Dashboard() {
                     image="/modules_assets/scapy.svg"
                   />
                 </Grid2>
-                <Grid2 size={4}>
-                  <Card
-                    title="IPv6"
-                    description="Simplifiez ou étendez une adresse IPv6 avec ce module."
-                    image="/modules_assets/ipv6.svg"
-                  />
-                </Grid2>
               </Grid2>
             </Box>
           </>
