@@ -15,6 +15,7 @@ dependencies = [
     "scapy>=2.6.1",
 ]
 requires-python = ">=3.11"
+readme = "README.md"
 license = { text = "MIT" }
 
 [build-system]
