@@ -55,11 +55,19 @@ export default function Home() {
           style={{ width: "auto", height: "auto" }}
         />
         {hasAccessToken ? (
-          <Button
-            text="Déconnexion"
-            onClick={() => router.push("/auth/logout")}
-            primary
-          />
+          <Box>
+            <Button
+              text="Déconnexion"
+              onClick={() => router.push("/auth/logout")}
+              secondary
+            />
+            <Spacer x={4} />
+            <Button
+              text="Tableau de bord"
+              onClick={() => router.push("/dashboard")}
+              primary
+            />
+          </Box>
         ) : (
           <Box>
             <Button

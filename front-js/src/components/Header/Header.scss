@@ -1,0 +1,64 @@
+.header {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    background: rgba(246, 246, 246, 0.4);
+    backdrop-filter: blur(100px);
+    --shadow-color: 236deg 42% 39%;
+    box-shadow:
+        0px 1px 1.3px hsl(var(--shadow-color) / 0.09),
+        0px 3.6px 4.5px -0.4px hsl(var(--shadow-color) / 0.1),
+        0px 7px 8.8px -0.8px hsl(var(--shadow-color) / 0.12),
+        0.1px 13.4px 16.8px -1.2px hsl(var(--shadow-color) / 0.14),
+        0.2px 25px 31.3px -1.6px hsl(var(--shadow-color) / 0.16);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-logo {
+        display: flex;
+        align-items: center;
+        transition: 0.3s;
+        &:hover {
+            cursor: pointer;
+            transform: scale(0.9);
+        }
+    }
+    &-content {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+
+        &-tab {
+            font-size: 20px;
+            margin-left: 50px;
+            margin-right: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            &:hover {
+                transform: scale(0.9);
+            }
+            &.active {
+                font-weight: bold;
+            }
+        }
+        &.logout {
+            align-items: center;
+            & .logout-line {
+                margin-left: 10px;
+                margin-right: 20px;
+                opacity: 0.8;
+            }
+            & .logout-icon {
+                transition: 0.3s;
+
+                cursor: pointer;
+                &:hover {
+                    transform: scale(0.9);
+                }
+            }
+        }
+    }
+}
