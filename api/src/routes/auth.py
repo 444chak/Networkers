@@ -9,11 +9,13 @@ from utils.auth import (
     create_access_token,
     create_refresh_token,
     get_hashed_password,
+    validate_password,
     verify_jwt,
     verify_password,
 )
 
 router = APIRouter()
+
 
 @router.post("/login", summary="Login to the app")
 async def login(auth: Auth) -> dict:
@@ -35,6 +37,7 @@ async def login(auth: Auth) -> dict:
     refresh_token = create_refresh_token(user.username)
     return {"access_token": access_token, "refresh_token": refresh_token}
 
+
 @router.post("/refresh", summary="Refresh the access token")
 async def refresh(refresh_token: RefreshToken) -> dict:
     """Refresh the access token."""
@@ -47,10 +50,22 @@ async def refresh(refresh_token: RefreshToken) -> dict:
     access_token = create_access_token(token["sub"])
     return {"access_token": access_token}
 
+
 @router.post("/register", summary="Register to the app")
 async def register(auth: Auth) -> dict:
     """Register to the app with username and password."""
+    if auth.password is None or not validate_password(auth.password):
+        raise HTTPException(status_code=400, detail="Invalid password")
+
     user = User(auth.username, get_hashed_password(auth.password), "user")
+
+    stmtverify = user_table.select().where(user_table.c.username == user.username)
+
+    with db.engine.begin() as conn:
+        result = conn.execute(stmtverify).fetchall()
+
+    if len(result) > 0:
+        raise HTTPException(status_code=400, detail="User already exists")
 
     stmt = user_table.insert().values(
         username=user.username,
