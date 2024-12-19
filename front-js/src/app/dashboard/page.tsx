@@ -118,14 +118,49 @@ export default function Dashboard() {
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="IPv4"
+                    title="Calcul IPv4"
                     description="..."
                     image="/modules_assets/ipv4.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="Scapy"
+                    title="Conversion IPv4"
+                    description="..."
+                    image="/modules_assets/ipv4.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="VLSM"
+                    description="..."
+                    image="/modules_assets/ipv4.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="Ethernet"
+                    description="..."
+                    image="/modules_assets/scapy.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="Ping"
+                    description="..."
+                    image="/modules_assets/scapy.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="TCP"
+                    description="..."
+                    image="/modules_assets/scapy.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="Interface réseau"
                     description="..."
                     image="/modules_assets/scapy.svg"
                   />

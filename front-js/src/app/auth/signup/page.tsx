@@ -10,7 +10,7 @@ import Text from "@/components/Text";
 import { useState } from "react";
 import Link from "@/components/Link";
 import ValidatePsw from "@/components/ValidatePsw";
-import { validate_passwd } from "./validatePasswd";
+import { validate_passwd } from "@/utils/validatePasswd";
 import Backlink from "@/components/Backlink";
 import { useRouter } from "next/navigation";
 import axios from "@/axiosConfig";

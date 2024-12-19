@@ -7,6 +7,7 @@
     - [Login](#login)
     - [Register](#register)
     - [Refresh token](#refresh-token)
+  - [Users](#users)
     - [Get all users](#get-all-users)
     - [Get user by username](#get-user-by-username)
     - [Get own user](#get-own-user)
@@ -14,6 +15,15 @@
     - [Update own user](#update-own-user)
     - [Update user password](#update-user-password)
     - [Delete user](#delete-user)
+  - [IPv4](#ipv4)
+    - [Get IPv4 class](#get-ipv4-class)
+    - [Convert dec to bin](#convert-dec-to-bin)
+    - [Convert dec to hex](#convert-dec-to-hex)
+    - [Convert hex to dec](#convert-hex-to-dec)
+    - [Convert bin to dec](#convert-bin-to-dec)
+    - [Get CIDR notation](#get-cidr-notation)
+    - [Get mask](#get-mask)
+    - [Get VLSM](#get-vlsm)
   - [IPv6](#ipv6)
     - [Simplify IPv6](#simplify-ipv6)
     - [Extend IPv6](#extend-ipv6)
@@ -70,6 +80,8 @@
   "refresh_token": "string"
 }
 ```
+
+### Users
 
 #### Get all users
 
@@ -138,6 +150,56 @@
 | Method | URL               | Description | Need token | Roles |
 | ------ | ----------------- | ----------- | ---------- | ----- |
 | DELETE | /users/{username} | Delete user | True       | Admin |
+
+### IPv4
+
+#### Get IPv4 class
+
+| Method | URL              | Description    | Need token | Roles |
+| ------ | ---------------- | -------------- | ---------- | ----- |
+| GET    | /ipv4/class/{ip} | Get IPv4 class | True       | User  |
+
+#### Convert dec to bin
+
+| Method | URL                    | Description        | Need token | Roles |
+| ------ | ---------------------- | ------------------ | ---------- | ----- |
+| GET    | /ipv4/dec-to-bin/{dec} | Convert dec to bin | True       | User  |
+
+#### Convert dec to hex
+
+| Method | URL                    | Description        | Need token | Roles |
+| ------ | ---------------------- | ------------------ | ---------- | ----- |
+| GET    | /ipv4/dec-to-hex/{dec} | Convert dec to hex | True       | User  |
+
+#### Convert hex to dec
+
+| Method | URL                    | Description        | Need token | Roles |
+| ------ | ---------------------- | ------------------ | ---------- | ----- |
+| GET    | /ipv4/hex-to-dec/{hex} | Convert hex to dec | True       | User  |
+
+#### Convert bin to dec
+
+| Method | URL                    | Description        | Need token | Roles |
+| ------ | ---------------------- | ------------------ | ---------- | ----- |
+| GET    | /ipv4/bin-to-dec/{bin} | Convert bin to dec | True       | User  |
+
+#### Get CIDR notation
+
+| Method | URL             | Description       | Need token | Roles |
+| ------ | --------------- | ----------------- | ---------- | ----- |
+| GET    | /ipv4/cidr/{ip} | Get CIDR notation | True       | User  |
+
+#### Get mask
+
+| Method | URL             | Description | Need token | Roles |
+| ------ | --------------- | ----------- | ---------- | ----- |
+| GET    | /ipv4/mask/{ip} | Get mask    | True       | User  |
+
+#### Get VLSM
+
+| Method | URL             | Description | Need token | Roles |
+| ------ | --------------- | ----------- | ---------- | ----- |
+| GET    | /ipv4/vlsm/{ip} | Get VLSM    | True       | User  |
 
 ### IPv6
 

@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dependencies.common_key_header import common_key_header
 from middlewares import client_auth
 from models import db, user
-from routes import auth, ipv6, scapy, users
+from routes import auth, ipv4, ipv6, scapy, users
 
 app = FastAPI(title="NetWorkers API", version="1.0.0")
 
@@ -54,6 +54,12 @@ app.include_router(
     scapy.router,
     prefix="/scapy",
     tags=["scapy"],
+    dependencies=[Depends(common_key_header)],
+)
+app.include_router(
+    ipv4.router,
+    prefix="/ipv4",
+    tags=["ipv4"],
     dependencies=[Depends(common_key_header)],
 )
 db.init_db()
