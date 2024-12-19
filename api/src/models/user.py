@@ -65,6 +65,7 @@ class UserUpdate(BaseModel):
 class UserPasswordUpdate(BaseModel):
     """Model for user password update."""
 
+    old_password: str
     password: str
     confirm_password: str
 
