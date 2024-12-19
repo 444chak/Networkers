@@ -13,17 +13,7 @@ RE_IP = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
 @router.get("/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",\
     summary="Create an Ethernet frame")
 def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
-    """Create an Ethernet frame.
-
-    Args:
-        dst_mac (str): Destination MAC address.
-        src_mac (str): Source MAC address.
-        eth_type (str): Ethernet type.
-
-    Returns:
-        dict: Ethernet frame details.
-
-    """
+    """Create an Ethernet frame."""
     frame = ethernet_frame(dst_mac, src_mac, eth_type)
 
     return {
@@ -32,16 +22,7 @@ def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
 
 @router.get("/tcp-test/{target_ip}/{target_port}", summary="Test a TCP connection")
 def get_tcp_test(target_ip:str, target_port:int) -> dict:
-    """Test a TCP connection.
-
-    Args:
-        target_ip (str): Target IP.
-        target_port (str): Target port.
-
-    Returns:
-        dict: Result of the TCP test.
-
-    """
+    """Test a TCP connection."""
     if RE_IP.match(target_ip) is None:
         target_ip = get_ip_from_dns(target_ip)
     start_time = time.time()
@@ -82,15 +63,7 @@ def get_tcp_test(target_ip:str, target_port:int) -> dict:
 
 @router.get("/ping/{ip}", summary="Ping a target IP")
 def get_ping(ip: str) -> dict:
-    """Ping a target IP.
-
-    Args:
-        ip (str): Target IP address.
-
-    Returns:
-        dict: Result of the ping.
-
-    """
+    """Ping a target IP."""
     if RE_IP.match(ip) is None:
         ip = get_ip_from_dns(ip)
     try:
