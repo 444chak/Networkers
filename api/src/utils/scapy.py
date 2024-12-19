@@ -2,7 +2,17 @@
 
 import socket
 
-from scapy.all import ICMP, IP, TCP, Ether, conf, hexdump, sr1
+from scapy.all import (
+    ICMP,
+    IP,
+    TCP,
+    Ether,
+    get_if_addr,
+    get_if_hwaddr,
+    get_if_list,
+    hexdump,
+    sr1,
+)
 
 
 def ping(ipv4: str) -> tuple[IP, IP]:
@@ -34,33 +44,23 @@ def ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> hexdump:
     frame = Ether(dst=dst_mac, src=src_mac, type=int(eth_type, 16))
     return hexdump(frame, dump=True)
 
-def interface() -> tuple[object]:
-    """Get the network interface of an IPv4 address.
-
-    Args:
-        ipv4 (str): The IPv4 address.
+def interfaces() -> dict:
+    """Get network interfaces of the host.
 
     Returns:
-        tuple: Network interface and IP object.
+        dict: Network interfaces information.
 
     """
-    return serialize_network_interface(conf.iface)
+    interfaces = {}
 
-def serialize_network_interface(iface: object) -> dict:
-    """Convert a network interface object to a dictionary.
+    for iface in get_if_list():
+        interfaces[iface] = {
+            "name": iface,
+            "ip": get_if_addr(iface),
+            "mac": get_if_hwaddr(iface),
+        }
 
-    Args:
-        iface (object): Network interface object.
-
-    Returns:
-        dict: Dictionary representation of the network interface.
-
-    """
-    return {
-        "name": str(iface.name) if hasattr(iface, "name") else None,
-        "ip": str(iface.ip) if hasattr(iface, "ip") else None,
-        "mac": str(iface.mac) if hasattr(iface, "mac") else None,
-    }
+    return {"interfaces": interfaces}
 
 def tcp(target_ip:str, target_port:int) -> tuple[int, IP | None, IP | None, str | None]:
     """Test a TCP connection.

@@ -4,7 +4,7 @@ import time
 
 from fastapi import APIRouter, HTTPException
 
-from utils.scapy import ethernet_frame, get_ip_from_dns, interface, ping, tcp
+from utils.scapy import ethernet_frame, get_ip_from_dns, interfaces, ping, tcp
 
 router = APIRouter()
 
@@ -95,11 +95,11 @@ def get_ping(ip: str) -> dict:
             detail=f"Ping failed: {e!s}",
         ) from e
 
-@router.get("/interface", summary="Get the interface of the machine")
+@router.get("/interfaces", summary="Get the interfaces of the machine")
 def get_interface() -> dict | None:
-    """Get the network interface of the host."""
+    """Get the network interfaces of the host."""
     try:
-        return interface()
+        return interfaces()
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
