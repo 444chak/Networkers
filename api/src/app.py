@@ -56,5 +56,11 @@ app.include_router(
     tags=["scapy"],
     dependencies=[Depends(common_key_header)],
 )
+app.include_router(
+    ipv4.router,
+    prefix="/ipv4",
+    tags=["ipv4"],
+    dependencies=[Depends(common_key_header)],
+)
 db.init_db()
 user.create_admin_user()
