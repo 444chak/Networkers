@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from dependencies.jwt import jwt_bearer
 from models import db
-from models.user import User, UserUpdate, user_table
+from models.user import User, UserPasswordUpdate, UserUpdate, user_table
 from utils.auth import get_hashed_password, verify_password
 
 router = APIRouter()
@@ -87,15 +87,37 @@ async def update_current_user(user_udpate: UserUpdate,\
 
         user.username = user_udpate.username
 
-    if not verify_password(user_udpate.password, user.password):
-        user.password = get_hashed_password(user_udpate.password)
-
     stmt = user_table.update().where(user_table.c.username == token["sub"])\
         .values(user.to_dict())
     with db.engine.begin() as conn:
         conn.execute(stmt)
 
     return user
+
+@router.patch("/me/password", summary="Update current user password",
+              dependencies=[Depends(jwt_bearer)])
+async def update_current_user_password(user_password_update: UserPasswordUpdate,\
+        token: dict = Depends(jwt_bearer)) -> dict: # noqa: B008, FAST002
+    """Update current user password."""
+    stmt = user_table.select().where(user_table.c.username == token["sub"])
+    with db.engine.begin() as conn:
+        result = conn.execute(stmt).fetchone()
+    if not result:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user: User = User.from_db(result[0], result[1], result[2])
+
+    if user_password_update.password != user_password_update.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+
+    user.password = get_hashed_password(user_password_update.password)
+
+    stmt = user_table.update().where(user_table.c.username == token["sub"])\
+        .values(user.to_dict())
+    with db.engine.begin() as conn:
+        conn.execute(stmt)
+
+    return {"message": "Password updated"}
 
 @router.patch("/{username}", response_model=User, summary="Update an user by username",
               dependencies=[Depends(jwt_bearer)])

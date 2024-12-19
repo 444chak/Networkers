@@ -61,7 +61,12 @@ class UserUpdate(BaseModel):
     """Model for user update."""
 
     username: str
+
+class UserPasswordUpdate(BaseModel):
+    """Model for user password update."""
+
     password: str
+    confirm_password: str
 
 
 def create_admin_user() -> User|None:
