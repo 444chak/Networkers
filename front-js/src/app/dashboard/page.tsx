@@ -164,6 +164,7 @@ export default function Dashboard() {
                     title="Interface réseau"
                     description="..."
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/interface_reseau")}
                   />
                 </Grid2>
               </Grid2>
