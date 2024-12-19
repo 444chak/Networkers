@@ -197,9 +197,9 @@
 
 #### Get VLSM
 
-| Method | URL             | Description | Need token | Roles |
-| ------ | --------------- | ----------- | ---------- | ----- |
-| GET    | /ipv4/vlsm/{ip} | Get VLSM    | True       | User  |
+| Method | URL                      | Description | Need token | Roles |
+| ------ | ------------------------ | ----------- | ---------- | ----- |
+| GET    | /ipv4/vlsm/{ip}/{subnet} | Get VLSM    | True       | User  |
 
 ### IPv6
 
