@@ -7,11 +7,12 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
 import { useEffect, useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid2 } from "@mui/material";
 import Title from "@/components/Title";
 import { EmojiProvider, Emoji } from "react-apple-emojis";
 import emojiData from "react-apple-emojis/src/data.json";
 import { Spacer } from "@nextui-org/spacer";
+import Card from "@/components/Card";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -91,13 +92,54 @@ export default function Dashboard() {
         {isLoading ? (
           <CircularProgress />
         ) : (
-          <Box margin={{ top: "150px", bottom: "50px", left: "10%" }}>
-            <Title level={1}>
-              Bonjour {username}
-              <Spacer x={2} />
-              <Emoji name="waving-hand" width={40} />
-            </Title>
-          </Box>
+          <>
+            <Box margin={{ top: "150px", bottom: "50px", left: "10%" }}>
+              <Title level={1}>
+                Bonjour {username}
+                <Spacer x={2} />
+                <Emoji name="waving-hand" width={40} />
+              </Title>
+            </Box>
+            <Box
+              margin={{
+                top: "50px",
+                bottom: "50px",
+                left: "10%",
+                right: "10%",
+              }}
+            >
+              <Grid2 container spacing={2}>
+                <Grid2 size={4}>
+                  <Card
+                    title="IPv6"
+                    description="Simplifiez ou étendez une adresse IPv6 avec ce module."
+                    image="/modules_assets/ipv6.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="IPv4"
+                    description="..."
+                    image="/modules_assets/ipv4.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="Scapy"
+                    description="..."
+                    image="/modules_assets/scapy.svg"
+                  />
+                </Grid2>
+                <Grid2 size={4}>
+                  <Card
+                    title="IPv6"
+                    description="Simplifiez ou étendez une adresse IPv6 avec ce module."
+                    image="/modules_assets/ipv6.svg"
+                  />
+                </Grid2>
+              </Grid2>
+            </Box>
+          </>
         )}
       </Layout>
     </EmojiProvider>
