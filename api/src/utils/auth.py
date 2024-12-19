@@ -106,7 +106,6 @@ def verify_jwt(token: str) -> dict:
     except JWTError as err:
         raise HTTPException(status_code=403, detail="Invalid token") from err
 
-
 def validate_password(password: str) -> bool:
     """Return True if the password is valid, False otherwise.
 
@@ -115,16 +114,7 @@ def validate_password(password: str) -> bool:
 
     Returns:
         bool: True if the password is valid, False otherwise
-
     """
-    if password is None:
+    if not password or len(password) < 8:
         return False
-    if len(password) < 8:
-        return False
-    if re.match(r"[A-Z]", password) is None:
-        return False
-    if re.match(r"[a-z]", password) is None:
-        return False
-    if re.match(r"[0-9]", password) is None:
-        return False
-    return re.match("[^A-Za-z0-9]", password) is not None
+    return bool(re.match(r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$", password))
