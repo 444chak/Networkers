@@ -107,6 +107,9 @@ async def update_current_user_password(user_password_update: UserPasswordUpdate,
 
     user: User = User.from_db(result[0], result[1], result[2])
 
+    if not verify_password(user_password_update.old_password, user.password):
+        raise HTTPException(status_code=400, detail="Incorrect password")
+
     if user_password_update.password != user_password_update.confirm_password:
         raise HTTPException(status_code=400, detail="Passwords do not match")
 
