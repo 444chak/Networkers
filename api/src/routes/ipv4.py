@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends
 
 from dependencies.jwt import jwt_bearer
-from utils.IPV4 import (
+from utils.ipv4 import (
     bin_to_dec,
     dec_to_bin,
     dec_to_hex,

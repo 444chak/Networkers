@@ -44,7 +44,14 @@ export default function Home() {
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 400) {
-        setError("Nom d'utilisateur déjà utilisé");
+        const data = axiosError.response.data as { detail: string };
+        if (data.detail === "User already exists") {
+          setError("Nom d'utilisateur déjà utilisé");
+        } else if (data.detail == "Invalid password") {
+          setError("Mot de passe invalide");
+        } else {
+          setError("Erreur lors de l'inscription");
+        }
       } else {
         setError("Erreur lors de l'inscription");
       }
