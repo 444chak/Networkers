@@ -1,4 +1,4 @@
-export function validate_passwd(passwd){
+export function validate_passwd(passwd) {
     if (passwd.length < 8) {
         return false;
     }
@@ -7,15 +7,15 @@ export function validate_passwd(passwd){
         return false;
     }
 
-    if (!/[a-z]/.test(passwd)){
+    if (!/[a-z]/.test(passwd)) {
         return false;
     }
 
-    if (!/[A-Z]/.test(passwd)){
+    if (!/[A-Z]/.test(passwd)) {
         return false;
     }
 
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(passwd)) {
+    if (!/[^A-Za-z0-9]/.test(passwd)) {
         return false;
     }
 
