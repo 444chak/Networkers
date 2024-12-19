@@ -4,9 +4,11 @@ import time
 
 from fastapi import APIRouter, HTTPException
 
-from utils.scapy import ethernet_frame, interface, ping, tcp
+from utils.scapy import ethernet_frame, get_ip_from_dns, interface, ping, tcp
 
 router = APIRouter()
+
+RE_IP = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
 
 @router.get("/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",\
     summary="Create an Ethernet frame")
@@ -40,6 +42,8 @@ def get_tcp_test(target_ip:str, target_port:int) -> dict:
         dict: Result of the TCP test.
 
     """
+    if RE_IP.match(target_ip) is None:
+        target_ip = get_ip_from_dns(target_ip)
     start_time = time.time()
     status, response, packet, tcp_flags = tcp(target_ip, target_port)
     rtt = (time.time() - start_time) * 1000  # Convert to ms
@@ -87,6 +91,8 @@ def get_ping(ip: str) -> dict:
         dict: Result of the ping.
 
     """
+    if RE_IP.match(ip) is None:
+        ip = get_ip_from_dns(ip)
     try:
         start_time = time.time()
         packet, response = ping(ip)
@@ -127,6 +133,8 @@ def get_interface(ip: str) -> dict | None:
         dict: Result of the ping with detailed information.
 
     """
+    if RE_IP.match(ip) is None:
+        ip = get_ip_from_dns(ip)
     try:
         iface, response, packet = interface(ip)
 

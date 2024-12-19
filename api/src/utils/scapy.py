@@ -1,5 +1,7 @@
 """Module for Scapy utilities."""
 
+import socket
+
 from scapy.all import ICMP, IP, TCP, Ether, conf, hexdump, sr1
 
 
@@ -69,3 +71,18 @@ def tcp(target_ip:str, target_port:int) -> tuple[int, IP | None, IP | None, str 
 
         return 2, None, None, tcp_flags
     return -1, None, None, None
+
+def get_ip_from_dns(dns:str) -> str | None:
+    """Get the IP address from a DNS name.
+
+    Args:
+        dns (str): DNS name.
+
+    Returns:
+        str | None: IP address.
+
+    """
+    try:
+        return socket.gethostbyname(dns)
+    except socket.gaierror:
+        return None
