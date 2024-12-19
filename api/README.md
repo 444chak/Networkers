@@ -11,6 +11,7 @@
   - [Architecture](#architecture)
   - [Environnement](#environnement)
   - [Base de données](#base-de-données)
+- [Dépendances](#dépendances)
 - [Routes](#routes)
   - [Auth](#auth)
     - [Login](#login)
@@ -99,6 +100,10 @@ FLUSH PRIVILEGES;
 
 Si vous gardez le lancement avec Docker, la base de données est déjà configurée.  
 Vous aurez un dossier `database/data` qui contient les données de la base de données.  
+
+## Dépendances
+
+L'applications dépend de la base de données pour fonctionner. Il faut donc lancer la base de données avant de lancer l'application API.  
 
 ## Routes
 
