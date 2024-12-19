@@ -47,8 +47,6 @@ def simplify(ipv6: str) -> str:
     compressed_address = compressed_address.replace(":::", "::")
     
     return compressed_address
-
-    return ":".join(parts)
 def extend(ipv6: str) -> str:
     """Extend an IPv6 address.
 
