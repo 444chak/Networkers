@@ -8,7 +8,7 @@ import Input from "@/components/Input";
 import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
 import ValidatePsw from "@/components/ValidatePsw";
-import {validate_passwd} from "../../utils/validatePasswd";
+import {validate_passwd} from "@/utils/validatePasswd";
 import { useEffect, useState } from "react";
 import Title from "@/components/Title";
 import axios from "@/axiosConfig";
