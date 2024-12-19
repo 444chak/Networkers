@@ -21,7 +21,7 @@
     - [Create ethernet frame](#create-ethernet-frame)
     - [TCP test](#tcp-test)
     - [Ping](#ping)
-    - [Get interface](#get-interface)
+    - [Get interfaces](#get-interfaces)
 
 ## Routes
 
@@ -173,8 +173,8 @@
 | ------ | ---------------- | ----------- | ---------- | ----- |
 | GET    | /scapy/ping/{ip} | Ping        | True       | User  |
 
-#### Get interface
+#### Get interfaces
 
-| Method | URL                   | Description   | Need token | Roles |
-| ------ | --------------------- | ------------- | ---------- | ----- |
-| GET    | /scapy/interface/{ip} | Get interface | True       | User  |
+| Method | URL               | Description                | Need token | Roles |
+| ------ | ----------------- | -------------------------- | ---------- | ----- |
+| GET    | /scapy/interfaces | Get interfaces of the host | True       | User  |
