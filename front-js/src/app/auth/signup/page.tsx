@@ -11,7 +11,7 @@ import { use, useState } from "react";
 import Link from "@/components/Link";
 import Space from "@/components/Space";
 import ValidatePsw from "@/components/ValidatePsw";
-import {validate_passwd} from "./validatePasswd";
+import {validate_passwd} from "@/utils/validatePasswd";
 
 export default function Home() {
     const [username, setUsername] = useState("");
