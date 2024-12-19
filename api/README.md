@@ -175,6 +175,6 @@
 
 #### Get interface
 
-| Method | URL                   | Description   | Need token | Roles |
-| ------ | --------------------- | ------------- | ---------- | ----- |
-| GET    | /scapy/interface/{ip} | Get interface | True       | User  |
+| Method | URL              | Description               | Need token | Roles |
+| ------ | ---------------- | ------------------------- | ---------- | ----- |
+| GET    | /scapy/interface | Get interface of the host | True       | User  |

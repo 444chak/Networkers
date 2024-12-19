@@ -122,50 +122,13 @@ def get_ping(ip: str) -> dict:
             detail=f"Ping failed: {e!s}",
         ) from e
 
-@router.get("/interface/{ip}", summary="Ping a target IP")
-def get_interface(ip: str) -> dict | None:
-    """Ping a target IP.
-
-    Args:
-        ip (str): Target IP address.
-
-    Returns:
-        dict: Result of the ping with detailed information.
-
-    """
-    if RE_IP.match(ip) is None:
-        ip = get_ip_from_dns(ip)
+@router.get("/interface", summary="Get the interface of the machine")
+def get_interface() -> dict | None:
+    """Get the network interface of the host."""
     try:
-        iface, response, packet = interface(ip)
-
-        if response:
-            return {
-                "interface": serialize_network_interface(iface),
-                "source_ip": packet.src,
-                "destination_ip": packet.dst,
-            }
-
-        return {
-            "message": f"No response from {ip}",
-            "interface": serialize_network_interface(iface),
-        }
+        return interface()
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
-def serialize_network_interface(iface: object) -> dict:
-    """Convert a network interface object to a dictionary.
 
-    Args:
-        iface (object): Network interface object.
-
-    Returns:
-        dict: Dictionary representation of the network interface.
-
-    """
-    return {
-        "name": str(iface.name) if hasattr(iface, "name") else None,
-        "ip": str(iface.ip) if hasattr(iface, "ip") else None,
-        "mac": str(iface.mac) if hasattr(iface, "mac") else None,
-        "mtu": int(iface.mtu) if hasattr(iface, "mtu") else None,
-    }

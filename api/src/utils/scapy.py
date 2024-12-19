@@ -34,7 +34,7 @@ def ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> hexdump:
     frame = Ether(dst=dst_mac, src=src_mac, type=int(eth_type, 16))
     return hexdump(frame, dump=True)
 
-def interface(ipv4: str) -> tuple[object, IP, IP]:
+def interface() -> tuple[object]:
     """Get the network interface of an IPv4 address.
 
     Args:
@@ -44,9 +44,23 @@ def interface(ipv4: str) -> tuple[object, IP, IP]:
         tuple: Network interface and IP object.
 
     """
-    iface = conf.iface
-    packet, response = ping(ipv4)
-    return iface, response, packet
+    return serialize_network_interface(conf.iface)
+
+def serialize_network_interface(iface: object) -> dict:
+    """Convert a network interface object to a dictionary.
+
+    Args:
+        iface (object): Network interface object.
+
+    Returns:
+        dict: Dictionary representation of the network interface.
+
+    """
+    return {
+        "name": str(iface.name) if hasattr(iface, "name") else None,
+        "ip": str(iface.ip) if hasattr(iface, "ip") else None,
+        "mac": str(iface.mac) if hasattr(iface, "mac") else None,
+    }
 
 def tcp(target_ip:str, target_port:int) -> tuple[int, IP | None, IP | None, str | None]:
     """Test a TCP connection.
