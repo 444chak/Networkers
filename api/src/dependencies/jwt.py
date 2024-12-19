@@ -1,4 +1,5 @@
 """JWT Dependency."""
+
 from fastapi import Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -6,8 +7,10 @@ from utils.auth import verify_jwt
 
 security = HTTPBearer()
 
-async def jwt_bearer(credentials: HTTPAuthorizationCredentials = Security(security)) \
-        -> dict:  # noqa: B008
+
+async def jwt_bearer(
+    credentials: HTTPAuthorizationCredentials = Security(security),
+) -> dict:  # noqa: B008
     """Verify JWT token.
 
     Args:

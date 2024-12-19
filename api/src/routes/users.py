@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from dependencies.jwt import jwt_bearer
 from models import db
 from models.user import User, UserPasswordUpdate, UserUpdate, user_table
-from utils.auth import get_hashed_password, verify_password, validate_password
+from utils.auth import get_hashed_password, validate_password, verify_password
 
 router = APIRouter()
 
