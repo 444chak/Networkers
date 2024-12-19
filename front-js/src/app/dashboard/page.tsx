@@ -93,7 +93,7 @@ export default function Dashboard() {
           <CircularProgress />
         ) : (
           <>
-            <Box margin={{ top: "150px", bottom: "50px", left: "10%" }}>
+            <Box margin={{ top: "50px", bottom: "50px", left: "10%" }}>
               <Title level={1}>
                 Bonjour {username}
                 <Spacer x={2} />
@@ -114,6 +114,7 @@ export default function Dashboard() {
                     title="IPv6"
                     description="Simplifiez ou étendez une adresse IPv6 avec ce module."
                     image="/modules_assets/ipv6.svg"
+                    onClick={() => router.push("/modules/ipv6")}
                   />
                 </Grid2>
                 <Grid2 size={4}>

@@ -16,7 +16,7 @@ def simplify(ipv6: str) -> str:
             parts[parts.index(part)] = "0"
 
     is_zero = False
-    if ipv6.contains("::"):
+    if ipv6.find("::") != -1:
         is_zero = True
     i = 0
     while i < len(parts):
