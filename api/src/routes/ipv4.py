@@ -102,4 +102,4 @@ async def get_mask(ipv4: str) -> dict:
 async def get_vlsm(baseip: str, subnet: str) -> dict:
     """Implement the VLSM (Variable Length Subnet Mask) technique."""
     res = vlsm(baseip, subnet)
-    return {"ipv4": res}
+    return {"subnet": res}
