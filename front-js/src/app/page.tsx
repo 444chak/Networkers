@@ -50,8 +50,8 @@ export default function Home() {
         <Image
           src="/logo.png"
           alt="logo"
-          width={100}
-          height={200}
+          width={55}
+          height={65}
           style={{ width: "auto", height: "auto" }}
         />
         {hasAccessToken ? (
