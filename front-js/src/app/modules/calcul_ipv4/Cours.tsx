@@ -215,6 +215,42 @@ const Cours: React.FC = () => {
         <Title level={3} margin={{ top: "2rem" }}>
         Calculer un masque de sous-réseau depuis une notation CIDR  
         </Title>
+        <ol style={{ listStyleType: "disc", marginLeft: "20px" }}>
+          <li>
+            <Text>Identifiez le nombre de bits réseau dans la notation CIDR.</Text>
+          </li>
+          <li>
+            <Text>Complétez ces bits en binaire avec des 1 suivis de 0 jusqu'à atteindre 32 bits.</Text>
+          </li>
+          <li>
+            <Text>Convertissez chaque bloc de 8 bits (octet) en décimal.</Text>
+          </li>
+        </ol>
+        <Title level={4} margin={{ top: "2rem" }}>
+        Exemple :  
+        </Title>
+        <Text>
+            Exemple pour /20
+        </Text>
+        <ul style={{ listStyleType: "disc", marginLeft: "20px" }}>
+          <li>
+            <Text>20 bits pour le réseau.   </Text>
+          </li>
+          <li>
+            <Text>20 bits à 1 → <Code
+              text="11111111.11111111.11110000.00000000"
+              language="text"
+              theme={solarizedLight}
+            /></Text>
+          </li>
+          <li>
+            <Text>En décimal : <Code
+              text="255.255.240.0"
+              language="text"
+              theme={solarizedLight}
+            /></Text>
+          </li>
+        </ul>
       </Space>
     </>
   );
