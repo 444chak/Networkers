@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
 import Footer from "@/components/Footer";
+import Text from "@/components/Text";
 export default function Home() {
   const router = useRouter();
   const [hasAccessToken, setHasAccessToken] = useState(false);
@@ -97,33 +98,34 @@ export default function Home() {
             top: "100px",
           }}
         >
-          <Title level={1}>Networkers</Title>
+          <Title level={1}>NetWorkers</Title>
           <Spacer y={2} />
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-            varius metus magna, sit amet porta velit eleifend iaculis. Donec
-            imperdiet rutrum lacus, luctus congue mauris iaculis ac. Suspendisse
-            aliquet nibh vitae magna efficitur bibendum. Vivamus molestie, neque
-            id feugiat fringilla, ante dui volutpat massa, non convallis erat mi
-            eget urna. Integer feugiat, purus id porta semper, ipsum ex
-            venenatis ante, ac rhoncus dolor sapien consequat nisi. Curabitur
-            maximus sem ac tortor consequat posuere ac ac massa. Praesent
-            imperdiet purus vel dui tempor finibus. Suspendisse arcu nunc,
-            mattis at sapien in, rhoncus ultricies dui. Morbi luctus lorem quis
-            aliquam dictum. Quisque porttitor mollis tellus, vel efficitur est
-            pretium aliquet. Etiam ornare velit ac interdum lobortis. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per
-            inceptos himenaeos. Maecenas vulputate vitae lorem a pulvinar.
-            Curabitur ante mi, tempor at felis laoreet, ultrices venenatis
-            turpis. Mauris scelerisque rhoncus diam sed ornare. Vestibulum at
-            accumsan ligula, non blandit erat.
-          </div>
+          <Space space="1rem">
+          <Text>
+          NetWorkers est une plateforme en ligne spécialement conçue pour simplifier 
+          l&rsquo;accès des étudiants à leurs ressources universitaires. Son interface permet de trouver rapidement les documents, supports de cours
+          et autres contenus partagés par les professeurs, 
+          rendant ainsi le processus d&rsquo;apprentissage plus fluide et efficace. Notre mission est de faciliter le quotidien des étudiants 
+          en leur offrant une solution fiable, performante et facile à utiliser.
+          </Text>
+          <Text>
+          Que vous recherchiez des cours ou des supports d&rsquo;exercices, tout est centralisé en un seul 
+          endroit accessible à tout moment. En vous connectant, vous bénéficiez d&rsquo;un espace organisé et sécurisé, spécialement 
+          pensé pour répondre à vos besoins académiques.
+          </Text>
+          <Text>
+          Grâce à NetWorkers, nous souhaitons créer un environnement d&rsquo;apprentissage moderne, où chaque étudiant dispose des outils 
+          nécessaires pour travailler efficacement et atteindre ses objectifs.
+          </Text>
+          </Space>
         </Box>
+        
         <Image
           src="/homeillustration.svg"
           alt="networkers"
           width={700}
           height={600}
+          style={{height:"auto"}}
         />
       </Space>
       <Footer/>
