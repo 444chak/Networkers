@@ -140,7 +140,7 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Ethernet"
-                    description="Etablissez une trame ethernet"
+                    description="Établissez une trame ethernet"
                     image="/modules_assets/scapy.svg"
                     onClick={() => router.push("/modules/ethernet")}
                   />
