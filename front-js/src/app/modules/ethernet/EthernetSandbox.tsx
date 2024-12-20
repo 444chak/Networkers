@@ -42,7 +42,7 @@ const EthernetSandbox: React.FC = () => {
           data.detail || "Erreur lors de la création de la trame Ethernet"
         );
       } else {
-        setSimpleRes("Erreur inattendue lors de l'appel API");
+        setSimpleRes("La création de la trame Ethernet a échoué");
       }
     }
     setIsLoading(false);
