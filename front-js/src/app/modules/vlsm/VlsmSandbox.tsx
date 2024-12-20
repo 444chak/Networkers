@@ -6,7 +6,6 @@ import React from "react";
 import { useState } from "react";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
-import { AxiosError } from "axios";
 import { Alert } from "@mui/material";
 import Box from "@/components/Box";
 
@@ -36,17 +35,6 @@ const VlsmSandbox: React.FC = () => {
         setSubnets(formattedSubnets);
       }
     } catch (error: unknown) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response?.status === 400) {
-        const data = axiosError.response.data as { detail: string };
-        if (data.detail === "Invalid IPv6") {
-          // setSimpleRes("Adresse IPv6 invalide");
-        } else {
-          // setSimpleRes("Adresse IPv6 invalide");
-        }
-      } else {
-        // setSimpleRes("Erreur lors de la simplification de l'adresse IPv6");
-      }
     }
   };
 
@@ -54,7 +42,7 @@ const VlsmSandbox: React.FC = () => {
     <>
       <Space space="50px" direction="vertical" margin={{ bottom: "100px" }}>
         <form onSubmit={handleSimplify}>
-          <Title level={2}>Création d&rsquot;un sous réseau</Title>
+          <Title level={2}>Création d&rsquo;un sous réseau</Title>
 
           <Input
             type="text"
@@ -72,7 +60,7 @@ const VlsmSandbox: React.FC = () => {
             margin={{ bottom: "20px" }}
             onChange={(e) => setNombreAddr(e.target.value)}
             required
-            label="Nombre d&rsquot;adresses à attribuer (séparées par des virgules)"
+            label="Nombre d&rsquo;adresses à attribuer (séparées par des virgules)"
           />
           <Button
             text="Simplifier"
