@@ -149,7 +149,7 @@ export default function Dashboard() {
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="Ping"
+                    title="Ping ICMP"
                     description="Expérimentez l'envoi de paquets à travers les couches OSI."
                     image="/modules_assets/scapy.svg"
                     onClick={() => router.push("/modules/ping")}
