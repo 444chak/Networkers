@@ -29,12 +29,12 @@ const Cours: React.FC = () => {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        }
+        },
       );
       const data = response.data;
       if (response.status === 200) {
         setRes(data.ipv6);
-        setValid(res == ipv6test);
+        setValid(data.ipv6 === ipv6test);
       }
     } catch (error: unknown) {
       const axiosError = error as AxiosError;

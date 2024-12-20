@@ -1,5 +1,6 @@
 """Module for IPv4 utilities."""
 
+
 def is_valid(address: str) -> bool:
     """Check if an IPv4 address is valid.
 
@@ -20,6 +21,7 @@ def is_valid(address: str) -> bool:
             return False
 
     return True
+
 
 def ipv4_class(address: str) -> str:
     """Determine the class A, B, or C of an IPv4 address.
@@ -46,6 +48,7 @@ def ipv4_class(address: str) -> str:
 
     return "The address does not belong to classes A, B, or C"
 
+
 def dec_to_bin(address: str) -> str:
     """Convert an IPv4 address from decimal notation to binary notation.
 
@@ -59,13 +62,14 @@ def dec_to_bin(address: str) -> str:
 
     """
     if not is_valid(address):
-        return "Invalid IPv4 address"
+        return "Adresse IPv4 invalide"
 
     octets = address.split(".")
 
     binary_octets = [f"{int(octet):08b}" for octet in octets]
 
     return ".".join(binary_octets)
+
 
 def dec_to_hex(address: str) -> str:
     """Convert an IPv4 address from decimal notation to hexadecimal notation.
@@ -80,13 +84,14 @@ def dec_to_hex(address: str) -> str:
 
     """
     if not is_valid(address):
-        return "Invalid IPv4 address"
+        return "Adresse IPv4 invalide"
 
     octets = address.split(".")
 
     hex_octets = [f"{int(octet):02X}" for octet in octets]
 
     return ".".join(hex_octets)
+
 
 def hex_to_dec(address: str) -> str:
     """Convert an IPv4 address from hexadecimal notation to decimal notation.
@@ -104,14 +109,15 @@ def hex_to_dec(address: str) -> str:
     octets = address.split(".")
 
     if len(octets) != 4:  # noqa: PLR2004
-        return "Invalid hexadecimal IPv4 address"
+        return "Adresse IPv4 invalide"
 
     try:
         decimal_octets = [str(int(octet, 16)) for octet in octets]
     except ValueError:
-        return "Invalid hexadecimal IPv4 address"
+        return "Adresse IPv4 invalide"
 
     return ".".join(decimal_octets)
+
 
 def bin_to_dec(address: str) -> str:
     """Convert an IPv4 address from binary notation to decimal notation.
@@ -129,14 +135,15 @@ def bin_to_dec(address: str) -> str:
     octets = address.split(".")
 
     if len(octets) != 4:  # noqa: PLR2004
-        return "Invalid binary IPv4 address"
+        return "Adresse IPv4 invalide"
 
     try:
         decimal_octets = [str(int(octet, 2)) for octet in octets]
     except ValueError:
-        return "Invalid binary IPv4 address"
+        return "Adresse IPv4 invalide"
 
     return ".".join(decimal_octets)
+
 
 def ipv4_to_cidr(address: str, mask: str) -> str:
     """Convert an IPv4 address to CIDR notation.
@@ -152,12 +159,13 @@ def ipv4_to_cidr(address: str, mask: str) -> str:
 
     """
     if not is_valid(address):
-        return "Invalid address"
+        return "Adresse IPv4 invalide"
 
     binary_mask = "".join([f"{int(octet):08b}" for octet in mask.split(".")])
     ones_count = binary_mask.count("1")
 
     return f"{address}/{ones_count}"
+
 
 def get_ipv4_mask(cidr: str) -> str:
     """Calculate the subnet mask from an IPv4 address in CIDR notation.
@@ -185,9 +193,10 @@ def get_ipv4_mask(cidr: str) -> str:
 
     binary_mask = "1" * prefix + "0" * (32 - prefix)
 
-    mask_octets = [int(binary_mask[i:i+8], 2) for i in range(0, 32, 8)]
+    mask_octets = [int(binary_mask[i : i + 8], 2) for i in range(0, 32, 8)]
 
     return ".".join(map(str, mask_octets))
+
 
 def vlsm(base_ip: str, subnets: str) -> str:
     """Implement the VLSM (Variable Length Subnet Mask) technique.
@@ -204,6 +213,8 @@ def vlsm(base_ip: str, subnets: str) -> str:
     """
     if not is_valid(base_ip):
         return "Invalid base IP address"
+
+    subnets = [int(subnet) for subnet in subnets.split(",")]
 
     # Check if any subnet requires more than 255 machines
     if any(hosts > 255 for hosts in subnets):  # noqa: PLR2004
@@ -258,12 +269,14 @@ def vlsm(base_ip: str, subnets: str) -> str:
             raise ValueError(msg)
 
         # Append the results to the list
-        results.append({
-            "network": int_to_ip(network_ip),
-            "mask": get_ipv4_mask(f"0.0.0.0/{prefix}"),
-            "broadcast": int_to_ip(broadcast_ip),
-            "range": f"{int_to_ip(network_ip + 1)} - {int_to_ip(broadcast_ip - 1)}",
-        })
+        results.append(
+            {
+                "network": int_to_ip(network_ip),
+                "mask": get_ipv4_mask(f"0.0.0.0/{prefix}"),
+                "broadcast": int_to_ip(broadcast_ip),
+                "range": f"{int_to_ip(network_ip + 1)} - {int_to_ip(broadcast_ip - 1)}",
+            },
+        )
 
         # Move to the next subnet's network address
         current_ip_int = broadcast_ip + 1

@@ -13,7 +13,8 @@ RE_IP = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
 
 
 @router.get(
-    "/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}", summary="Create an Ethernet frame"
+    "/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",
+    summary="Create an Ethernet frame",
 )
 def create_ethernet_frame(dst_mac: str, src_mac: str, eth_type: str) -> dict:
     """Create an Ethernet frame."""
@@ -29,6 +30,15 @@ def get_tcp_test(target_ip: str, target_port: int) -> dict:
     """Test a TCP connection."""
     if re.search(RE_IP, target_ip) is None:
         target_ip = get_ip_from_dns(target_ip)
+
+    if target_ip is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": f"{target_ip} not resolved",
+            },
+        )
+
     start_time = time.time()
     status, response, packet, tcp_flags = tcp(target_ip, target_port)
     rtt = (time.time() - start_time) * 1000  # Convert to ms
@@ -68,6 +78,14 @@ def get_ping(ip: str) -> dict:
     """Ping a target IP."""
     if re.search(RE_IP, ip) is None:
         ip = get_ip_from_dns(ip)
+
+    if ip is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": f"{ip} not resolved",
+            },
+        )
     try:
         start_time = time.time()
         packet, response = ping(ip)

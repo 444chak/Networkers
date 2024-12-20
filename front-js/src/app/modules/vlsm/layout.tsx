@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Modifier mon mot de passe",
+  title: "VLSM",
   description: "Networkers",
 };
 

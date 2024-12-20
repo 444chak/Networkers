@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# :lipstick: NetWorkers Web
 
-## Getting Started
+**Table des matières**  
 
-First, run the development server:
+- [Framework](#framework)
+- [Mise en place (Si vous ne passez pas par le Docker)](#mise-en-place-si-vous-ne-passez-pas-par-le-docker)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Run](#run)
+- [Codes](#codes)
+  - [Architecture](#architecture)
+  - [Environnement](#environnement)
+- [Dépendances](#dépendances)
+
+## Framework
+
+- [Next.js](https://nextjs.org/)  
+- [Tailwind CSS](https://tailwindcss.com/)  
+
+## Mise en place (Si vous ne passez pas par le Docker)
+
+### Requirements
+
+- [Node.js](https://nodejs.org/)
+
+### Installation
+
+```bash
+npm install
+```
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Codes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Le code est fait en TypeScript (`.ts` et `.tsx`).  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Architecture
 
-## Learn More
+Dans le dossier `src/` :
 
-To learn more about Next.js, take a look at the following resources:
+- `components/`: composants utilisés dans les différentes pages  
+- `app/`: pages de l'application  
+  - `api/`: serveur API (next/server) qui permet de récupérer la common key permettant de communiquer avec le serveur API  
+- `axiosConfig.ts`: configuration des requêtes Axios
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environnement
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+L'application a besoin que la variable d'environnement suivante soit définie :
 
-## Deploy on Vercel
+- COMMON_KEY  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> La variable d'environnement est déjà définie si l'application est lancée avec le Docker  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Dépendances
+
+L'applications dépend de l'API pour fonctionner. Il faut donc lancer l'API avant de lancer l'application front-end.  

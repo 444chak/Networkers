@@ -127,8 +127,9 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Conversion IPv4"
-                    description="..."
+                    description="Découvrez comment convertir une adresse IPv4 de différentes manières."
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/convert_ipv4")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -136,6 +137,7 @@ export default function Dashboard() {
                     title="VLSM"
                     description="..."
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/vlsm")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -165,6 +167,7 @@ export default function Dashboard() {
                     title="Interface réseau"
                     description="..."
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/interface_reseau")}
                   />
                 </Grid2>
               </Grid2>
