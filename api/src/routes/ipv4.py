@@ -95,11 +95,11 @@ async def get_mask(ipv4: str) -> dict:
 
 
 @router.get(
-    "/vlsm/{ipv4}",
+    "/vlsm/{baseip}/{subnet}",
     summary="Implement the VLSM (Variable Length Subnet Mask) technique.",
     dependencies=[Depends(jwt_bearer)],
 )
 async def get_vlsm(baseip: str, subnet: str) -> dict:
     """Implement the VLSM (Variable Length Subnet Mask) technique."""
     res = vlsm(baseip, subnet)
-    return {"ipv4": res}
+    return {"subnet": res}

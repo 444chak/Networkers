@@ -3,6 +3,7 @@
 **Table des matières**  
 
 - [Framework](#framework)
+- [Swagger](#swagger)
 - [Mise en place (Si vous ne passez pas par le Docker)](#mise-en-place-si-vous-ne-passez-pas-par-le-docker)
   - [Requirements](#requirements)
   - [Installation](#installation)
@@ -49,6 +50,16 @@
 
 - [FastAPI](https://fastapi.tiangolo.com/)  
 - [SQLAlchemy](https://www.sqlalchemy.org/)  
+
+## Swagger
+
+Pour avoir accès à la documentation Swagger, il suffit de se rendre sur l'URL suivante :  
+
+```text
+http://<url>:8000/docs
+```
+
+Sur cette page, des appels peuvent être effectués directement pour tester les routes.
 
 ## Mise en place (Si vous ne passez pas par le Docker)
 
@@ -198,8 +209,7 @@ L'applications dépend de la base de données pour fonctionner. Il faut donc lan
 
 ```json
 {
-  "username": "string",
-  "password": "string"
+  "username": "string"
 }
 ```
 
@@ -285,9 +295,9 @@ L'applications dépend de la base de données pour fonctionner. Il faut donc lan
 
 #### Get VLSM
 
-| Method | URL             | Description | Need token | Roles |
-| ------ | --------------- | ----------- | ---------- | ----- |
-| GET    | /ipv4/vlsm/{ip} | Get VLSM    | True       | User  |
+| Method | URL                      | Description | Need token | Roles |
+| ------ | ------------------------ | ----------- | ---------- | ----- |
+| GET    | /ipv4/vlsm/{ip}/{subnet} | Get VLSM    | True       | User  |
 
 ### IPv6
 

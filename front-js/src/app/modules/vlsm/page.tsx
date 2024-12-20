@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
 import { Tabs, Tab } from "@mui/material";
-import Cours from "./cours";
-import PingSandbox from "./pingSandbox";
+import Cours from "./Cours";
+import VlsmSandbox from "./VlsmSandbox";
 
-export default function Ping() {
+export default function VLSM() {
   const router = useRouter();
 
   const [, setHasAccessToken] = useState(false);
@@ -58,9 +58,10 @@ export default function Ping() {
         <Header
           tabs={{
             dashboard: "Tableau de bord",
+            modules: "Mes modules",
             profile: "Mon profil",
           }}
-          activeTab=""
+          activeTab="modules"
           onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
           onClickLogout={() => router.push("/auth/logout")}
           onClickLogo={() => router.push("/")}
@@ -68,7 +69,7 @@ export default function Ping() {
       </Box>
       <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
         <Title level={1} align="center">
-          Ping ICMP
+          VLSM
         </Title>
       </Box>
 
@@ -82,8 +83,8 @@ export default function Ping() {
       </Tabs>
 
       <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
-        {activeTab === "cours" ? <Cours /> : <PingSandbox /> }
-      </Box>    
+        {activeTab === "cours" ? <Cours /> : <VlsmSandbox />}
+      </Box>
     </Layout>
   );
 }
