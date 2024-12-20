@@ -4,13 +4,13 @@ import Layout from "@/components/Layout";
 import Box from "@/components/Box";
 import Cookies from "js-cookie";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
   Cookies.remove("access_token");
   Cookies.remove("refresh_token");
-  router.push("/");
+  router.replace("/");
 
   return (
     <Layout type="home">
