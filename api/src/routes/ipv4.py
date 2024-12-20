@@ -84,13 +84,13 @@ async def get_cidr(ipv4: str, mask: str) -> dict:
 
 
 @router.get(
-    "/mask/{ipv4}",
+    "/mask/{ipv4}/{mask}",
     summary="Calculate the subnet mask from an IPv4 address in CIDR notation.",
     dependencies=[Depends(jwt_bearer)],
 )
-async def get_mask(ipv4: str) -> dict:
+async def get_mask(ipv4: str, mask:str) -> dict:
     """Calculate the subnet mask from an IPv4 address in CIDR notation."""
-    res = get_ipv4_mask(ipv4)
+    res = get_ipv4_mask(ipv4 + "/" + mask)
     return {"ipv4": res}
 
 
