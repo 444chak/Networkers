@@ -7,14 +7,16 @@ import { useState } from "react";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import Box from "@/components/Box";
 
 const CalculIpv4Sandbox: React.FC = () => {
   const [simpleIpv4, setSimpleIpv4] = useState("");
   const [simpleRes, setSimpleRes] = useState("");
+  const [isLoadingClass, setIsLoadingClass] = useState(false);
 
   const handleClass = async (e: { preventDefault: () => void }) => {
+    setIsLoadingClass(true);
     e.preventDefault();
     try {
       const response = await axios.get("/ipv4/class/" + simpleIpv4, {
@@ -40,13 +42,15 @@ const CalculIpv4Sandbox: React.FC = () => {
         setSimpleRes("Erreur lors du calcul de la classe de l'adresse IPv4");
       }
     }
+    setIsLoadingClass(false);
   };
-
 
   const [simpleIpv4cidr, setSimpleIpv4cidr] = useState("");
   const [simpleRescidr, setSimpleRescidr] = useState("");
+  const [isLoadingMask, setIsLoadingMask] = useState(false);
 
   const handleMask = async (e: { preventDefault: () => void }) => {
+    setIsLoadingMask(true);
     e.preventDefault();
     try {
       const response = await axios.get("/ipv4/mask/" + simpleIpv4cidr, {
@@ -72,13 +76,14 @@ const CalculIpv4Sandbox: React.FC = () => {
         setSimpleRescidr("Erreur lors du calcul du masque de l'adresse IPv4");
       }
     }
+    setIsLoadingMask(false);
   };
 
   return (
     <>
       <Space space="50px" direction="vertical" margin={{ bottom: "100px" }}>
         <form onSubmit={handleClass}>
-          <Title level={2}>Calcul d'une adresse IPv4</Title>
+          <Title level={2}>Calcul d&rsquo;une adresse IPv4</Title>
 
           <Input
             type="text"
@@ -100,7 +105,12 @@ const CalculIpv4Sandbox: React.FC = () => {
               handleClass(e);
             }}
           />
-          {simpleRes ? (
+          {isLoadingClass && (
+            <Box align="center" margin={{ top: "20px" }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!isLoadingClass && simpleRes ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
                 severity="success"
@@ -113,7 +123,7 @@ const CalculIpv4Sandbox: React.FC = () => {
           ) : null}
         </form>
         <form onSubmit={handleMask}>
-          <Title level={2}>Calcul du masque d'une adresse IPv4</Title>
+          <Title level={2}>Calcul du masque d&rsquo;une adresse IPv4</Title>
 
           <Input
             type="text"
@@ -135,7 +145,12 @@ const CalculIpv4Sandbox: React.FC = () => {
               handleMask(e);
             }}
           />
-          {simpleRescidr ? (
+          {isLoadingMask && (
+            <Box align="center" margin={{ top: "20px" }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!isLoadingClass && simpleRescidr ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
                 severity="success"
