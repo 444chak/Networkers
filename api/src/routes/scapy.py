@@ -1,5 +1,6 @@
 """Scapy routes modules."""
 
+import re
 import time
 
 from fastapi import APIRouter, HTTPException
@@ -64,7 +65,7 @@ def get_tcp_test(target_ip:str, target_port:int) -> dict:
 @router.get("/ping/{ip}", summary="Ping a target IP")
 def get_ping(ip: str) -> dict:
     """Ping a target IP."""
-    if RE_IP.match(ip) is None:
+    if re.search(RE_IP, ip) is None:
         ip = get_ip_from_dns(ip)
     try:
         start_time = time.time()
