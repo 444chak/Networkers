@@ -13,7 +13,8 @@ RE_IP = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
 
 
 @router.get(
-    "/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}", summary="Create an Ethernet frame"
+    "/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",
+    summary="Create an Ethernet frame",
 )
 def create_ethernet_frame(dst_mac: str, src_mac: str, eth_type: str) -> dict:
     """Create an Ethernet frame."""

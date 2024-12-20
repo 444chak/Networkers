@@ -24,18 +24,14 @@ def simplify(ipv6: str) -> str:
         if group == "0":
             if current_start is None:
                 current_start = i
-        else:
-            if current_start is not None:
-                zero_runs.append((current_start, i - 1))
-                current_start = None
+        elif current_start is not None:
+            zero_runs.append((current_start, i - 1))
+            current_start = None
     if current_start is not None:
         zero_runs.append((current_start, len(groups) - 1))
 
     # Find the longest run of zeros
-    if zero_runs:
-        longest_run = max(zero_runs, key=lambda run: run[1] - run[0])
-    else:
-        longest_run = None
+    longest_run = max(zero_runs, key=lambda run: run[1] - run[0]) if zero_runs else None
 
     # Step 3: Replace the longest run of zeros with "::"
     if longest_run:
@@ -46,9 +42,7 @@ def simplify(ipv6: str) -> str:
     compressed_address = ":".join(groups)
 
     # Ensure "::" is not accidentally replaced multiple times
-    compressed_address = compressed_address.replace(":::", "::")
-
-    return compressed_address
+    return compressed_address.replace(":::", "::")
 
 
 def extend(ipv6: str) -> str:
