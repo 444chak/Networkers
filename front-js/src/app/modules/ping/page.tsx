@@ -69,7 +69,7 @@ export default function Ping() {
       </Box>
       <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
         <Title level={1} align="center">
-          Ping
+          Ping ICMP
         </Title>
       </Box>
 
