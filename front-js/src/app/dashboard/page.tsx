@@ -20,8 +20,6 @@ export default function Dashboard() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const[isAdmin, setIsAdmin] = useState(false);
-
   useEffect(() => {
     const checkTokens = async () => {
       const token = Cookies.get("access_token");
@@ -104,13 +102,14 @@ export default function Dashboard() {
               tabs={{
                 dashboard: "Tableau de bord",
                 profile: "Mon profil",
-                ...(role=="admin" && {userManagement: "Gestion des utilisateurs"}),
+                ...(role == "admin" && {
+                  userManagement: "Gestion des utilisateurs",
+                }),
               }}
               activeTab="dashboard"
               onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
               onClickLogout={() => router.push("/auth/logout")}
               onClickLogo={() => router.push("/")}
-              
             />
           )}
         </Box>
