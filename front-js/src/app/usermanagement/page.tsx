@@ -174,7 +174,7 @@ export default function Profile() {
               margin={{ bottom: "20px" }}
               onChange={(e) => setUsername(e.target.value)}
               required
-              label="Nom d'utilisateur"
+              label="Modification du nom d'utilisateur"
             />
             {res !== "" ? (
               <Alert
