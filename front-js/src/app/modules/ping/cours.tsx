@@ -86,7 +86,7 @@ const Cours: React.FC = () => {
             3. Checksum (2 octets) : Ce champ contient une somme de contrôle utilisée pour vérifier l'intégrité du paquet ICMP.
           </Text>
           <Text>
-            4. dentifiant (2 octets) : Identifie de manière unique une requête/réponse.
+            4. Identifiant (2 octets) : Identifie de manière unique une requête/réponse.
           </Text>
           <Text>
             5. Numéro de séquence (2 octets) : Ce champ est utilisé pour numéroter les paquets dans une session de ping,
