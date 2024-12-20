@@ -209,8 +209,7 @@ L'applications dépend de la base de données pour fonctionner. Il faut donc lan
 
 ```json
 {
-  "username": "string",
-  "password": "string"
+  "username": "string"
 }
 ```
 
