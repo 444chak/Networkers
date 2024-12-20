@@ -16,7 +16,7 @@ import Button from "@/components/Button";
 export default function Profile() {
   const router = useRouter();
 
-  const [hasAccessToken, setHasAccessToken] = useState(false);
+  const [, setHasAccessToken] = useState(false);
 
   useEffect(() => {
     const checkTokens = async () => {
@@ -48,6 +48,27 @@ export default function Profile() {
   }, [router]);
 
   const [role, setRole] = useState("");
+
+  const [currentUser, setCurrentUser] = useState<string>();
+
+  const getAdminUser = async () => {
+    try {
+      const response = await axios.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      setCurrentUser(response.data.username);
+    } catch {
+      Cookies.remove("access_token");
+      Cookies.remove("refresh_token");
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
+    getAdminUser();
+  }, []);
 
   useEffect(() => {
     const getRole = async () => {
@@ -86,8 +107,7 @@ export default function Profile() {
       }
       setUsers(data);
       console.log(data);
-    } catch {
-    }
+    } catch {}
   };
 
   useEffect(() => {
@@ -100,20 +120,23 @@ export default function Profile() {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.patch(`/users/${selectedUser}`, {
-        username: username,
-      }, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
+      const response = await axios.patch(
+        `/users/${selectedUser}`,
+        {
+          username: username,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
+          },
+        }
+      );
       if (response.status === 200) {
         setRes("Utilisateur mis à jour");
         getUsers();
       }
-    } catch {
-    }
-  }
+    } catch {}
+  };
 
   const handleDelete = async () => {
     try {
@@ -125,19 +148,21 @@ export default function Profile() {
       if (response.status === 200) {
         setRes("Utilisateur supprimé");
         getUsers();
+        setSelectedUser("");
       }
-    } catch {
-    }
+    } catch {}
   };
 
   return (
     <Layout type="logged">
-      <Box align="center" margin={{ top: "50px", bottom: "150px" }}>
+      <Box align="center" margin={{ top: "50px", bottom: "100px" }}>
         <Header
           tabs={{
             dashboard: "Tableau de bord",
             profile: "Mon profil",
-            ...(role == "admin" && { userManagement: "Gestion des utilisateurs" }),
+            ...(role == "admin" && {
+              userManagement: "Gestion des utilisateurs",
+            }),
           }}
           activeTab="Gestion des utilisateurs"
           onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
@@ -145,7 +170,7 @@ export default function Profile() {
           onClickLogo={() => router.push("/")}
         />
       </Box>
-      <Box align="center">
+      <Box align="center" margin={{ bottom: "150px" }}>
         <Modal>
           <Title level={3}>Gestion des utilisateurs</Title>
           <form>
@@ -160,13 +185,14 @@ export default function Profile() {
               sx={{ width: 200, height: 40, marginY: 1 }}
               required
             >
-              {users?.map(user => (
+              {users?.map((user) => (
                 <MenuItem key={user} value={user}>
                   {user}
                 </MenuItem>
               ))}
             </Select>
             <Input
+              disabled={selectedUser === "" || username === currentUser}
               type="text"
               placeholder="Nom d'utilisateur"
               value={username}
@@ -185,6 +211,11 @@ export default function Profile() {
               </Alert>
             ) : null}
             <Button
+              disabled={
+                selectedUser === "" ||
+                username === "" ||
+                username === currentUser
+              }
               text="Mettre à jour"
               primary
               type="input"
@@ -193,6 +224,7 @@ export default function Profile() {
               }}
             />
             <Button
+              disabled={selectedUser === "" || username === currentUser}
               text="Supprimer"
               secondary
               type="input"
@@ -205,6 +237,5 @@ export default function Profile() {
         </Modal>
       </Box>
     </Layout>
-
-  )
-};
+  );
+}
