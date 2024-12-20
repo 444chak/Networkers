@@ -9,7 +9,7 @@ import Box from "@/components/Box";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
 import { AxiosError } from "axios";
-import { Code, solarizedLight } from "react-code-blocks";
+import { CodeBlock, solarizedLight } from "react-code-blocks";
 
 const EthernetSandbox: React.FC = () => {
     const [masdst, setMacdst] = useState("");
@@ -96,7 +96,7 @@ const EthernetSandbox: React.FC = () => {
                                 style={{ borderRadius: "10px" }}
                             >
                                 Résultat :
-                                <Code
+                                <CodeBlock
                                     text={simpleRes}                                    
                                     language="JSON"
                                     theme={solarizedLight}
