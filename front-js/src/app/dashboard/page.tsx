@@ -112,7 +112,7 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="IPv6"
-                    description="Simplifiez ou étendez une adresse IPv6 avec ce module."
+                    description="Simplifiez ou étendez une adresse IPv6."
                     image="/modules_assets/ipv6.svg"
                     onClick={() => router.push("/modules/ipv6")}
                   />
@@ -120,7 +120,7 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Calcul IPv4"
-                    description="..."
+                    description="Faîtes le calcul d'une adresse IPv4."
                     image="/modules_assets/ipv4.svg"
                   />
                 </Grid2>
@@ -135,7 +135,7 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="VLSM"
-                    description="..."
+                    description="Décomposez votre réseau avec VLSM"
                     image="/modules_assets/ipv4.svg"
                     onClick={() => router.push("/modules/vlsm")}
                   />
@@ -143,8 +143,9 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Ethernet"
-                    description="..."
+                    description="Établissez une trame ethernet"
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/ethernet")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -158,14 +159,14 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="TCP"
-                    description="..."
+                    description="Testez une connexion TCP"
                     image="/modules_assets/scapy.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Interface réseau"
-                    description="..."
+                    description="Affichez l'interface réseau du client"
                     image="/modules_assets/scapy.svg"
                     onClick={() => router.push("/modules/interface_reseau")}
                   />
