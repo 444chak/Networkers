@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Title from "@/components/Title";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
@@ -51,7 +51,7 @@ export default function Profile() {
 
   const [currentUser, setCurrentUser] = useState<string>();
 
-  const getAdminUser = async () => {
+  const getAdminUser = useCallback(async () => {
     try {
       const response = await axios.get("/users/me", {
         headers: {
@@ -64,11 +64,11 @@ export default function Profile() {
       Cookies.remove("refresh_token");
       router.push("/");
     }
-  };
+  }, [router]);
 
   useEffect(() => {
     getAdminUser();
-  }, []);
+  }, [getAdminUser]);
 
   useEffect(() => {
     const getRole = async () => {
@@ -129,7 +129,7 @@ export default function Profile() {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        },
+        }
       );
       if (response.status === 200) {
         setRes("Utilisateur mis à jour");

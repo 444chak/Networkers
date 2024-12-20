@@ -33,6 +33,11 @@ const InterfaceSandbox: React.FC = () => {
       return;
     }
 
+    interface Details {
+      mac: string;
+      ip: string;
+    }
+
     try {
       const response = await axios.get("/scapy/interfaces/", {
         headers: {
@@ -42,16 +47,16 @@ const InterfaceSandbox: React.FC = () => {
       const data = response.data;
       if (response.status === 200) {
         const formattedInterfaces = Object.entries(data.interfaces).map(
-          ([name, details]: [string, any]) => ({
+          ([name, details]) => ({
             name,
-            mac: details.mac,
-            ip: details.ip,
-          }),
+            mac: (details as Details).mac,
+            ip: (details as Details).ip,
+          })
         );
         setInterfaces(formattedInterfaces);
         setError("");
       }
-    } catch (error: unknown) {}
+    } catch {}
   };
 
   return (
