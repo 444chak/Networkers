@@ -79,7 +79,6 @@ export default function Dashboard() {
             <Header
               tabs={{
                 dashboard: "Tableau de bord",
-                modules: "Mes modules",
                 profile: "Mon profil",
               }}
               activeTab="dashboard"
@@ -112,7 +111,7 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="IPv6"
-                    description="Simplifiez ou étendez une adresse IPv6 avec ce module."
+                    description="Simplifiez ou étendez une adresse IPv6."
                     image="/modules_assets/ipv6.svg"
                     onClick={() => router.push("/modules/ipv6")}
                   />
@@ -120,49 +119,53 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Calcul IPv4"
-                    description="..."
+                    description="Faites le calcul d'une adresse IPv4."
                     image="/modules_assets/ipv4-calcul.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Conversion IPv4"
-                    description="..."
+                    description="Découvrez comment convertir une adresse IPv4 de différentes manières."
                     image="/modules_assets/ipv4-convert.svg"
+                    onClick={() => router.push("/modules/convert_ipv4")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="VLSM"
-                    description="..."
+                    description="Décomposez votre réseau avec VLSM"
                     image="/modules_assets/vlsm.svg"
+                    onClick={() => router.push("/modules/vlsm")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Ethernet"
-                    description="..."
+                    description="Établissez une trame ethernet"
                     image="/modules_assets/ethernet.svg"
+                    onClick={() => router.push("/modules/ethernet")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="Ping"
-                    description="..."
+                    title="Ping ICMP"
+                    description="Expérimentez l'envoi de paquets à travers les couches OSI."
                     image="/modules_assets/pingicmp.svg"
+                    onClick={() => router.push("/modules/ping")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="TCP"
-                    description="..."
+                    description="Testez une connexion TCP"
                     image="/modules_assets/tcp.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Interface réseau"
-                    description="Consultez les interfaces réseau d'une machine."
+                    description="Affichez l'interface réseau du client"
                     image="/modules_assets/interface_reseau.svg"
                     onClick={() => router.push("/modules/interface_reseau")}
                   />

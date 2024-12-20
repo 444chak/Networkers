@@ -285,9 +285,9 @@ L'applications dépend de la base de données pour fonctionner. Il faut donc lan
 
 #### Get VLSM
 
-| Method | URL             | Description | Need token | Roles |
-| ------ | --------------- | ----------- | ---------- | ----- |
-| GET    | /ipv4/vlsm/{ip} | Get VLSM    | True       | User  |
+| Method | URL                      | Description | Need token | Roles |
+| ------ | ------------------------ | ----------- | ---------- | ----- |
+| GET    | /ipv4/vlsm/{ip}/{subnet} | Get VLSM    | True       | User  |
 
 ### IPv6
 

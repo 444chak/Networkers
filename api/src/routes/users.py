@@ -60,7 +60,6 @@ async def get_current_user(token: dict = Depends(jwt_bearer)) -> dict:  # noqa: 
     dependencies=[Depends(jwt_bearer)],
 )
 async def get_user_by_name(username: str, token: dict = Depends(jwt_bearer)) -> dict:
-    # noqa: B008, FAST002
     """Get user by username."""
     # Check if user is admin
     stmt = user_table.select().where(user_table.c.username == token["sub"])
@@ -87,8 +86,9 @@ async def get_user_by_name(username: str, token: dict = Depends(jwt_bearer)) -> 
     dependencies=[Depends(jwt_bearer)],
 )
 async def update_current_user(
-    user_udpate: UserUpdate, token: dict = Depends(jwt_bearer)
-) -> dict:  # noqa: B008, FAST002
+    user_udpate: UserUpdate,
+    token: dict = Depends(jwt_bearer),
+) -> dict:
     """Update current user."""
     stmt = user_table.select().where(user_table.c.username == token["sub"])
     with db.engine.begin() as conn:
@@ -125,8 +125,9 @@ async def update_current_user(
     dependencies=[Depends(jwt_bearer)],
 )
 async def update_current_user_password(
-    user_password_update: UserPasswordUpdate, token: dict = Depends(jwt_bearer)
-) -> dict:  # noqa: B008, FAST002
+    user_password_update: UserPasswordUpdate,
+    token: dict = Depends(jwt_bearer),
+) -> dict:
     """Update current user password."""
     if user_password_update.password is None or not validate_password(
         user_password_update.password
@@ -166,8 +167,10 @@ async def update_current_user_password(
     dependencies=[Depends(jwt_bearer)],
 )
 async def update_user(
-    username: str, user_udpate: UserUpdate, token: dict = Depends(jwt_bearer)
-) -> dict:  # noqa: B008, FAST002
+    username: str,
+    user_udpate: UserUpdate,
+    token: dict = Depends(jwt_bearer),
+) -> dict:
     """Update an user by username."""
     stmt = user_table.select().where(user_table.c.username == token["sub"])
     with db.engine.begin() as conn:
@@ -214,7 +217,6 @@ async def update_user(
     dependencies=[Depends(jwt_bearer)],
 )
 async def delete_user(username: str, token: dict = Depends(jwt_bearer)) -> dict:
-    # noqa: B008, FAST002
     """Delete an user by username."""
     stmt = user_table.select().where(user_table.c.username == token["sub"])
     with db.engine.begin() as conn:
