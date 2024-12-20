@@ -218,6 +218,7 @@ L'applications dépend de la base de données pour fonctionner. Il faut donc lan
 
 ```json
 {
+  "old_password": "string",
   "password": "string",
   "confirm_password": "string"
 }
