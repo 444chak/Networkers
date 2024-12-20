@@ -1,21 +1,18 @@
 "use client";
 
 import Box from "@/components/Box";
-import Text from "@/components/Text";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
 import { useEffect, useState } from "react";
-import { CircularProgress, Grid, Grid2, Input } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import Title from "@/components/Title";
-import { EmojiProvider } from "react-apple-emojis";
-import emojiData from "react-apple-emojis/src/data.json";
-import Space from "@/components/Space";
-import Image from "next/image";
+import CoursEthernet from "./Cours";
+import EthernetSandbox from "./EthernetSandbox";
 
-export default function Dashboard() {
+export default function Ethernet() {
     const router = useRouter();
     const [hasAccessToken, setHasAccessToken] = useState(false);
 
@@ -72,88 +69,46 @@ export default function Dashboard() {
 
         getUser();
     }, [router]);
-    return (
-        <EmojiProvider data={emojiData}>
-            <Layout type="logged">
-                <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
-                    {hasAccessToken && (
-                        <Header
-                            tabs={{
-                                dashboard: "Tableau de bord",
-                                modules: "Mes modules",
-                                profile: "Mon profil",
-                            }}
-                            activeTab="modules"
-                            onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
-                            onClickLogout={() => router.push("/auth/logout")}
-                            onClickLogo={() => router.push("/")}
-                        />
-                    )}
-                </Box>
-                {isLoading ? (
-                    <CircularProgress />
-                ) : (
-                    <>
-                        <Box margin={{ top: "50px", bottom: "50px", left: "10%" }}>
-                            <Grid2 container spacing={5}>
-                                <Grid2 size={6}>
-                                    <Space space="15px">
-                                        <Title level={1}>Ethernet</Title>
-                                        <Text>
-                                            Bienvenue sur le module Ethernet. Ce module génère une trame Ethernet basée sur les paramètres fournis.
-                                            Elle utilise les informations sur les adresses MAC source et destination ainsi que le type Ethernet (exprimé en hexadécimal).
-                                            La trame générée est renvoyée au format JSON.
-                                        </Text>
-                                    </Space>
-                                </Grid2>
-                                <Grid2 size={6}>
-                                    <Space space="15px">
-                                        <Title level={2}>Entrées : </Title>
-                                        <Text>・Adresse MAC de destination, (par exemple, FF:FF:FF:FF:FF:FF).</Text>
-                                        <Text>・Adresse MAC source, (par exemple, 00:11:22:33:44:55).</Text>
-                                        <Text>・Type de trame ethernet, (cf Types de trames).</Text>
-                                    </Space>
-                                </Grid2>
-                                <Grid2 size={6}>
-                                    <Space space="15px">
-                                        <Title level={2}>Types de trames Ethernet :</Title>
-                                        <Text>・0x0800 pour IPv4</Text>
-                                        <Text>・0x0806 pour ARP</Text>
-                                        <Text>・0x86DD pour IPv6</Text>
-                                        <Text>・0x8100 pour VLAN</Text>
-                                    </Space>
-                                </Grid2>
-                                <Grid2 size={6}>
-                                    <Space space="15px">
-                                        <Title level={2}>Exemple de réponse 200 OK</Title>
-                                        <Image
-                                            src="/modules_assets/example_ethernet.png"
-                                            alt="Example ethernet"
-                                            width={500}
-                                            height={200}
-                                            style={{ width: "auto", height: "auto" }} />
-                                    </Space>
-                                </Grid2>
-                                <Grid2 size={6}>
-                                    <Space space="15px">
-                                        <Title level={2}>Exemple :</Title>
-                                        <Input
-                                            placeholder="Adresse MAC de destination" fullWidth />
-                                        <Input
-                                            placeholder="Adresse MAC source" fullWidth />
-                                        <Input
-                                            placeholder="Type de trame Ethernet" fullWidth />
-                                    </Space>
-                                </Grid2>
-                                <Grid2 size={6}>
-                                    <Title level={2}>Réponse :</Title>
-                                </Grid2>
-                            </Grid2>
-                        </Box>
 
-                    </>
-                )}
-            </Layout>
-        </EmojiProvider>
-    );
+    const [activeTab, setActiveTab] = useState("cours");
+
+    const handleTabChange = (tab: string) => {
+      setActiveTab(tab);
+    };
+
+    return (
+        <Layout type="logged">
+          <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
+            <Header
+              tabs={{
+                dashboard: "Tableau de bord",
+                modules: "Mes modules",
+                profile: "Mon profil",
+              }}
+              activeTab="modules"
+              onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
+              onClickLogout={() => router.push("/auth/logout")}
+              onClickLogo={() => router.push("/")}
+            />
+          </Box>
+          <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
+            <Title level={1} align="center">
+              IPv6
+            </Title>
+          </Box>
+    
+          <Tabs
+            value={activeTab}
+            onChange={(_, tab) => handleTabChange(tab)}
+            centered
+          >
+            <Tab label="Cours & exercice" value="cours" />
+            <Tab label="Bac à sable" value="sandbox" />
+          </Tabs>
+    
+          <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
+            {activeTab === "cours" ? <CoursEthernet /> : <EthernetSandbox />}
+          </Box>
+        </Layout>
+      );
 }
