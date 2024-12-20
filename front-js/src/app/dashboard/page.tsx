@@ -162,8 +162,8 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Interface réseau"
-                    description="..."
-                    image="/modules_assets/scapy.svg"
+                    description="Consultez les interfaces réseau d'une machine."
+                    image="/modules_assets/interface_reseau.svg"
                     onClick={() => router.push("/modules/interface_reseau")}
                   />
                 </Grid2>
