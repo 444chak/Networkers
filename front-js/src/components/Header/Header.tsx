@@ -23,12 +23,13 @@ const Header: React.FC<HeaderProps> = ({
     <div className="header">
       <div className="header-logo">
         <Image
+          quality={100}
           onClick={onClickLogo}
           src="/logo.png"
           alt="logo"
-          width={100}
+          width={125}
           height={200}
-          style={{ width: "auto", height: "auto" }}
+          style={{ width: "500", height: "auto" }}
         />
       </div>
 
