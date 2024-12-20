@@ -1,1 +1,1 @@
-export { default} from './ValidatePsw';
+export { default } from "./ValidatePsw";
