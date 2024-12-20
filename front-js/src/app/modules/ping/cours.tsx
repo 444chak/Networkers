@@ -12,26 +12,25 @@ import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 import Button from "@/components/Button";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import Box from "@/components/Box";
 
 const Cours: React.FC = () => {
   const [pingTest, setPing] = useState("");
   const [res, setRes] = useState("");
   const [valid, setValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePing = async (e: { preventDefault: () => void }) => {
+    setIsLoading(true);
     e.preventDefault();
     try {
-      const ipAddress = pingTest.replace('ping ', '');
-      const response = await axios.get(
-        "/scapy/ping/" + ipAddress,
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
+      const ipAddress = pingTest.replace("ping ", "");
+      const response = await axios.get("/scapy/ping/" + ipAddress, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
       const data = response.data;
       if (response.status === 200) {
         setRes(data.destination);
@@ -52,6 +51,7 @@ const Cours: React.FC = () => {
         setRes("false");
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -60,92 +60,92 @@ const Cours: React.FC = () => {
         <Space space="1rem">
           <Title level={2}>Introduction</Title>
           <Text>
-          Le ping est un outil de diagnostic réseau utilisé pour tester la connectivité entre deux hôtes
-           sur un réseau IP. Il fonctionne en envoyant des paquets ICMP (Internet Control Message Protocol)
-            de type à un hôte cible et en attendant des réponses. 
-            Le ping est couramment utilisé pour vérifier si un hôte est accessible, mesurer le temps de
-            latence entre deux hôtes, et diagnostiquer les problèmes de réseau.
+            Le ping est un outil de diagnostic réseau utilisé pour tester la
+            connectivité entre deux hôtes sur un réseau IP. Il fonctionne en
+            envoyant des paquets ICMP (Internet Control Message Protocol) de
+            type à un hôte cible et en attendant des réponses. Le ping est
+            couramment utilisé pour vérifier si un hôte est accessible, mesurer
+            le temps de latence entre deux hôtes, et diagnostiquer les problèmes
+            de réseau.
           </Text>
           <Title level={2} margin={{ top: "2rem" }}>
             Structure paquet ICMP
           </Title>
           <Text>
-            Un paquet ICMP est encapsulé dans un paquet IP et contient plusieurs champs spécifiques.
-            La structure d'un paquet ICMP Requête/Réponse est la suivante : 
+            Un paquet ICMP est encapsulé dans un paquet IP et contient plusieurs
+            champs spécifiques. La structure d&rsquo;un paquet ICMP
+            Requête/Réponse est la suivante :
           </Text>
-          <Text>
-            L'entête est composée de :
-          </Text>
+          <Text>L&rsquo;entête est composée de :</Text>
           <Text>
             1. Type (1 octet) : Ce champ indique le type de message ICMP.
           </Text>
           <Text>
-            2. Code (1 octet) : Fournit des informations supplémentaires sur le type.
-        </Text>
-        <Text>
-            3. Checksum (2 octets) : Ce champ contient une somme de contrôle utilisée pour vérifier l'intégrité du paquet ICMP.
+            2. Code (1 octet) : Fournit des informations supplémentaires sur le
+            type.
           </Text>
           <Text>
-            4. Identifiant (2 octets) : Identifie de manière unique une requête/réponse.
+            3. Checksum (2 octets) : Ce champ contient une somme de contrôle
+            utilisée pour vérifier l&rsquo;intégrité du paquet ICMP.
           </Text>
           <Text>
-            5. Numéro de séquence (2 octets) : Ce champ est utilisé pour numéroter les paquets dans une session de ping,
-             permettant de détecter les pertes de paquets.
+            4. Identifiant (2 octets) : Identifie de manière unique une
+            requête/réponse.
           </Text>
           <Text>
-            Après l'entête, nous retrouvons toutes les données qui sont envoyés dans le paquet ICMP.
+            5. Numéro de séquence (2 octets) : Ce champ est utilisé pour
+            numéroter les paquets dans une session de ping, permettant de
+            détecter les pertes de paquets.
           </Text>
-        <Text>
-           Voici un exemple de commande que vous pourriez utiliser afin de réaliser un ping :
+          <Text>
+            Après l&rsquo;entête, nous retrouvons toutes les données qui sont
+            envoyés dans le paquet ICMP.
+          </Text>
+          <Text>
+            Voici un exemple de commande que vous pourriez utiliser afin de
+            réaliser un ping :
             <Spacer x={1} />
-            <Code
-              text="ping 8.8.8.8"
-              language="text"
-              theme={solarizedLight}
-            />
+            <Code text="ping 8.8.8.8" language="text" theme={solarizedLight} />
           </Text>
           <Title level={2} margin={{ top: "2rem" }}>
-            Réponse d'une requête ping
+            Réponse d&rsquo;une requête ping
           </Title>
+          <Text weight="bold">Envoi de l&rsquo;Echo Request :</Text>
           <Text>
-          Envoi de l'Echo Request :
+            Lorsque vous envoyez un ping à un autre appareil, votre ordinateur
+            crée un petit message appelé &quot;Echo Request&quot;. Ce message
+            est envoyé à l&rsquo;adresse IP de l&rsquo;appareil cible.
           </Text>
+          <Text weight="bold">Réception de l&rsquo;Echo Request :</Text>
           <Text>
-          Lorsque vous envoyez un ping à un autre appareil, votre ordinateur crée un petit message appelé "Echo Request".
-          Ce message est envoyé à l'adresse IP de l'appareil cible.
+            L&rsquo;appareil cible reçoit le message &quot;Echo Request&quot;.
+            Il vérifie que le message n&rsquo;est pas corrompu en utilisant une
+            somme de contrôle (checksum).
           </Text>
+          <Text weight="bold">Création de l&rsquo;Echo Reply :</Text>
           <Text>
-          Réception de l'Echo Request :
+            Si le message est correct, l&rsquo;appareil cible crée un nouveau
+            message appelé &quot;Echo Reply&quot;. Ce message contient les mêmes
+            informations que l&rsquo;Echo Request, mais avec un type différent
+            pour indiquer qu&rsquo;il s&rsquo;agit d&rsquo;une réponse.
           </Text>
+          <Text weight="bold">Envoi de l&rsquo;Echo Reply :</Text>
           <Text>
-          L'appareil cible reçoit le message "Echo Request".
-          Il vérifie que le message n'est pas corrompu en utilisant une somme de contrôle (checksum).
+            L&rsquo;appareil cible envoie le message &quot;Echo Reply&quot; à
+            votre ordinateur. Votre ordinateur reçoit ce message et peut ainsi
+            confirmer que l&rsquo;appareil cible est accessible.
           </Text>
+          <Text weight="bold">Mesure du Temps de Réponse :</Text>
           <Text>
-          Création de l'Echo Reply :
-          </Text>
-          <Text>
-          Si le message est correct, l'appareil cible crée un nouveau message appelé "Echo Reply".
-          Ce message contient les mêmes informations que l'Echo Request, mais avec un type différent pour indiquer qu'il s'agit d'une réponse.
-          </Text>
-          <Text>
-          Envoi de l'Echo Reply :
-          </Text>
-          <Text>
-          L'appareil cible envoie le message "Echo Reply" à votre ordinateur.
-          Votre ordinateur reçoit ce message et peut ainsi confirmer que l'appareil cible est accessible.
-          </Text>
-          <Text>
-          Mesure du Temps de Réponse :
-          </Text>
-          <Text>
-          Votre ordinateur mesure le temps écoulé entre l'envoi de l'Echo Request et la réception de l'Echo Reply.
-          Ce temps est appelé "latence" et vous donne une idée de la rapidité de la connexion réseau.
+            Votre ordinateur mesure le temps écoulé entre l&rsquo;envoi de
+            l&rsquo;Echo Request et la réception de l&rsquo;Echo Reply. Ce temps
+            est appelé &quot;latence&quot; et vous donne une idée de la rapidité
+            de la connexion réseau.
           </Text>
           <Title level={2} margin={{ top: "2rem" }}>
             Essayez ! <Emoji name="test-tube" width={32} />
           </Title>
-          Tentez de ping le site de l'iut de Vélizy.
+          Tentez de ping le site de l&rsquo;iut de Vélizy.
           <Code
             text="https://www.iut-velizy-rambouillet.uvsq.fr/"
             language="text"
@@ -164,7 +164,10 @@ const Cours: React.FC = () => {
             <Button text="Vérifier" primary form="submit" type="input" />
           </form>
           <Box margin={{ top: "20px", bottom: "20px" }}>
-            {res &&
+            <Box align="center">{isLoading && <CircularProgress />}</Box>
+
+            {!isLoading &&
+              res &&
               (valid ? (
                 <Alert
                   severity="success"
