@@ -7,14 +7,18 @@ import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
 import Title from "@/components/Title";
 import Text from "@/components/Text";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "@/components/Link";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 import { Alert, CircularProgress } from "@mui/material";
+import Backlink from "@/components/Backlink";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
 
   const [password, setPassword] = useState("");
@@ -34,7 +38,7 @@ export default function Home() {
       if (response.status === 200) {
         Cookies.set("access_token", data.access_token);
         Cookies.set("refresh_token", data.refresh_token);
-        window.location.href = "/";
+        router.replace("/dashboard");
       }
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
@@ -51,8 +55,19 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = Cookies.get("access_token");
+      if (token) {
+        router.replace("/dashboard");
+      }
+    };
+    checkAuth();
+  }, [router]);
+
   return (
     <Layout type="home">
+      <Backlink onClick={router.back} />
       <Box align="center" margin={{ top: "100px", bottom: "50px" }}>
         <Title level={1}>Networkers</Title>
       </Box>

@@ -1,4 +1,5 @@
 """Package for models."""
+
 import os
 
 from sqlalchemy import (
@@ -20,7 +21,8 @@ class Database:
         username = os.getenv("MYSQL_USER")
         password = os.getenv("MYSQL_PASSWORD")
         self.engine = create_engine(
-            f"mariadb+mariadbconnector://{username}:{password}@networkers-db/{database}")
+            f"mariadb+mariadbconnector://{username}:{password}@networkers-db/{database}"
+        )
         self.metadata.create_all(self.engine)
 
 

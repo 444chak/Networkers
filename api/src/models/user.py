@@ -1,4 +1,5 @@
 """User model module."""
+
 from dataclasses import asdict, dataclass
 
 from pydantic import BaseModel
@@ -24,9 +25,9 @@ user_table = Table(
 class User:
     """Class of user model."""
 
-    username:str
-    password:str
-    role:str
+    username: str
+    password: str
+    role: str
 
     def to_dict(self) -> dict:
         """Return the dictionary representation of the object.
@@ -38,7 +39,7 @@ class User:
         return asdict(self)
 
     @classmethod
-    def from_db(cls, username: str, password: str, role: str|None) -> "User":
+    def from_db(cls, username: str, password: str, role: str | None) -> "User":
         """Create a new instance.
 
         Args:
@@ -62,6 +63,7 @@ class UserUpdate(BaseModel):
 
     username: str
 
+
 class UserPasswordUpdate(BaseModel):
     """Model for user password update."""
 
@@ -70,7 +72,7 @@ class UserPasswordUpdate(BaseModel):
     confirm_password: str
 
 
-def create_admin_user() -> User|None:
+def create_admin_user() -> User | None:
     """Create the admin user if not exists.
 
     Returns:
