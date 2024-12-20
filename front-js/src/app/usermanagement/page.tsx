@@ -47,7 +47,7 @@ export default function Profile() {
     checkTokens();
   }, [router]);
 
-  const [role, setRole] = useState("");
+  const [, setRole] = useState("");
 
   const [currentUser, setCurrentUser] = useState<string>();
 
@@ -160,11 +160,8 @@ export default function Profile() {
           tabs={{
             dashboard: "Tableau de bord",
             profile: "Mon profil",
-            ...(role == "admin" && {
-              userManagement: "Gestion des utilisateurs",
-            }),
           }}
-          activeTab="Gestion des utilisateurs"
+          activeTab="userManagement"
           onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
           onClickLogout={() => router.push("/auth/logout")}
           onClickLogo={() => router.push("/")}

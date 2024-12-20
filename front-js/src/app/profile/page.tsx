@@ -28,7 +28,7 @@ export default function Profile() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const [hasAccessToken, setHasAccessToken] = useState(false);
+  const [, setHasAccessToken] = useState(false);
 
   useEffect(() => {
     const checkTokens = async () => {
@@ -75,9 +75,8 @@ export default function Profile() {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        },
+        }
       );
-      const data = response.data;
       if (response.status === 200) {
         setSuccess("Mot de passe modifié avec succès");
       }
@@ -101,7 +100,6 @@ export default function Profile() {
         <Header
           tabs={{
             dashboard: "Tableau de bord",
-            modules: "Mes modules",
             profile: "Mon profil",
           }}
           activeTab="profile"

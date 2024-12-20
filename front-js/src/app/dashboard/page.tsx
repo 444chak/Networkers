@@ -72,27 +72,6 @@ export default function Dashboard() {
     getUser();
   }, [router]);
 
-  const [role, setRole] = useState("");
-
-  useEffect(() => {
-    const getRole = async () => {
-      try {
-        const response = await axios.get("/users/me", {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
-          },
-        });
-        setRole(response.data.role);
-      } catch {
-        Cookies.remove("access_token");
-        Cookies.remove("refresh_token");
-        router.push("/");
-      }
-    };
-
-    getRole();
-  }, [router]);
-
   return (
     <EmojiProvider data={emojiData}>
       <Layout type="logged">
@@ -102,9 +81,6 @@ export default function Dashboard() {
               tabs={{
                 dashboard: "Tableau de bord",
                 profile: "Mon profil",
-                ...(role == "admin" && {
-                  userManagement: "Gestion des utilisateurs",
-                }),
               }}
               activeTab="dashboard"
               onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}

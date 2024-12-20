@@ -5,11 +5,7 @@
   width: 100%;
   &.background {
     &-home {
-      background-image: linear-gradient(
-        125deg,
-        rgba(218, 240, 247, 0.63) 25%,
-        rgba(0, 5, 255, 0.34) 75%
-      );
+      background-image: linear-gradient(125deg, rgba(218, 240, 247, 0.63) 25%, rgba(0, 5, 255, 0.34) 75%);
       overflow-y: scroll;
     }
     &-logged {
@@ -17,4 +13,8 @@
       overflow-y: scroll;
     }
   }
+}
+.footer,
+.push {
+  height: 50px;
 }

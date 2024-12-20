@@ -3,7 +3,10 @@
 import React from "react";
 import "./Header.scss";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import axios from "@/axiosConfig";
+import { useEffect, useState } from "react";
 interface HeaderProps {
   tabs: { [key: string]: string };
   activeTab: string;
@@ -19,6 +22,31 @@ const Header: React.FC<HeaderProps> = ({
   onClickLogout,
   onClickLogo,
 }) => {
+  const router = useRouter();
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const getRole = async () => {
+      try {
+        const response = await axios.get("/users/me", {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
+          },
+        });
+        setRole(response.data.role);
+      } catch {
+        Cookies.remove("access_token");
+        Cookies.remove("refresh_token");
+        router.push("/");
+      }
+    };
+
+    getRole();
+  }, [router]);
+  tabs = {
+    ...tabs,
+    ...(role == "admin" && { userManagement: "Gestion des utilisateurs" }),
+  };
   return (
     <div className="header">
       <div className="header-logo">
