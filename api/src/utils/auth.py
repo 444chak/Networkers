@@ -59,7 +59,7 @@ def create_access_token(subject: str, expires_delta: int | None = None) -> str:
         expires_delta = datetime.now(tz=UTC) + expires_delta
     else:
         expires_delta = datetime.now(tz=UTC) + timedelta(
-            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES,
         )
 
     to_encode = {"exp": expires_delta, "sub": str(subject)}
@@ -81,7 +81,7 @@ def create_refresh_token(subject: str, expires_delta: int | None = None) -> str:
         expires_delta = datetime.now(tz=UTC) + expires_delta
     else:
         expires_delta = datetime.now(tz=UTC) + timedelta(
-            minutes=REFRESH_TOKEN_EXPIRE_MINUTES
+            minutes=REFRESH_TOKEN_EXPIRE_MINUTES,
         )
 
     to_encode = {"exp": expires_delta, "sub": str(subject)}
@@ -106,6 +106,7 @@ def verify_jwt(token: str) -> dict:
     except JWTError as err:
         raise HTTPException(status_code=403, detail="Invalid token") from err
 
+
 def validate_password(password: str) -> bool:
     """Return True if the password is valid, False otherwise.
 
@@ -114,7 +115,10 @@ def validate_password(password: str) -> bool:
 
     Returns:
         bool: True if the password is valid, False otherwise
+
     """
     if not password or len(password) < 8:
         return False
-    return bool(re.match(r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$", password))
+    return bool(
+        re.match(r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$", password),
+    )
