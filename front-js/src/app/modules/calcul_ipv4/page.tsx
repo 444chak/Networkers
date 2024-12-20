@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
 import { Tab, Tabs } from "@mui/material";
-import InterfaceSandbox from "./InterfaceSandbox";
+import CalculIpv4Sandbox from "./CalculIpv4Sandbox";
 import Cours from "./Cours";
+import { CalculationInterpolation } from "sass";
 
 export default function Interface() {
   const router = useRouter();
@@ -82,7 +83,7 @@ export default function Interface() {
       </Tabs>
 
       <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
-        {activeTab === "cours" ? <Cours /> : <InterfaceSandbox />}
+        {activeTab === "cours" ? <Cours /> : <CalculIpv4Sandbox />}
       </Box>
 
     </Layout>
