@@ -3,7 +3,7 @@
 **Table des matières**  
 
 - [Framework](#framework)
-- [Mise en place](#mise-en-place)
+- [Mise en place (Si vous ne passez pas par le Docker)](#mise-en-place-si-vous-ne-passez-pas-par-le-docker)
   - [Requirements](#requirements)
   - [Installation](#installation)
   - [Run](#run)
@@ -11,6 +11,8 @@
   - [Architecture](#architecture)
   - [Environnement](#environnement)
   - [Base de données](#base-de-données)
+    - [Création de la base de données sans Docker](#création-de-la-base-de-données-sans-docker)
+    - [Base de données avec Docker](#base-de-données-avec-docker)
 - [Dépendances](#dépendances)
 - [Routes](#routes)
   - [Auth](#auth)
@@ -39,7 +41,7 @@
 - [FastAPI](https://fastapi.tiangolo.com/)  
 - [SQLAlchemy](https://www.sqlalchemy.org/)  
 
-## Mise en place
+## Mise en place (Si vous ne passez pas par le Docker)
 
 ### Requirements
 
@@ -86,6 +88,8 @@ L'application a besoin que les variables d'environnement suivantes soient défin
 
 ### Base de données
 
+#### Création de la base de données sans Docker
+
 La base de données utilisée est MariaDB. Si vous lancez MariaDB sans Docker, il faut que vous exécutiez les commandes suivantes :
 
 ```bash
@@ -97,6 +101,8 @@ CREATE USER 'xxx'@'%' IDENTIFIED BY 'xxx';
 GRANT ALL PRIVILEGES ON networkers.* TO 'xxx'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
+
+#### Base de données avec Docker
 
 Si vous gardez le lancement avec Docker, la base de données est déjà configurée.  
 Vous aurez un dossier `database/data` qui contient les données de la base de données.  

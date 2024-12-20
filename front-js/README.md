@@ -3,7 +3,7 @@
 **Table des matières**  
 
 - [Framework](#framework)
-- [Mise en place](#mise-en-place)
+- [Mise en place (Si vous ne passez pas par le Docker)](#mise-en-place-si-vous-ne-passez-pas-par-le-docker)
   - [Requirements](#requirements)
   - [Installation](#installation)
   - [Run](#run)
@@ -17,7 +17,7 @@
 - [Next.js](https://nextjs.org/)  
 - [Tailwind CSS](https://tailwindcss.com/)  
 
-## Mise en place
+## Mise en place (Si vous ne passez pas par le Docker)
 
 ### Requirements
 
