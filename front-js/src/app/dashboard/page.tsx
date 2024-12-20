@@ -157,9 +157,10 @@ export default function Dashboard() {
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="TCP"
-                    description="Testez une connexion TCP"
+                    title="Ping TCP"
+                    description="Expérimentez l'envoi de paquets avec le protocole TCP."
                     image="/modules_assets/tcp.svg"
+                    onClick={() => router.push("/modules/tcp")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
