@@ -3,18 +3,16 @@
 import Box from "@/components/Box";
 import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
 import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
-import ValidatePsw from "@/components/ValidatePsw";
-import { validate_passwd } from "@/utils/validatePasswd";
 import { useEffect, useState } from "react";
 import Title from "@/components/Title";
 import axios from "@/axiosConfig";
-import { AxiosError } from "axios";
 import Cookies from "js-cookie";
-import { Alert } from "@mui/material";
+import { Alert, MenuItem, Select } from "@mui/material";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
+import Space from "@/components/Space";
 
 export default function Profile() {
   const router = useRouter();
@@ -74,6 +72,65 @@ export default function Profile() {
     getRole();
   }, [router]);
 
+  const [users, setUsers] = useState<Array<string>>();
+
+  const getUsers = async () => {
+    try {
+      const response = await axios.get("/users", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      const data = new Array<string>();
+      for (const user of response.data) {
+        data.push(user.username);
+      }
+      setUsers(data);
+      console.log(data);
+    } catch {
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const [selectedUser, setSelectedUser] = useState("");
+  const [username, setUsername] = useState("");
+  const [res, setRes] = useState("");
+
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.patch(`/users/${selectedUser}`, {
+        username: username,
+      }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      if (response.status === 200) {
+        setRes("Utilisateur mis à jour");
+        getUsers();
+      }
+    } catch {
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`/users/${selectedUser}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      if (response.status === 200) {
+        setRes("Utilisateur supprimé");
+        getUsers();
+      }
+    } catch {
+    }
+  };
+
   return (
     <Layout type="logged">
       <Box align="center" margin={{ top: "50px", bottom: "150px" }}>
@@ -92,9 +149,63 @@ export default function Profile() {
       <Box align="center">
         <Modal>
           <Title level={3}>Gestion des utilisateurs</Title>
+          <form /*onSubmit={handleUpdate}*/>
+            <label htmlFor="user">Utilisateur : </label>
+            <Select
+              defaultValue=""
+              value={selectedUser}
+              onChange={(e) => {
+                setSelectedUser(e.target.value);
+                setUsername(e.target.value);
+              }}
+              sx={{ width: 200, height: 40, marginY: 1 }}
+              required
+            >
+              {users?.map(user => (
+                <MenuItem key={user} value={user}>
+                  {user}
+                </MenuItem>
+              ))}
+            </Select>
+            <Input
+              type="text"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              margin={{ bottom: "20px" }}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              label="Nom d'utilisateur"
+            />
+            {res !== "" ? (
+              <Alert
+                severity="success"
+                variant="outlined"
+                style={{ borderRadius: "10px", marginBottom: "10px" }}
+              >
+                {res}
+              </Alert>
+            ) : null}
+            <Button
+              text="Mettre à jour"
+              primary
+              type="input"
+              onClick={() => {
+                handleUpdate();
+              }}
+            />
+            <Button
+              text="Supprimer"
+              secondary
+              type="input"
+              onClick={() => {
+                handleDelete();
+              }}
+              margin={{ top: "20px" }}
+            />
+          </form>
         </Modal>
       </Box>
     </Layout>
 
   )
-}
+};
