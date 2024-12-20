@@ -54,6 +54,10 @@ async def refresh(refresh_token: RefreshToken) -> dict:
 @router.post("/register", summary="Register to the app")
 async def register(auth: Auth) -> dict:
     """Register to the app with username and password."""
+
+    if "/" in auth.username:
+        raise HTTPException(status_code=400, detail="Invalid username")
+
     if auth.password is None or not validate_password(auth.password):
         raise HTTPException(status_code=400, detail="Invalid password")
 
