@@ -11,6 +11,7 @@ import Title from "@/components/Title";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
+import Footer from "@/components/Footer";
 export default function Home() {
   const router = useRouter();
   const [hasAccessToken, setHasAccessToken] = useState(false);
@@ -125,6 +126,7 @@ export default function Home() {
           height={600}
         />
       </Space>
+      <Footer/>
     </Layout>
   );
 }
