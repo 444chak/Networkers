@@ -16,6 +16,11 @@ body {
   overflow-x: hidden;
 }
 
+@font-face {
+  font-family: "Tahoma";
+  src: url("/Tahoma.woff");
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
