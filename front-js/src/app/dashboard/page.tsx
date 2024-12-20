@@ -136,6 +136,7 @@ export default function Dashboard() {
                     title="VLSM"
                     description="..."
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/vlsm")}
                   />
                 </Grid2>
                 <Grid2 size={4}>

@@ -214,6 +214,8 @@ def vlsm(base_ip: str, subnets: str) -> str:
     if not is_valid(base_ip):
         return "Invalid base IP address"
 
+    subnets = [int(subnet) for subnet in subnets.split(",")]
+
     # Check if any subnet requires more than 255 machines
     if any(hosts > 255 for hosts in subnets):  # noqa: PLR2004
         return "Error: Each subnet can only accommodate up to 255 machines."
