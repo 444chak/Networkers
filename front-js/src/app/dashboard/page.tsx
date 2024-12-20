@@ -122,6 +122,7 @@ export default function Dashboard() {
                     title="Calcul IPv4"
                     description="..."
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/calcul_ipv4")}
                   />
                 </Grid2>
                 <Grid2 size={4}>

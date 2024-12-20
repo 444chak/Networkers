@@ -192,8 +192,29 @@ const Cours: React.FC = () => {
         <Title level={2} margin={{ top: "2rem" }}>
           Masque  
         </Title>
-
-
+        <Text>
+        Un masque de sous-réseau est un outil essentiel en réseau informatique.
+        Il est utilisé pour diviser une adresse IPv4 en deux parties principales :
+        </Text>
+        <ul style={{ listStyleType: "disc", marginLeft: "20px" }}>
+          <li>
+            <Text>La partie réseau : identifie le réseau auquel appartient une adresse.</Text>
+          </li>
+          <li>
+            <Text>La partie hôte : identifie les appareils spécifiques (hôtes) sur ce réseau.</Text>
+          </li>
+        </ul>
+        <Text>
+        Le masque est représenté sous la forme de 4 octets (32 bits), comme une adresse IPv4.
+        Exemple : <Code
+              text="255.255.255.0"
+              language="text"
+              theme={solarizedLight}
+            />
+        </Text>
+        <Title level={3} margin={{ top: "2rem" }}>
+        Calculer un masque de sous-réseau depuis une notation CIDR  
+        </Title>
       </Space>
     </>
   );
