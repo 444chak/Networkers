@@ -70,6 +70,7 @@ const TcpSandbox: React.FC = () => {
         setError("Impossible de résoudre l'adresse");
       } else {
         setError("Erreur lors du ping TCP");
+        setRes("");
       }
     }
   };
