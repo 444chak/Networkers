@@ -57,14 +57,14 @@ const InterfaceSandbox: React.FC = () => {
                     style={{ borderRadius: "10px" }}
                 >
                     Résultat : 
-                    <table>
-                        <tr>
-                            <th>Interface</th>
-                            <th>Adresse IP</th>
-                            <th>Adresse MAC</th>
+                    <table style={{ borderCollapse: "collapse", width: "100%" }}>
+                        <tr style={{ borderBottom: "1px solid black" }}>
+                            <th style={{ paddingRight: "1.5em" }}>Interface</th>
+                            <th style={{ paddingRight: "1.5em" }}>Adresse IP</th>
+                            <th style={{ paddingRight: "1.5em" }}>Adresse MAC</th>
                         </tr>
                         {interfaces.map((iface, index) => (
-                            <tr key={index}>
+                            <tr key={index} style={{ borderBottom: "1px solid black" }}>
                                 <td>{iface.name}</td>
                                 <td>{iface.ip}</td>
                                 <td>{iface.mac}</td>
