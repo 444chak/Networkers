@@ -121,42 +121,42 @@ export default function Dashboard() {
                   <Card
                     title="Calcul IPv4"
                     description="..."
-                    image="/modules_assets/ipv4.svg"
+                    image="/modules_assets/ipv4-calcul.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Conversion IPv4"
                     description="..."
-                    image="/modules_assets/ipv4.svg"
+                    image="/modules_assets/ipv4-convert.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="VLSM"
                     description="..."
-                    image="/modules_assets/ipv4.svg"
+                    image="/modules_assets/vlsm.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Ethernet"
                     description="..."
-                    image="/modules_assets/scapy.svg"
+                    image="/modules_assets/ethernet.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="Ping"
                     description="..."
-                    image="/modules_assets/scapy.svg"
+                    image="/modules_assets/pingicmp.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
                     title="TCP"
                     description="..."
-                    image="/modules_assets/scapy.svg"
+                    image="/modules_assets/tcp.svg"
                   />
                 </Grid2>
                 <Grid2 size={4}>
