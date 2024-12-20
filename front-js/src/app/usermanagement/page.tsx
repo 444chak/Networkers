@@ -12,7 +12,6 @@ import Cookies from "js-cookie";
 import { Alert, MenuItem, Select } from "@mui/material";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import Space from "@/components/Space";
 
 export default function Profile() {
   const router = useRouter();
