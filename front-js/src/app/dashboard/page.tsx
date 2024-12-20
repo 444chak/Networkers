@@ -119,6 +119,7 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Calcul IPv4"
+                    onClick={() => router.push("/modules/calcul_ipv4")}
                     description="Faites le calcul d'une adresse IPv4."
                     image="/modules_assets/ipv4-calcul.svg"
                   />
