@@ -62,7 +62,7 @@ def dec_to_bin(address: str) -> str:
 
     """
     if not is_valid(address):
-        return "Invalid IPv4 address"
+        return "Adresse IPv4 invalide"
 
     octets = address.split(".")
 
@@ -84,7 +84,7 @@ def dec_to_hex(address: str) -> str:
 
     """
     if not is_valid(address):
-        return "Invalid IPv4 address"
+        return "Adresse IPv4 invalide"
 
     octets = address.split(".")
 
@@ -109,12 +109,12 @@ def hex_to_dec(address: str) -> str:
     octets = address.split(".")
 
     if len(octets) != 4:  # noqa: PLR2004
-        return "Invalid hexadecimal IPv4 address"
+        return "Adresse IPv4 invalide"
 
     try:
         decimal_octets = [str(int(octet, 16)) for octet in octets]
     except ValueError:
-        return "Invalid hexadecimal IPv4 address"
+        return "Adresse IPv4 invalide"
 
     return ".".join(decimal_octets)
 
@@ -135,12 +135,12 @@ def bin_to_dec(address: str) -> str:
     octets = address.split(".")
 
     if len(octets) != 4:  # noqa: PLR2004
-        return "Invalid binary IPv4 address"
+        return "Adresse IPv4 invalide"
 
     try:
         decimal_octets = [str(int(octet, 2)) for octet in octets]
     except ValueError:
-        return "Invalid binary IPv4 address"
+        return "Adresse IPv4 invalide"
 
     return ".".join(decimal_octets)
 
@@ -159,7 +159,7 @@ def ipv4_to_cidr(address: str, mask: str) -> str:
 
     """
     if not is_valid(address):
-        return "Invalid address"
+        return "Adresse IPv4 invalide"
 
     binary_mask = "".join([f"{int(octet):08b}" for octet in mask.split(".")])
     ones_count = binary_mask.count("1")
