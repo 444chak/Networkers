@@ -60,7 +60,7 @@ export default function Dashboard() {
             dashboard: "Tableau de bord",
             profile: "Mon profil",
           }}
-          activeTab="modules"
+          activeTab=""
           onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
           onClickLogout={() => router.push("/auth/logout")}
           onClickLogo={() => router.push("/")}
