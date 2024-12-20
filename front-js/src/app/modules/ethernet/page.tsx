@@ -82,10 +82,9 @@ export default function Ethernet() {
             <Header
               tabs={{
                 dashboard: "Tableau de bord",
-                modules: "Mes modules",
                 profile: "Mon profil",
               }}
-              activeTab="modules"
+              activeTab=""
               onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
               onClickLogout={() => router.push("/auth/logout")}
               onClickLogo={() => router.push("/")}
