@@ -154,9 +154,10 @@ export default function Dashboard() {
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="TCP"
+                    title="Ping TCP"
                     description="..."
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/tcp")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
