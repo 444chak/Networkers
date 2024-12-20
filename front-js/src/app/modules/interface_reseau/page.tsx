@@ -13,79 +13,78 @@ import Cours from "./Cours";
 import { Tab, Tabs } from "@mui/material";
 
 export default function Interface() {
-    const router = useRouter();
-  
-    const [, setHasAccessToken] = useState(false);
+  const router = useRouter();
 
-    useEffect(() => {
-        const checkTokens = async () => {
-        const token = Cookies.get("access_token");
-        const refresh = Cookies.get("refresh_token");
-        if (!token && refresh) {
-            try {
-            const response = await axios.post("/auth/refresh", {
-                refresh_token: refresh,
-            });
-            const data = response.data;
-            if (response.status === 200) {
-                Cookies.set("access_token", data.access_token);
-                Cookies.set("refresh_token", refresh);
-            }
-            } catch {
-            Cookies.remove("access_token");
-            Cookies.remove("refresh_token");
-            }
+  const [, setHasAccessToken] = useState(false);
+
+  useEffect(() => {
+    const checkTokens = async () => {
+      const token = Cookies.get("access_token");
+      const refresh = Cookies.get("refresh_token");
+      if (!token && refresh) {
+        try {
+          const response = await axios.post("/auth/refresh", {
+            refresh_token: refresh,
+          });
+          const data = response.data;
+          if (response.status === 200) {
+            Cookies.set("access_token", data.access_token);
+            Cookies.set("refresh_token", refresh);
+          }
+        } catch {
+          Cookies.remove("access_token");
+          Cookies.remove("refresh_token");
         }
-        setHasAccessToken(!!token);
+      }
+      setHasAccessToken(!!token);
 
-        if (!token && !refresh) {
-            router.push("/");
-        }
-        };
-
-        checkTokens();
-    }, [router]);
-
-    const [activeTab, setActiveTab] = useState("cours");
-
-    const handleTabChange = (tab: string) => {
-        setActiveTab(tab);
+      if (!token && !refresh) {
+        router.push("/");
+      }
     };
 
-    return (
-        <Layout type="logged">
-        <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
-            <Header
-            tabs={{
-                dashboard: "Tableau de bord",
-                modules: "Mes modules",
-                profile: "Mon profil",
-            }}
-            activeTab="modules"
-            onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
-            onClickLogout={() => router.push("/auth/logout")}
-            onClickLogo={() => router.push("/")}
-            />
-        </Box>
-        <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
-            <Title level={1} align="center">
-            Interface réseau
-            </Title>
-        </Box>
+    checkTokens();
+  }, [router]);
 
-        <Tabs
-            value={activeTab}
-            onChange={(_, tab) => handleTabChange(tab)}
-            centered
-        >
-            <Tab label="Cours & exercice" value="cours" />
-            <Tab label="Bac à sable" value="sandbox" />
-        </Tabs>
+  const [activeTab, setActiveTab] = useState("cours");
 
-        <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
-            {activeTab === "cours" ? <Cours /> : <InterfaceSandbox />}
-        </Box>
-        </Layout>
-    );
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <Layout type="logged">
+      <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
+        <Header
+          tabs={{
+            dashboard: "Tableau de bord",
+            modules: "Mes modules",
+            profile: "Mon profil",
+          }}
+          activeTab="modules"
+          onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
+          onClickLogout={() => router.push("/auth/logout")}
+          onClickLogo={() => router.push("/")}
+        />
+      </Box>
+      <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
+        <Title level={1} align="center">
+          Interface réseau
+        </Title>
+      </Box>
+
+      <Tabs
+        value={activeTab}
+        onChange={(_, tab) => handleTabChange(tab)}
+        centered
+      >
+        <Tab label="Cours" value="cours" />
+        <Tab label="Bac à sable" value="sandbox" />
+      </Tabs>
+
+      <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
+        {activeTab === "cours" ? <Cours /> : <InterfaceSandbox />}
+      </Box>
+    </Layout>
+  );
 }
-  
