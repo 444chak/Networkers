@@ -7,12 +7,22 @@ import { useState } from "react";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
-import { Alert } from "@mui/material";
+import {
+  Alert,
+  CircularProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+} from "@mui/material";
 import Box from "@/components/Box";
 
-const pingSandbox: React.FC = () => {
+const PingSandbox: React.FC = () => {
   const [command, setCommand] = useState<string>("");
   const [simpleRes, setSimpleRes] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [testPing, setTestPing] = useState<{
     rtt_ms: number;
@@ -25,14 +35,21 @@ const pingSandbox: React.FC = () => {
   const [error, setError] = useState<string>("");
 
   const handleSimplify = async (e: { preventDefault: () => void }) => {
+    setIsLoading(true);
+    setError("");
+    setSimpleRes("");
     e.preventDefault();
     const parts = command.split(" ");
     if (parts.length < 2 || parts.length > 2) {
-      setSimpleRes("Commande invalide");
+      setSimpleRes("");
+      setIsLoading(false);
+      setError("Commande invalide");
       return;
     }
     if (parts[0] !== "ping") {
-      setSimpleRes("Commande invalide");
+      setSimpleRes("");
+      setIsLoading(false);
+      setError("Commande invalide");
       return;
     }
     try {
@@ -69,11 +86,12 @@ const pingSandbox: React.FC = () => {
         setError("Erreur lors de la tentative de ping");
       }
     }
+    setIsLoading(false);
   };
 
   return (
-      <Space space="50px" direction="vertical" margin={{ bottom: "100px" }}>
-        <>
+    <Space space="50px" direction="vertical" margin={{ bottom: "100px" }}>
+      <>
         <form onSubmit={handleSimplify}>
           <Title level={2}>Envoi de requête de ping</Title>
 
@@ -97,7 +115,12 @@ const pingSandbox: React.FC = () => {
               handleSimplify(e);
             }}
           />
-          {simpleRes && testPing ? (
+          {isLoading && (
+            <Box align="center" margin={{ top: "20px" }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!isLoading && simpleRes && testPing ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
                 severity="success"
@@ -105,35 +128,49 @@ const pingSandbox: React.FC = () => {
                 style={{ borderRadius: "10px" }}
               >
                 Résultat : {simpleRes}
-                <Space />
-                <table style={{ borderCollapse: "collapse", width: "100%" }}>
-                  <tbody>
-                    <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>Source</th>
-                      <td>{testPing.source}</td>
-                    </tr>
-                    <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>Destination</th>
-                      <td>{testPing.destination}</td>
-                    </tr>
-                    <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>TTL</th>
-                      <td>{testPing.ttl}</td>
-                    </tr>
-                    <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>RTT (ms)</th>
-                      <td>{testPing.rtt_ms}</td>
-                    </tr>
-                    <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>Taille du paquet</th>
-                      <td>{testPing.packet_size}</td>
-                    </tr>
-                  </tbody>
-                </table>
               </Alert>
+              <TableContainer
+                component={Paper}
+                sx={{ marginTop: "20px", backgroundColor: "#f6f6f666" }}
+              >
+                <Table style={{ borderCollapse: "collapse", width: "100%" }}>
+                  <TableBody>
+                    <TableRow style={{ borderBottom: "1px solid black" }}>
+                      <TableCell style={{ paddingRight: "1.5em" }}>
+                        Source
+                      </TableCell>
+                      <TableCell>{testPing.source}</TableCell>
+                    </TableRow>
+                    <TableRow style={{ borderBottom: "1px solid black" }}>
+                      <TableCell style={{ paddingRight: "1.5em" }}>
+                        Destination
+                      </TableCell>
+                      <TableCell>{testPing.destination}</TableCell>
+                    </TableRow>
+                    <TableRow style={{ borderBottom: "1px solid black" }}>
+                      <TableCell style={{ paddingRight: "1.5em" }}>
+                        TTL
+                      </TableCell>
+                      <TableCell>{testPing.ttl}</TableCell>
+                    </TableRow>
+                    <TableRow style={{ borderBottom: "1px solid black" }}>
+                      <TableCell style={{ paddingRight: "1.5em" }}>
+                        RTT (ms)
+                      </TableCell>
+                      <TableCell>{testPing.rtt_ms}</TableCell>
+                    </TableRow>
+                    <TableRow style={{ borderBottom: "1px solid black" }}>
+                      <TableCell style={{ paddingRight: "1.5em" }}>
+                        Taille du paquet
+                      </TableCell>
+                      <TableCell>{testPing.packet_size}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Box>
           ) : null}
-          {error? (
+          {!isLoading && error ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
                 severity="error"
@@ -145,9 +182,9 @@ const pingSandbox: React.FC = () => {
             </Box>
           ) : null}
         </form>
-        </>
-        </Space>
+      </>
+    </Space>
   );
 };
 
-export default pingSandbox;
+export default PingSandbox;

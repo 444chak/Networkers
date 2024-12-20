@@ -291,7 +291,7 @@ L'applications dépend de la base de données pour fonctionner. Il faut donc lan
 
 | Method | URL             | Description | Need token | Roles |
 | ------ | --------------- | ----------- | ---------- | ----- |
-| GET    | /ipv4/mask/{ip} | Get mask    | True       | User  |
+| GET    | /ipv4/mask/{ip}/{mask} | Get mask    | True       | User  |
 
 #### Get VLSM
 
