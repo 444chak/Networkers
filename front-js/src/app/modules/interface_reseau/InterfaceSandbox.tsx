@@ -1,5 +1,6 @@
 import Title from "@/components/Title";
 import Button from "@/components/Button";
+import Input from "@/components/Input";
 import Space from "@/components/Space";
 import React from "react";
 import { useState } from "react";
@@ -12,9 +13,17 @@ const InterfaceSandbox: React.FC = () => {
   const [interfaces, setInterfaces] = useState<
     Array<{ name: string; mac: string; ip: string }>
   >([]);
+  const [command, setCommand] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleInterfaces = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    if (command != "ifconfig" && command != "ip a" && command != "ipconfig") {
+      setError("Commande incorrecte");
+      setInterfaces([]);
+      return;
+    }
+
     try {
       const response = await axios.get("/scapy/interfaces/", {
         headers: {
@@ -31,8 +40,9 @@ const InterfaceSandbox: React.FC = () => {
           }),
         );
         setInterfaces(formattedInterfaces);
+        setError("");
       }
-    } catch (error: unknown) {}
+    } catch (error: unknown) { }
   };
 
   return (
@@ -41,12 +51,23 @@ const InterfaceSandbox: React.FC = () => {
         <form onSubmit={handleInterfaces}>
           <Title level={2}>Interface réseau</Title>
 
+          <Input
+            label="Commande de récupération des interfaces"
+            type="text"
+            placeholder="ifconfig, ip a, ipconfig"
+            value={command}
+            margin={{ bottom: "20px" }}
+            onChange={(e) => setCommand(e.target.value)}
+            required
+          />
+
           <Button
             text="Obtenir les interfaces de la machine hôte"
             primary
             form="submit"
             type="input"
             margin={{ top: "20px" }}
+            disabled={!command}
             onClick={(e) => {
               handleInterfaces(e);
             }}
@@ -60,19 +81,34 @@ const InterfaceSandbox: React.FC = () => {
               >
                 Résultat :
                 <table style={{ borderCollapse: "collapse", width: "100%" }}>
-                  <tr style={{ borderBottom: "1px solid black" }}>
-                    <th style={{ paddingRight: "1.5em" }}>Interface</th>
-                    <th style={{ paddingRight: "1.5em" }}>Adresse IP</th>
-                    <th style={{ paddingRight: "1.5em" }}>Adresse MAC</th>
-                  </tr>
-                  {interfaces.map((iface, index) => (
-                    <tr key={index} style={{ borderBottom: "1px solid black" }}>
-                      <td>{iface.name}</td>
-                      <td>{iface.ip}</td>
-                      <td>{iface.mac}</td>
+                  <thead>
+                    <tr style={{ borderBottom: "1px solid black" }}>
+                      <th style={{ paddingRight: "1.5em" }}>Interface</th>
+                      <th style={{ paddingRight: "1.5em" }}>Adresse IP</th>
+                      <th style={{ paddingRight: "1.5em" }}>Adresse MAC</th>
                     </tr>
-                  ))}
+                  </thead>
+                  <tbody>
+                    {interfaces.map((iface, index) => (
+                      <tr key={index} style={{ borderBottom: "1px solid black" }}>
+                        <td>{iface.name}</td>
+                        <td>{iface.ip}</td>
+                        <td>{iface.mac}</td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
+              </Alert>
+            </Box>
+          ) : null}
+          {error ? (
+            <Box margin={{ top: "20px", bottom: "20px" }}>
+              <Alert
+                severity="error"
+                variant="outlined"
+                style={{ borderRadius: "10px" }}
+              >
+                {error}
               </Alert>
             </Box>
           ) : null}
