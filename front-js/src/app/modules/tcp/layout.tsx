@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "TCP",
+  title: "Ping TCP",
   description: "Networkers",
 };
 
