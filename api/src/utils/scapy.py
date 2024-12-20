@@ -66,7 +66,8 @@ def interfaces() -> dict:
 
 
 def tcp(
-    target_ip: str, target_port: int
+    target_ip: str,
+    target_port: int,
 ) -> tuple[int, IP | None, IP | None, str | None]:
     """Test a TCP connection.
 

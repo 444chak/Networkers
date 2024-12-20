@@ -10,7 +10,7 @@ security = HTTPBearer()
 
 async def jwt_bearer(
     credentials: HTTPAuthorizationCredentials = Security(security),
-) -> dict:  # noqa: B008
+) -> dict:
     """Verify JWT token.
 
     Args:
