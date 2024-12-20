@@ -20,6 +20,8 @@ export default function Dashboard() {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const[isAdmin, setIsAdmin] = useState(false);
+
   useEffect(() => {
     const checkTokens = async () => {
       const token = Cookies.get("access_token");
@@ -71,6 +73,28 @@ export default function Dashboard() {
 
     getUser();
   }, [router]);
+
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const getRole = async () => {
+      try {
+        const response = await axios.get("/users/me", {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
+          },
+        });
+        setRole(response.data.role);
+      } catch {
+        Cookies.remove("access_token");
+        Cookies.remove("refresh_token");
+        router.push("/");
+      }
+    };
+
+    getRole();
+  }, [router]);
+
   return (
     <EmojiProvider data={emojiData}>
       <Layout type="logged">
@@ -81,11 +105,13 @@ export default function Dashboard() {
                 dashboard: "Tableau de bord",
                 modules: "Mes modules",
                 profile: "Mon profil",
+                ...(role=="admin" && {userManagement: "Gestion des utilisateurs"}),
               }}
               activeTab="dashboard"
               onClick={(tab) => router.push(`/${tab.toLowerCase()}`)}
               onClickLogout={() => router.push("/auth/logout")}
               onClickLogo={() => router.push("/")}
+              
             />
           )}
         </Box>
