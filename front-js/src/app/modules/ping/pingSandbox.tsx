@@ -9,10 +9,8 @@ import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 import { Alert } from "@mui/material";
 import Box from "@/components/Box";
-import test from "node:test";
 
 const pingSandbox: React.FC = () => {
-  // const [testPing, setTestPing] = useState("");
   const [command, setCommand] = useState<string>("");
   const [simpleRes, setSimpleRes] = useState("");
 
