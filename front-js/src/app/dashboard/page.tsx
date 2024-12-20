@@ -79,7 +79,6 @@ export default function Dashboard() {
             <Header
               tabs={{
                 dashboard: "Tableau de bord",
-                modules: "Mes modules",
                 profile: "Mon profil",
               }}
               activeTab="dashboard"
