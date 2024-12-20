@@ -28,7 +28,7 @@ const EthernetSandbox: React.FC = () => {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        }
+        },
       );
       const data = response.data;
       if (response.status === 200) {
@@ -39,7 +39,7 @@ const EthernetSandbox: React.FC = () => {
       if (axiosError.response?.status === 400) {
         const data = axiosError.response.data as { detail: string };
         setSimpleRes(
-          data.detail || "Erreur lors de la création de la trame Ethernet"
+          data.detail || "Erreur lors de la création de la trame Ethernet",
         );
       } else {
         setSimpleRes("La création de la trame Ethernet a échoué");

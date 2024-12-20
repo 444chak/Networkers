@@ -48,7 +48,7 @@ const VlsmSandbox: React.FC = () => {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        }
+        },
       );
       const data = response.data;
       if (response.status === 200) {

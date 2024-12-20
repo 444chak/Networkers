@@ -129,7 +129,7 @@ export default function Profile() {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        }
+        },
       );
       if (response.status === 200) {
         setRes("Utilisateur mis à jour");

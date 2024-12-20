@@ -82,8 +82,8 @@ export default function Ping() {
       </Tabs>
 
       <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
-        {activeTab === "cours" ? <Cours /> : <PingSandbox /> }
-      </Box>    
+        {activeTab === "cours" ? <Cours /> : <PingSandbox />}
+      </Box>
     </Layout>
   );
 }

@@ -46,7 +46,7 @@ const InterfaceSandbox: React.FC = () => {
             name,
             mac: details.mac,
             ip: details.ip,
-          })
+          }),
         );
         setInterfaces(formattedInterfaces);
         setError("");

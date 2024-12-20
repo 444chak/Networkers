@@ -75,7 +75,7 @@ export default function Profile() {
           headers: {
             Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
-        }
+        },
       );
       if (response.status === 200) {
         setSuccess("Mot de passe modifié avec succès");
