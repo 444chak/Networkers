@@ -17,23 +17,24 @@ const CalculIpv4Sandbox: React.FC = () => {
   const handleSimplify = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      const response = await axios.get("/ipv4/simplify/ " + simpleIpv4, {
+      const response = await axios.get("/ipv4/class/" + simpleIpv4, {
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
       });
       const data = response.data;
+      console.log(data);
       if (response.status === 200) {
-        setSimpleRes(data.ipv6);
+        setSimpleRes(`Adresse IPv4 de ${data.ipv4}`);
       }
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 400) {
         const data = axiosError.response.data as { detail: string };
-        if (data.detail === "Invalid IPv6") {
-          setSimpleRes("Adresse IPv6 invalide");
+        if (data.detail === "Invalid IPv4") {
+          setSimpleRes("Adresse IPv4 invalide");
         } else {
-          setSimpleRes("Adresse IPv6 invalide");
+          setSimpleRes("Adresse IPv4 invalide");
         }
       } else {
         setSimpleRes("Erreur lors de la simplification de l'adresse IPv6");
