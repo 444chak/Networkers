@@ -98,7 +98,7 @@ const EthernetSandbox: React.FC = () => {
                                 Résultat :
                                 <Code
                                     text={simpleRes}                                    
-                                    language="text"
+                                    language="JSON"
                                     theme={solarizedLight}
                                 />
                             </Alert>

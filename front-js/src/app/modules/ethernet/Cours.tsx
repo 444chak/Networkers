@@ -1,55 +1,22 @@
-import Header from "@/components/Header"
-import Layout from "@/components/Layout"
 import Space from "@/components/Space"
 import Title from "@/components/Title"
-import { Box, CircularProgress, Grid2, Input } from "@mui/material"
-import axios, { AxiosError } from "axios"
-import router from "next/router"
-import { useState } from "react"
 import { EmojiProvider } from "react-apple-emojis"
-import Cookies from "js-cookie";
-import Image from "next/image";
 import Text from "@/components/Text"
 import emojiData from "react-apple-emojis/src/data.json";
-
+import { Code, CodeBlock, solarizedLight } from "react-code-blocks";
+import { text } from "stream/consumers";
 
 
 const CoursEthernet: React.FC = () => {
 
-    const [ipv6test, setIPv6test] = useState("");
-    const [res, setRes] = useState("");
-    const [valid, setValid] = useState(false);
-
-    const handleSimplify = async (e: { preventDefault: () => void }) => {
-        e.preventDefault();
-        try {
-            const response = await axios.get(
-                "/ipv6/simplify/fe80:0000:0000:0000:0202:b3ff:fe1e:8329",
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("access_token")}`,
-                    },
-                },
-            );
-            const data = response.data;
-            if (response.status === 200) {
-                setRes(data.ipv6);
-                setValid(res == ipv6test);
-            }
-        } catch (error: unknown) {
-            const axiosError = error as AxiosError;
-            if (axiosError.response?.status === 400) {
-                const data = axiosError.response.data as { detail: string };
-                if (data.detail === "Invalid IPv6") {
-                    setRes("false");
-                } else {
-                    setRes("false");
-                }
-            } else {
-                setRes("false");
-            }
+    const example = `{
+        "frame": {
+            "dst_mac": "FF:FF:FF:FF:FF:FF",
+            "src_mac": "00:11:22:33:44:55",
+            "eth_type": "0x0800",
+            "frame_hex": "FFFFFFFFFFFF0011223344550800"
         }
-    };
+    }`;
 
     return (
         <EmojiProvider data={emojiData}>
@@ -74,12 +41,11 @@ const CoursEthernet: React.FC = () => {
                 <Text>・0x8100 pour VLAN</Text>
 
                 <Title level={2} margin={{ top: "2rem" }}>Exemple de réponse 200 OK</Title>
-                <Image
-                    src="/modules_assets/example_ethernet.png"
-                    alt="Example ethernet"
-                    width={500}
-                    height={200}
-                    style={{ width: "auto", height: "auto" }} />
+                <CodeBlock
+                    text={(example)}
+                    language="JSON"
+                    theme={solarizedLight}
+                />
             </Space>
         </EmojiProvider>
     )
