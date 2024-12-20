@@ -194,12 +194,6 @@ async def update_user(
 
         user.username = user_udpate.username
 
-    if user_udpate.password is not None and not validate_password(user_udpate.password):
-        raise HTTPException(status_code=400, detail="Invalid password")
-
-    if not verify_password(user_udpate.password, user.password):
-        user.password = get_hashed_password(user_udpate.password)
-
     stmt = (
         user_table.update()
         .where(user_table.c.username == username)
@@ -211,7 +205,7 @@ async def update_user(
     return user
 
 
-@router.patch(
+@router.delete(
     "/{username}",
     summary="Delete an user by username",
     dependencies=[Depends(jwt_bearer)],
