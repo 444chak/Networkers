@@ -14,9 +14,11 @@ const CalculIpv4Sandbox: React.FC = () => {
   const [simpleIpv4, setSimpleIpv4] = useState("");
   const [simpleRes, setSimpleRes] = useState("");
   const [isLoadingClass, setIsLoadingClass] = useState(false);
+  const [error, setError] = useState("");
 
   const handleClass = async (e: { preventDefault: () => void }) => {
     setIsLoadingClass(true);
+    setError("");
     e.preventDefault();
     try {
       const response = await axios.get("/ipv4/class/" + simpleIpv4, {
@@ -35,11 +37,14 @@ const CalculIpv4Sandbox: React.FC = () => {
         const data = axiosError.response.data as { detail: string };
         if (data.detail === "Invalid IPv4") {
           setSimpleRes("Adresse IPv4 invalide");
+          setError("Adresse IPv4 invalide");
         } else {
           setSimpleRes("Adresse IPv4 invalide");
+          setError("Adresse IPv4 invalide");
         }
       } else {
         setSimpleRes("Erreur lors du calcul de la classe de l'adresse IPv4");
+        setError("Erreur lors du calcul de la classe de l'adresse IPv4");
       }
     }
     setIsLoadingClass(false);
@@ -48,9 +53,11 @@ const CalculIpv4Sandbox: React.FC = () => {
   const [simpleIpv4cidr, setSimpleIpv4cidr] = useState("");
   const [simpleRescidr, setSimpleRescidr] = useState("");
   const [isLoadingMask, setIsLoadingMask] = useState(false);
+  const [errorMask, setErrorMask] = useState("");
 
   const handleMask = async (e: { preventDefault: () => void }) => {
     setIsLoadingMask(true);
+    setErrorMask("");
     e.preventDefault();
     try {
       const response = await axios.get("/ipv4/mask/" + simpleIpv4cidr, {
@@ -69,11 +76,14 @@ const CalculIpv4Sandbox: React.FC = () => {
         const data = axiosError.response.data as { detail: string };
         if (data.detail === "Invalid IPv4") {
           setSimpleRescidr("Adresse IPv4 invalide");
+          setErrorMask("Adresse IPv4 invalide");
         } else {
           setSimpleRescidr("Adresse IPv4 invalide");
+          setErrorMask("Adresse IPv4 invalide");
         }
       } else {
         setSimpleRescidr("Erreur lors du calcul du masque de l'adresse IPv4");
+        setErrorMask("Erreur lors du calcul du masque de l'adresse IPv4");
       }
     }
     setIsLoadingMask(false);
@@ -113,11 +123,24 @@ const CalculIpv4Sandbox: React.FC = () => {
           {!isLoadingClass && simpleRes ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
-                severity="success"
+                severity={error ? "error" : "success"}
                 variant="outlined"
                 style={{ borderRadius: "10px" }}
               >
                 Résultat : {simpleRes}
+              </Alert>
+            </Box>
+          ) : null}
+          {(!isLoadingClass && error) || !simpleRes ? (
+            <Box margin={{ top: "20px", bottom: "20px" }}>
+              <Alert
+                severity="error"
+                variant="outlined"
+                style={{ borderRadius: "10px" }}
+              >
+                {error
+                  ? error
+                  : "Erreur lors du calcul de la classe de l'adresse IPv4"}
               </Alert>
             </Box>
           ) : null}
@@ -153,11 +176,12 @@ const CalculIpv4Sandbox: React.FC = () => {
           {!isLoadingClass && simpleRescidr ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
-                severity="success"
+                severity={errorMask ? "error" : "success"}
                 variant="outlined"
                 style={{ borderRadius: "10px" }}
               >
-                Résultat : {simpleRescidr}
+                {errorMask ? "Erreur : " : "Résultat : "}
+                {errorMask ? errorMask : simpleRescidr}
               </Alert>
             </Box>
           ) : null}
