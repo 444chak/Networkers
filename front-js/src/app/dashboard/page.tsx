@@ -93,7 +93,7 @@ export default function Dashboard() {
           <CircularProgress />
         ) : (
           <>
-            <Box margin={{ top: "150px", bottom: "50px", left: "10%" }}>
+            <Box margin={{ top: "50px", bottom: "50px", left: "10%" }}>
               <Title level={1}>
                 Bonjour {username}
                 <Spacer x={2} />
@@ -114,6 +114,7 @@ export default function Dashboard() {
                     title="IPv6"
                     description="Simplifiez ou étendez une adresse IPv6."
                     image="/modules_assets/ipv6.svg"
+                    onClick={() => router.push("/modules/ipv6")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -126,8 +127,9 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Conversion IPv4"
-                    description="Convertissez une adresse IPv4 en hexadécimal."
+                    description="Découvrez comment convertir une adresse IPv4 de différentes manières."
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/convert_ipv4")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -135,6 +137,7 @@ export default function Dashboard() {
                     title="VLSM"
                     description="Décomposez votre réseau avec VLSM"
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/vlsm")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -147,9 +150,10 @@ export default function Dashboard() {
                 </Grid2>
                 <Grid2 size={4}>
                   <Card
-                    title="Ping"
-                    description="Envoyez un ping"
+                    title="Ping ICMP"
+                    description="Expérimentez l'envoi de paquets à travers les couches OSI."
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/ping")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
@@ -164,6 +168,7 @@ export default function Dashboard() {
                     title="Interface réseau"
                     description="Affichez l'interface réseau du client"
                     image="/modules_assets/scapy.svg"
+                    onClick={() => router.push("/modules/interface_reseau")}
                   />
                 </Grid2>
               </Grid2>

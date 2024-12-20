@@ -7,75 +7,144 @@ import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
 import Title from "@/components/Title";
 import Text from "@/components/Text";
-import { use, useState } from "react";
+import { useState } from "react";
 import Link from "@/components/Link";
-import Space from "@/components/Space";
 import ValidatePsw from "@/components/ValidatePsw";
-import {validate_passwd} from "./validatePasswd";
+import { validate_passwd } from "@/utils/validatePasswd";
+import Backlink from "@/components/Backlink";
+import { useRouter } from "next/navigation";
+import axios from "@/axiosConfig";
+import { AxiosError } from "axios";
+import { Alert, CircularProgress } from "@mui/material";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function Home() {
-    const [username, setUsername] = useState("");
+  const router = useRouter();
+  const [username, setUsername] = useState("");
 
-    const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [confirmPassword, setConfirmPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-    const isValid = false;
+  const [loading, setLoading] = useState(false);
 
-    return (
-        <Layout type="home">
-          <Box align="center" margin={{ top: "100px", bottom: "50px" }}>
-            <Title level={1}>Networkers</Title>
-          </Box>
-          <Box align="center">
-            <Modal>
-              <Title level={3}>Inscription</Title>
-              <Input
-                type="text"
-                placeholder="Nom d'utilisateur"
-                value={username}
-                margin={{ bottom: "20px" }}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                label="Nom d'utilisateur"
-              />
-              <Input
-                type="password"
-                placeholder="Password123&"
-                value={password}
-                margin={{ bottom: "20px" }}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                label="Mot de passe"
-              />
-              <Input
-                type="password"
-                placeholder="Password123&"
-                value={confirmPassword}
-                margin={{ bottom: "20px" }}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                label="Confimer mot de passe"
-              />
-              <ValidatePsw
-              password={password}
-              />
+  const [error, setError] = useState("");
+
+  const handleSignup = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/auth/register", {
+        username: username,
+        password: password,
+      });
+      if (response.status === 200) {
+        router.push("/auth/login");
+      }
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 400) {
+        const data = axiosError.response.data as { detail: string };
+        if (data.detail === "User already exists") {
+          setError("Nom d'utilisateur déjà utilisé");
+        } else if (data.detail == "Invalid password") {
+          setError("Mot de passe invalide");
+        } else {
+          setError("Erreur lors de l'inscription");
+        }
+      } else {
+        setError("Erreur lors de l'inscription");
+      }
+    }
+  };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = Cookies.get("access_token");
+      if (token) {
+        router.replace("/dashboard");
+      }
+    };
+    checkAuth();
+  }, [router]);
+
+  return (
+    <Layout type="home">
+      <Backlink onClick={router.back} />
+      <Box align="center" margin={{ top: "100px", bottom: "50px" }}>
+        <Title level={1}>Networkers</Title>
+      </Box>
+      <Box align="center">
+        <Modal>
+          <Title level={3}>Inscription</Title>
+          <form onSubmit={handleSignup}>
+            <Input
+              type="text"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              margin={{ bottom: "20px" }}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              label="Nom d'utilisateur"
+            />
+            <Input
+              type="password"
+              placeholder="Password123&"
+              value={password}
+              margin={{ bottom: "20px" }}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              label="Mot de passe"
+            />
+            <Input
+              type="password"
+              placeholder="Password123&"
+              value={confirmPassword}
+              margin={{ bottom: "20px" }}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              label="Confirmer mot de passe"
+            />
+            <ValidatePsw password={password} />
+            {error !== "" ? (
+              <Alert
+                severity="error"
+                variant="outlined"
+                style={{ borderRadius: "10px" }}
+              >
+                {error}
+              </Alert>
+            ) : null}
+            {loading ? (
+              <CircularProgress />
+            ) : (
               <Button
-                text="Connexion"
+                text="Inscription"
                 primary
                 type="input"
                 margin={{ top: "20px" }}
-                disabled={!username || !password || !confirmPassword || password !== confirmPassword || !validate_passwd(password)}
+                disabled={
+                  !username ||
+                  !password ||
+                  !confirmPassword ||
+                  password !== confirmPassword ||
+                  !validate_passwd(password)
+                }
+                form="submit"
+                onClick={(e) => {
+                  setLoading(true);
+                  handleSignup(e).finally(() => setLoading(false));
+                }}
               />
-              <Box align="right">
-                <Text align="right" margin={{ top: "20px" }} size="15px">
-                  Déjà un compte ?{" "}
-                  <Link href="/auth/login">Se connecter</Link>
-                </Text>
-              </Box>
-            </Modal>
+            )}
+          </form>
+          <Box align="right">
+            <Text align="right" margin={{ top: "20px" }} size="15px">
+              Déjà un compte ? <Link href="/auth/login">Se connecter</Link>
+            </Text>
           </Box>
-        </Layout>
-      );
-    }
-    
+        </Modal>
+      </Box>
+    </Layout>
+  );
+}

@@ -18,6 +18,7 @@ interface TextProps {
   className?: string;
   icon?: React.ReactNode;
   iconPosition?: "start" | "end"; // Add the iconPosition prop here
+  isItalic?: boolean;
 }
 
 const Text: React.FC<TextProps> = ({
@@ -30,6 +31,7 @@ const Text: React.FC<TextProps> = ({
   className,
   icon,
   iconPosition = "start", // Destructure the iconPosition prop here with a default value
+  isItalic,
 }) => {
   return (
     <span
@@ -43,6 +45,7 @@ const Text: React.FC<TextProps> = ({
         marginTop: margin?.top,
         marginBottom: margin?.bottom,
         textAlign: align,
+        fontStyle: isItalic ? "italic" : "normal",
       }}
     >
       {iconPosition === "start" && icon && <span className="icon">{icon}</span>}

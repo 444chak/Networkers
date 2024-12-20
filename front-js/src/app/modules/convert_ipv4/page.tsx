@@ -8,11 +8,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "@/axiosConfig";
-import InterfaceSandbox from "./InterfaceSandbox";
+import { Tabs, Tab } from "@mui/material";
 import Cours from "./Cours";
-import { Tab, Tabs } from "@mui/material";
+import IpSandbox from "./IpSandbox";
 
-export default function Interface() {
+export default function Dashboard() {
   const router = useRouter();
 
   const [, setHasAccessToken] = useState(false);
@@ -69,7 +69,7 @@ export default function Interface() {
       </Box>
       <Box align="center" margin={{ top: "50px", bottom: "50px" }}>
         <Title level={1} align="center">
-          Interface réseau
+          Conversion IPv4
         </Title>
       </Box>
 
@@ -78,12 +78,12 @@ export default function Interface() {
         onChange={(_, tab) => handleTabChange(tab)}
         centered
       >
-        <Tab label="Cours" value="cours" />
+        <Tab label="Cours & exercice" value="cours" />
         <Tab label="Bac à sable" value="sandbox" />
       </Tabs>
 
       <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
-        {activeTab === "cours" ? <Cours /> : <InterfaceSandbox />}
+        {activeTab === "cours" ? <Cours /> : <IpSandbox />}
       </Box>
     </Layout>
   );

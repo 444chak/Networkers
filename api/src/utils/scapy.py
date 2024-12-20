@@ -29,7 +29,8 @@ def ping(ipv4: str) -> tuple[IP, IP]:
     response = sr1(packet, timeout=3, verbose=0)
     return packet, response
 
-def ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> hexdump:
+
+def ethernet_frame(dst_mac: str, src_mac: str, eth_type: str) -> hexdump:
     """Create an Ethernet frame.
 
     Args:
@@ -43,6 +44,7 @@ def ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> hexdump:
     """
     frame = Ether(dst=dst_mac, src=src_mac, type=int(eth_type, 16))
     return hexdump(frame, dump=True)
+
 
 def interfaces() -> dict:
     """Get network interfaces of the host.
@@ -62,7 +64,11 @@ def interfaces() -> dict:
 
     return {"interfaces": interfaces}
 
-def tcp(target_ip:str, target_port:int) -> tuple[int, IP | None, IP | None, str | None]:
+
+def tcp(
+    target_ip: str,
+    target_port: int,
+) -> tuple[int, IP | None, IP | None, str | None]:
     """Test a TCP connection.
 
     Args:
@@ -86,7 +92,8 @@ def tcp(target_ip:str, target_port:int) -> tuple[int, IP | None, IP | None, str 
         return 2, None, None, tcp_flags
     return -1, None, None, None
 
-def get_ip_from_dns(dns:str) -> str | None:
+
+def get_ip_from_dns(dns: str) -> str | None:
     """Get the IP address from a DNS name.
 
     Args:

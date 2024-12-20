@@ -1,5 +1,6 @@
 """Scapy routes modules."""
 
+import re
 import time
 
 from fastapi import APIRouter, HTTPException
@@ -10,9 +11,12 @@ router = APIRouter()
 
 RE_IP = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
 
-@router.get("/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",\
-    summary="Create an Ethernet frame")
-def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
+
+@router.get(
+    "/ethernet-frame/{dst_mac}/{src_mac}/{eth_type}",
+    summary="Create an Ethernet frame",
+)
+def create_ethernet_frame(dst_mac: str, src_mac: str, eth_type: str) -> dict:
     """Create an Ethernet frame."""
     frame = ethernet_frame(dst_mac, src_mac, eth_type)
 
@@ -20,11 +24,21 @@ def create_ethernet_frame(dst_mac:str, src_mac:str, eth_type:str) -> dict:
         "frame": frame,
     }
 
+
 @router.get("/tcp-test/{target_ip}/{target_port}", summary="Test a TCP connection")
-def get_tcp_test(target_ip:str, target_port:int) -> dict:
+def get_tcp_test(target_ip: str, target_port: int) -> dict:
     """Test a TCP connection."""
-    if RE_IP.match(target_ip) is None:
+    if re.search(RE_IP, target_ip) is None:
         target_ip = get_ip_from_dns(target_ip)
+
+    if target_ip is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": f"{target_ip} not resolved",
+            },
+        )
+
     start_time = time.time()
     status, response, packet, tcp_flags = tcp(target_ip, target_port)
     rtt = (time.time() - start_time) * 1000  # Convert to ms
@@ -39,33 +53,39 @@ def get_tcp_test(target_ip:str, target_port:int) -> dict:
 
     if status == 0:
         return {
-                "message":\
-                f"Connexion TCP réussie avec {target_ip}:{target_port} (SYN-ACK reçu).",
-                "details": {
+            "message": f"Connexion TCP réussie avec {target_ip}:{target_port} (SYN-ACK reçu).",
+            "details": {
                 "rtt_ms": round(rtt, 2),
                 "packet_size": len(response),
                 "ttl": response.ttl,
                 "source": packet.src,
                 "destination": packet.dst,
             },
-            }
+        }
 
     if status == 1:
         return {
-                "message":\
-                f"Connexion TCP refusée par {target_ip}:{target_port} (RESET reçu).",
-            }
+            "message": f"Connexion TCP refusée par {target_ip}:{target_port} (RESET reçu).",
+        }
 
     return {
-        "message": \
-        f"Connexion TCP refusée par {target_ip}:{target_port} (Flags : {tcp_flags}).",
+        "message": f"Connexion TCP refusée par {target_ip}:{target_port} (Flags : {tcp_flags}).",
     }
+
 
 @router.get("/ping/{ip}", summary="Ping a target IP")
 def get_ping(ip: str) -> dict:
     """Ping a target IP."""
-    if RE_IP.match(ip) is None:
+    if re.search(RE_IP, ip) is None:
         ip = get_ip_from_dns(ip)
+
+    if ip is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": f"{ip} not resolved",
+            },
+        )
     try:
         start_time = time.time()
         packet, response = ping(ip)
@@ -95,6 +115,7 @@ def get_ping(ip: str) -> dict:
             detail=f"Ping failed: {e!s}",
         ) from e
 
+
 @router.get("/interfaces", summary="Get the interfaces of the machine")
 def get_interface() -> dict | None:
     """Get the network interfaces of the host."""
@@ -103,5 +124,3 @@ def get_interface() -> dict | None:
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
-
-
