@@ -57,7 +57,7 @@ python3 set_env.py
 sudo usermod -aG docker <user>
 ```
 
-3. Redémarrer la console.
+3. Se déconnecter et se reconnecter pour que les changements soient pris en compte.  
 
 ### :rocket: • Démarrage
 
