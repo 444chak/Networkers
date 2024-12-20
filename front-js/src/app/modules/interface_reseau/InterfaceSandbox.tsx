@@ -6,7 +6,16 @@ import React from "react";
 import { useState } from "react";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
-import { Alert } from "@mui/material";
+import {
+  Alert,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import Box from "@/components/Box";
 
 const InterfaceSandbox: React.FC = () => {
@@ -37,12 +46,12 @@ const InterfaceSandbox: React.FC = () => {
             name,
             mac: details.mac,
             ip: details.ip,
-          }),
+          })
         );
         setInterfaces(formattedInterfaces);
         setError("");
       }
-    } catch (error: unknown) { }
+    } catch (error: unknown) {}
   };
 
   return (
@@ -79,26 +88,34 @@ const InterfaceSandbox: React.FC = () => {
                 variant="outlined"
                 style={{ borderRadius: "10px" }}
               >
-                Résultat :
-                <table style={{ borderCollapse: "collapse", width: "100%" }}>
-                  <thead>
-                    <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>Interface</th>
-                      <th style={{ paddingRight: "1.5em" }}>Adresse IP</th>
-                      <th style={{ paddingRight: "1.5em" }}>Adresse MAC</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {interfaces.map((iface, index) => (
-                      <tr key={index} style={{ borderBottom: "1px solid black" }}>
-                        <td>{iface.name}</td>
-                        <td>{iface.ip}</td>
-                        <td>{iface.mac}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                Récupération des interfaces réussie
               </Alert>
+              <TableContainer
+                component={Paper}
+                sx={{ marginTop: "20px", backgroundColor: "#f6f6f666" }}
+              >
+                <Table style={{ borderCollapse: "collapse", width: "100%" }}>
+                  <TableHead>
+                    <TableRow style={{ borderBottom: "1px solid black" }}>
+                      <TableCell>Interface</TableCell>
+                      <TableCell>Adresse IP</TableCell>
+                      <TableCell>Adresse MAC</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {interfaces.map((iface, index) => (
+                      <TableRow
+                        key={index}
+                        style={{ borderBottom: "1px solid black" }}
+                      >
+                        <TableCell>{iface.name}</TableCell>
+                        <TableCell>{iface.ip}</TableCell>
+                        <TableCell>{iface.mac}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Box>
           ) : null}
           {error ? (
