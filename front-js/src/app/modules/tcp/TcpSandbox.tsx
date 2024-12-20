@@ -7,7 +7,7 @@ import { useState } from "react";
 import axios from "@/axiosConfig";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import Box from "@/components/Box";
 
 const TcpSandbox: React.FC = () => {
@@ -21,18 +21,22 @@ const TcpSandbox: React.FC = () => {
   } | null>(null);
   const [command, setCommand] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePing = async (e: { preventDefault: () => void }) => {
+    setIsLoading(true);
     e.preventDefault();
     const parts = command.split(" ");
     if (parts.length < 2 || parts.length > 2) {
       setError("Commande invalide");
       setRes("");
+      setIsLoading(false);
       return;
     }
     if (parts[0] !== "ping") {
       setError("Commande invalide");
       setRes("");
+      setIsLoading(false);
       return;
     }
     try {
@@ -40,6 +44,7 @@ const TcpSandbox: React.FC = () => {
       if (ip_port.length < 2 || ip_port.length > 2) {
         setError("Commande invalide");
         setRes("");
+        setIsLoading(false);
         return;
       }
       const ip = ip_port[0];
@@ -73,6 +78,7 @@ const TcpSandbox: React.FC = () => {
         setRes("");
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -83,7 +89,7 @@ const TcpSandbox: React.FC = () => {
 
           <Input
             type="text"
-            placeholder="ping 8.8.8.8:80"
+            placeholder="ping 145.242.11.100:80 ou ping impots.gouv.fr:443"
             value={command}
             margin={{ bottom: "20px" }}
             onChange={(e) => setCommand(e.target.value)}
@@ -101,7 +107,13 @@ const TcpSandbox: React.FC = () => {
               handlePing(e);
             }}
           />
-          {res && ping ? (
+          {isLoading && (
+            <Box align="center" margin={{ top: "20px" }}>
+              {" "}
+              <CircularProgress />
+            </Box>
+          )}
+          {!isLoading && res && ping ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
                 severity="success"
@@ -129,7 +141,9 @@ const TcpSandbox: React.FC = () => {
                       <td>{ping.rtt_ms}</td>
                     </tr>
                     <tr style={{ borderBottom: "1px solid black" }}>
-                      <th style={{ paddingRight: "1.5em" }}>Taille du paquet</th>
+                      <th style={{ paddingRight: "1.5em" }}>
+                        Taille du paquet
+                      </th>
                       <td>{ping.packet_size}</td>
                     </tr>
                   </tbody>
@@ -137,7 +151,7 @@ const TcpSandbox: React.FC = () => {
               </Alert>
             </Box>
           ) : null}
-          {error ? (
+          {!isLoading && error ? (
             <Box margin={{ top: "20px", bottom: "20px" }}>
               <Alert
                 severity="error"
