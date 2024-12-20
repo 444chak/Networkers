@@ -127,8 +127,9 @@ export default function Dashboard() {
                 <Grid2 size={4}>
                   <Card
                     title="Conversion IPv4"
-                    description="..."
+                    description="Découvrez comment convertir une adresse IPv4 de différentes manières."
                     image="/modules_assets/ipv4.svg"
+                    onClick={() => router.push("/modules/convert_ipv4")}
                   />
                 </Grid2>
                 <Grid2 size={4}>
