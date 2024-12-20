@@ -148,7 +148,7 @@ export default function Profile() {
       <Box align="center">
         <Modal>
           <Title level={3}>Gestion des utilisateurs</Title>
-          <form /*onSubmit={handleUpdate}*/>
+          <form>
             <label htmlFor="user">Utilisateur : </label>
             <Select
               defaultValue=""
@@ -173,7 +173,7 @@ export default function Profile() {
               margin={{ bottom: "20px" }}
               onChange={(e) => setUsername(e.target.value)}
               required
-              label="Modification du nom d'utilisateur"
+              label="Nouveau nom d'utilisateur"
             />
             {res !== "" ? (
               <Alert
