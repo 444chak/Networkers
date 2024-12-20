@@ -11,7 +11,6 @@ import axios from "@/axiosConfig";
 import { Tab, Tabs } from "@mui/material";
 import CalculIpv4Sandbox from "./CalculIpv4Sandbox";
 import Cours from "./Cours";
-import { CalculationInterpolation } from "sass";
 
 export default function Interface() {
   const router = useRouter();
@@ -85,7 +84,6 @@ export default function Interface() {
       <Box margin={{ top: "50px", bottom: "50px", left: "20%", right: "20%" }}>
         {activeTab === "cours" ? <Cours /> : <CalculIpv4Sandbox />}
       </Box>
-
     </Layout>
   );
 }
